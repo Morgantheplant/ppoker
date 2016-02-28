@@ -1,6 +1,8 @@
-import React from '../node_modules/react'
-import socket from '../socket'
-import classNames from 'classNames'
+import React from '../node_modules/react';
+import socket from '../socket';
+import classNames from 'classNames';
+import Cards from './Cards';
+
 
 class Room extends React.Component {
    constructor () {
@@ -10,18 +12,20 @@ class Room extends React.Component {
       messages: [],
       name: ''
     }
-
   }
   render () {
    let { roomname } = this.props.params
-    return (<div>Hello. You are attempting to join room: {roomname}
-        <div>Your name is &nbsp;
-          { this.state.name ? this.state.name : (<span><input ref="nameentry" />
+    return (<div>Hello. This is room: {roomname}
+        <div>
+          { this.state.name ? 'Your name is ' + this.state.name : (<span>Enter your name to join &nbsp;<input ref="nameentry" />
            <button onClick={this.updateName.bind(this)}>enter</button></span>) }
+        </div>
+        <div className="card-area">
+          <Cards />
         </div>
         <textarea ref="textarea" ></textarea>
         <button onClick={this.sendMessage.bind(this)} >send</button>
-        <ul>{this.state.messages.map(this._createMessage.bind(this))}</ul>
+        <ul>{this.state.messages.map(this._createMessage, this)}</ul>
         </div>)
   }
 

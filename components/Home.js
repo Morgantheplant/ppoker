@@ -24,7 +24,7 @@ class Home extends React.Component {
       if(name != this.state.roomName){
         this.setState({ roomName: name, verified: true })
       }
-      this.refs.roomLinkInput.value = `http://path/to/root/${ name }` 
+      this.refs.roomLinkInput.value = window.location.href+ `room/${name}`
     }.bind(this))
 
     socket.on('room-not-available', function(){
@@ -57,7 +57,7 @@ class Home extends React.Component {
         
         { this.state.link ? <input ref="roomLinkInput" className="room-link-input" 
            /> : null }
-        { this.state.link ? (<Link to={`/room/`+ this.state.roomName  }><button className="btn"> Let's Go </button></Link>) : null }
+        { this.state.link ? (<Link to={`/room/`+ this.state.roomName }><button className="btn"> Let's Go </button></Link>) : null }
     </div>)
   }
   updateRoomname(e){

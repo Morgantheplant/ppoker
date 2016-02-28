@@ -111,7 +111,47 @@
       width: 75px;
       padding: 2px;
     }
+    
+    .card {
+    position: relative;
+    height: 135px;
+    width: 8%;
+    border: 2px solid;
+    border-radius: 5px;
+    display:inline-block;
+    margin-right: 1%;
+    max-width: 100px;
+    cursor: pointer;
+    }
 
+    .top {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    }
+
+    .middle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 20px;
+    font-weight: bold;
+    }
+
+    .bottom {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    transform: rotate(180deg);
+    }
+
+    .card-area {
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 10px;
+    }
 
   </style>
   </head>
