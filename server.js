@@ -13,6 +13,10 @@ app.get('/room', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/room/:room', function(req, res){
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 
 
 app.get('/bundle.js', function(req, res){
@@ -23,16 +27,21 @@ app.get('/images/cards.jpg', function(req, res){
   res.sendFile(__dirname + '/public/images/cards.jpg');
 });
 
-var rooms = [];
+var socketData = {};
 
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+    var data = socketData[socket.id]
+    if(data && data.length === 2){
+      io.to(data[0]).emit('message',{
+        msg: data[1] + ' left the room'
+      });
+    }
+    
   });
 
   socket.on('roomname', function(room){
-    console.log(io.sockets.adapter.rooms[room], '!!!!!!!')
     if(!io.sockets.adapter.rooms[room]){
         io.emit('room-available', room)
         socket.join(room)
@@ -41,6 +50,24 @@ io.on('connection', function(socket){
         io.emit('room-not-available')
     }
   })
+
+  socket.on('joinroom', function(data){
+    console.log('user joined ', data)
+    socket.join(data.room)
+    socketData[socket.id] = [data.room, data.name]
+    io.to(data.room).emit('message', {
+      msg: data.name + ' joined the room'
+    })
+  })
+
+  socket.on('message', function(data){
+     console.log(data.room, data.msg)
+    io.to(data.room).emit('message',{
+      name: data.name,
+      msg: data.msg
+    });
+  })
+
 
 });
 

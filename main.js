@@ -10,7 +10,7 @@ import { Router, history,  Route, browserHistory  } from 'react-router';
 var div = document.querySelector('.react-content')
 ReactDOM.render(
 <Router history={browserHistory}>
-    { Routes }
+   { Routes }
 </Router>
 , div)
 
