@@ -1,8 +1,9 @@
 import React from '../node_modules/react'
 import socket from '../socket'
 import classNames from 'classNames'
+import { Link } from 'react-router';
 
-class Widget extends React.Component {
+class Home extends React.Component {
   constructor () {
     super()
 
@@ -52,11 +53,11 @@ class Widget extends React.Component {
         <button className={classNames('btn roomname',{ show: this.state.roomName } )} 
         onClick={ this.submitRoomname.bind(this) } > Sumit </button> 
         
-        <p className="link-text" >Link to your room:</p>
+        <p className="link-text" >Link to your ROOM:</p>
         
         { this.state.link ? <input ref="roomLinkInput" className="room-link-input" 
            /> : null }
-        { this.state.link ? <button className="btn"> Let's Go </button>: null }
+        { this.state.link ? (<Link to={`/room`}><button className="btn"> Let's Go </button></Link>) : null }
     </div>)
   }
   updateRoomname(e){
@@ -81,4 +82,4 @@ class Widget extends React.Component {
 
 }
 
-export default Widget
+export default Home

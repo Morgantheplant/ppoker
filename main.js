@@ -1,9 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
-import Widget from './components/Widget';
-import socket from './socket'
+import Home from './components/Home';
+import Room from './components/Room';
+import Routes from './routes/routes';
+import socket from './socket';
+import { Router, history,  Route, browserHistory  } from 'react-router';
+
 
 var div = document.querySelector('.react-content')
-ReactDOM.render(<Widget aid={ 123 } uid={ 123 } />, div)
+ReactDOM.render(
+<Router history={browserHistory}>
+    { Routes }
+</Router>
+, div)
+
 
  
