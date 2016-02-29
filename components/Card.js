@@ -1,7 +1,6 @@
 import React from '../node_modules/react'
 import socket from '../socket'
 import classNames from 'classNames'
-import socket from '../socket';
 
 class Card extends React.Component {
    constructor () {
