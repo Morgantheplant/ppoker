@@ -5,12 +5,12 @@ import socket from '../socket';
 
 import { Router, Route } from 'react-router';
 
-let Routes = ( 
+export default (store) => {
+  return (
     <Route>
         <Route path="/" component={ Home }>
         </Route>
         <Route path="room/:roomname" component={ Room } />
-    </Route>    
-        )
-
-module.exports = Routes
+    </Route>   
+  );
+};

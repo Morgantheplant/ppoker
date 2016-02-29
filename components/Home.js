@@ -2,11 +2,12 @@ import React from '../node_modules/react'
 import socket from '../socket'
 import classNames from 'classNames'
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
 class Home extends React.Component {
   constructor () {
     super()
-
+    debugger
     this.state = { 
       roomName: '',
       message: 'Please enter a room name',
@@ -50,17 +51,18 @@ class Home extends React.Component {
         onChange={this.updatePassword.bind(this)} 
         placeholder="enter a password" /> : null }
         
-        <button className={classNames('btn roomname',{ show: this.state.roomName } )} 
+        <button className={classNames('btn roomname',{ show: this.props.roomName } )} 
         onClick={ this.submitRoomname.bind(this) } > Sumit </button> 
         
         <p className="link-text" >Link to your ROOM:</p>
         
         { this.state.link ? <input ref="roomLinkInput" className="room-link-input" 
            /> : null }
-        { this.state.link ? (<Link to={`/room/`+ this.state.roomName }><button className="btn"> Let's Go </button></Link>) : null }
+        { this.state.link ? (<Link to={`/room/`+ this.props.roomName }><button className="btn"> Let's Go </button></Link>) : null }
     </div>)
   }
   updateRoomname(e){
+
      this.setState({ roomName: e.target.value })
   }
   updatePassword(e){
@@ -82,4 +84,12 @@ class Home extends React.Component {
 
 }
 
-export default Home
+function mapStateToProps(state) {
+  let props = {};
+  for(let i in state){
+    props[i] = state[i];
+  }
+  return props;
+}
+
+export default connect(mapStateToProps)(Home)
