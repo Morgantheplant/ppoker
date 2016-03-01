@@ -2,24 +2,28 @@ import React from '../node_modules/react'
 import socket from '../socket'
 import classNames from 'classNames'
 import Card from './Card'
-
-var fibNumbers =  [1,2,3,5,8,13,21,34,55,89];
+import { connect } from 'react-redux';
 
 class Cards extends React.Component {
-   constructor () {
-    super()
+   constructor (props) {
+    super(props)
   }
   render () {
    
     return (<div>
-         { fibNumbers.map(this._createCards, this)}
+         { this.props.cards.map(this._createCards, this)}
         </div>)
   }
   
   _createCards(item, index){
-    return <Card key={index} item={item} index={index}/> 
+    return <Card key={index} item={item.number} selected={item.selected} index={index}/> 
   }
 }
-    
 
-export default Cards
+function mapStateToProps(state) {
+  return {
+    cards: state.cards
+  }
+}
+
+export default connect(mapStateToProps)(Cards)   

@@ -16,7 +16,7 @@ class Home extends React.Component {
   }
   render () {
     return (
-      <div className={classNames("intro-modal", { hovered: this.props.hovered })} >
+      <div className={classNames("intro-modal", { inverse: this.props.bgColor })} >
         <h1> Welcome to Planning Poker</h1>
         <p className="message" >{this.props.message}</p>
           <div className="private-option">
@@ -59,38 +59,29 @@ class Home extends React.Component {
       const {dispatch} = this.props;
 
     socket.on('room-available', function(name){
-      debugger
+
       dispatch(actions.updateLink(location.href+ `${ name }`))
       dispatch(actions.updateMessage(`Roomname "${ name }" picked`))
-      dispatch(actions.updateRoomName(name))
-      // this.setState({
-      //   'message': `Roomname "${ name }" picked`,
-      //   'link': `http://path/to/room/${ name }`
-      // })
-      // if(name != this.props.roomName){
-      //   this.setState({ roomName: name, verified: true })
-      // }
-      this.refs.roomLinkInput.value = window.location.href+ `room/${name}`
+      if(name != this.props.roomName){
+        dispatch(actions.updateRoomName(name))
+      }
+      this.refs.roomLinkInput.value = window.location.href+`room/${name}`
     }.bind(this))
 
     socket.on('room-not-available', function(){
        dispatch(actions.updateMessage( "Sorry that room already exists"))
-       // this.setState({
-       //  'message': "Sorry that room already exists",
-       // })
-      
     }.bind(this))
+
+    dispatch(actions.updateMessage('Please enter a roomname'))
 
   }
   updateRoomname(e){
     const {dispatch} = this.props;
     dispatch(actions.updateRoomName(e.target.value)) 
-     // this.setState({ roomName: e.target.value })
   }
   updatePassword(e){
     const {dispatch} = this.props;
     dispatch(actions.updatePassword(e.target.value))
-     // this.setState({ password: e.target.value })
   }
   submitRoomname(e){
     const {dispatch} = this.props;
@@ -101,14 +92,10 @@ class Home extends React.Component {
   toggleBgColor(){
     const {dispatch} = this.props;
     dispatch(actions.toggleBgColor())
-    // var hovered = this.props.hovered ? false : true;
-    // this.setState({hovered: hovered })
   }
   togglePrivate(){
     const {dispatch} = this.props;
     dispatch(actions.togglePrivate())
-    // var usePass = this.props.usePass ? false : true;
-    // this.setState({ usePass: usePass })
   }
 
 }
@@ -117,7 +104,9 @@ function mapStateToProps(state) {
   //todo: only map state in this component
   let props = {};
   for(let i in state){
-    props[i] = state[i];
+    if(state[i]!== 'cards'){
+      props[i] = state[i];  
+    }
   }
   return props;
 }

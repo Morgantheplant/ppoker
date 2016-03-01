@@ -10,7 +10,7 @@ export const updateRoomName = function updateRoomName(name){
 export const updateMessage = function updateMessage(msg){
   return { 
     type: types.UPDATE_MESSAGE,
-    msg: msg 
+    message: msg 
   };
 }
     
