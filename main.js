@@ -7,31 +7,7 @@ import Room from './components/Room';
 import createRoutes from './routes/routes';
 import socket from './socket';
 import { Router, history,  Route, browserHistory  } from 'react-router';
-
-let init = { 
-    roomName: 'derp',
-    message: '',
-    hovered: false,
-    link: '',
-    password: '',
-    usePass: false
-}
-
-const mainStore = (state = init, action) => {
-    switch (action.type){
-        case 'UPDATE_NAME':
-            return { 
-              roomName: state.roomName,
-              message: action.msg,
-              hovered: state.hovered,
-              link: state.link,
-              password: state.password,
-              usePass: state.usePass
-            }
-        default: 
-            return state;     
-    }
-}
+import mainStore from './stores';
 
 const store = createStore(mainStore)
 const routes = createRoutes(store)
