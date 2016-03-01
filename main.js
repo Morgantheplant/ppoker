@@ -9,7 +9,7 @@ import socket from './socket';
 import { Router, history,  Route, browserHistory  } from 'react-router';
 
 let init = { 
-    roomName: '',
+    roomName: 'derp',
     message: '',
     hovered: false,
     link: '',
