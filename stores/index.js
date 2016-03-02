@@ -17,7 +17,8 @@ let init = {
         {number:34, selected:false},
         {number:55, selected:false},
         {number:89, selected:false} 
-    ]
+    ],
+    messages: []
 };
 
 const mainStore = (state = init, action) => {
@@ -30,7 +31,8 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice()
+            cards: state.cards.slice(),
+            messages: state.messages.slice()
           }
         case 'UPDATE_MESSAGE':
           return {
@@ -40,7 +42,8 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice()
+            cards: state.cards.slice(),
+            messages: state.messages.slice()
           }  
         case 'TOGGLE_BGCOLOR': 
           return {
@@ -50,7 +53,8 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice()
+            cards: state.cards.slice(),
+            messages: state.messages.slice()
           }
         case 'UPDATE_LINK': 
           return {
@@ -60,7 +64,8 @@ const mainStore = (state = init, action) => {
             link: action.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice()
+            cards: state.cards.slice(),
+            messages: state.messages.slice()
           }  
         case 'UPDATE_PASSWORD':
           return {
@@ -70,7 +75,8 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: action.password,
             usePass: state.usePass,
-            cards: state.cards.slice()
+            cards: state.cards.slice(),
+            messages: state.messages.slice()
           }
         case 'TOGGLE_PRIVATE':
           return {
@@ -80,7 +86,8 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: !state.usePass,
-            cards: state.cards.slice()
+            cards: state.cards.slice(),
+            messages: state.messages.slice()
           }
         case 'CLICKED_CARD':
           return {
@@ -102,8 +109,20 @@ const mainStore = (state = init, action) => {
                         number: item.number
                     }    
                 }
-            })
-          }      
+            }),
+            messages: state.messages.slice()
+          }
+        case 'ADD_ROOM_MESSAGE':
+          return {
+            roomName: state.roomName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: state.usePass,
+            cards: state.cards.slice(),
+            messages: [action.room_message].concat(state.messages)
+          }        
         default: 
             return state;     
     }

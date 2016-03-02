@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {clickedCard } from '../actions/home'
 
 class Cards extends React.Component {
-   constructor (props) {
+  constructor (props) {
     super(props)
     this.clicked = this.clicked.bind(this)
   }

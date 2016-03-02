@@ -46,3 +46,11 @@ export const clickedCard = function clickedCard(index){
     index: index
   };  
 }
+
+export const addRoomMessage = function addRoomMessage(message){
+  console.log('got here', message)
+  return { 
+    type: types.ADD_ROOM_MESSAGE,
+    room_message: message
+  };  
+}

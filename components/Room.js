@@ -2,12 +2,13 @@ import React from '../node_modules/react';
 import socket from '../socket';
 import classNames from 'classNames';
 import Cards from './Cards';
+import { addRoomMessage } from '../actions/home'
+import { connect } from 'react-redux';
 
 
 class Room extends React.Component {
    constructor () {
     super()
-
     this.state = { 
       messages: [],
       name: ''
@@ -25,15 +26,17 @@ class Room extends React.Component {
         </div>
         <textarea ref="textarea" ></textarea>
         <button onClick={this.sendMessage.bind(this)} >send</button>
-        <ul>{this.state.messages.map(this._createMessage, this)}</ul>
+        <ul>{this.props.messages.map(this._createMessage, this)}</ul>
         </div>)
   }
 
   componentDidMount(){
+    let { dispatch } = this.props
     socket.on('message', function(data){
-        this.setState({
-          'messages': this.state.messages.concat(data)
-        })
+        dispatch(addRoomMessage(data))
+        // this.setState({
+        //   'messages': this.state.messages.concat(data)
+        // })
     }.bind(this))
   }
   
@@ -65,4 +68,11 @@ class Room extends React.Component {
  
 }
 
-export default Room
+function mapStateToProps(state) {
+  return {
+    messages: state.messages
+  }
+}
+
+
+export default connect(mapStateToProps)(Room)   
