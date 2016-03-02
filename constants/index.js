@@ -4,3 +4,4 @@ export const UPDATE_LINK = 'UPDATE_LINK';
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 export const TOGGLE_BGCOLOR = 'TOGGLE_BGCOLOR';
 export const TOGGLE_PRIVATE = 'TOGGLE_PRIVATE';
+export const CLICKED_CARD = 'CLICKED_CARD';

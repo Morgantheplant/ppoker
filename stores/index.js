@@ -81,7 +81,29 @@ const mainStore = (state = init, action) => {
             password: state.password,
             usePass: !state.usePass,
             cards: state.cards.slice()
-          }    
+          }
+        case 'CLICKED_CARD':
+          return {
+            roomName: state.roomName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: !state.usePass,
+            cards: state.cards.map(function(item, index){
+                if(index === action.index){
+                    return {
+                        selected : true,
+                        number: item.number
+                    }    
+                } else {
+                    return {
+                        selected: false,
+                        number: item.number
+                    }    
+                }
+            })
+          }      
         default: 
             return state;     
     }

@@ -39,3 +39,10 @@ export const togglePrivate = function togglePrivate(){
     type: types.TOGGLE_PRIVATE
   };  
 }
+
+export const clickedCard = function clickedCard(index){
+  return { 
+    type: types.CLICKED_CARD,
+    index: index
+  };  
+}
