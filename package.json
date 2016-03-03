@@ -14,7 +14,7 @@
     ]
   },
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "npm run build-js && node server.js",
     "dev": "npm run start & npm run watch",
     "watch": "npm run watch-css & npm run watch-js",
     "build": "npm run build-css & npm run build-js",
