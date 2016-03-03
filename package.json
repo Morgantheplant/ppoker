@@ -21,7 +21,7 @@
     "build": "npm run build-css & npm run build-js",
     "watch-js": "watchify main.js -t browserify-css -o public/bundle.js -dv",
     "watch-css": "catw -c 'lessc --clean-css -' 'styles/*.less' -o public/staance-widget-styles.min.css",
-    "build-js": "browserify -t browserify-css main.js | uglifyjs -cm > public/bundle.js",
+    "build-js": "browserify main.js | uglifyjs -cm > public/bundle.js",
     "build-css": "lessc --clean-css styles/index.less staance-widget-styles.min.css"
   },
   "dependencies": {
