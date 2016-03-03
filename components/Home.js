@@ -1,6 +1,6 @@
 import React from '../node_modules/react'
 import socket from '../socket'
-import classNames from 'classNames'
+import classNames from 'classnames'
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../actions/home'

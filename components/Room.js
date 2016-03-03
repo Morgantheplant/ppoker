@@ -1,6 +1,6 @@
 import React from '../node_modules/react';
 import socket from '../socket';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import Cards from './Cards';
 import { addRoomMessage } from '../actions/home'
 import { connect } from 'react-redux';

@@ -1,6 +1,6 @@
 import React from '../node_modules/react'
 import socket from '../socket'
-import classNames from 'classNames'
+import classNames from 'classnames'
 import Card from './Card'
 import { connect } from 'react-redux';
 import {clickedCard } from '../actions/home'
