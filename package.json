@@ -14,7 +14,7 @@
     ]
   },
   "scripts": {
-    "preinstall": "npm run build",
+    "preinstall": "npm run build-js",
     "start": "node server.js",
     "dev": "npm run start & npm run watch",
     "watch": "npm run watch-css & npm run watch-js",
