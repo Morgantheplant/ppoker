@@ -54,3 +54,17 @@ export const addRoomMessage = function addRoomMessage(message){
     room_message: message
   };  
 }
+
+export const addUser = function addUser(user){
+  return { 
+    type: types.ADD_USER,
+    users: user
+  };  
+}
+
+export const removeUser = function removeUser(name){
+  return { 
+    type: types.REMOVE_USER,
+    name: name
+  };  
+}

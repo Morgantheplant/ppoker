@@ -27,7 +27,9 @@ app.get('/images/cards.jpg', function(req, res){
   res.sendFile(__dirname + '/public/images/cards.jpg');
 });
 
-var socketData = {};
+var socketData = {
+  users:[]
+};
 
 io.on('connection', function(socket){
   console.log('a user connected');
@@ -35,7 +37,8 @@ io.on('connection', function(socket){
     var data = socketData[socket.id]
     if(data && data.length === 2){
       io.to(data[0]).emit('message',{
-        msg: data[1] + ' left the room'
+        msg: data[1] + ' left the room',
+        left: data[1]
       });
     }
     
@@ -54,9 +57,11 @@ io.on('connection', function(socket){
   socket.on('joinroom', function(data){
     console.log('user joined ', data)
     socket.join(data.room)
+    socketData.users.push({ name: data.name });
     socketData[socket.id] = [data.room, data.name]
     io.to(data.room).emit('message', {
-      msg: data.name + ' joined the room'
+      msg: data.name + ' joined the room',
+      joined: socketData.users
     })
   })
 

@@ -6,3 +6,5 @@ export const TOGGLE_BGCOLOR = 'TOGGLE_BGCOLOR';
 export const TOGGLE_PRIVATE = 'TOGGLE_PRIVATE';
 export const CLICKED_CARD = 'CLICKED_CARD';
 export const ADD_ROOM_MESSAGE = 'ADD_ROOM_MESSAGE';
+export const ADD_USER = 'ADD_USER';
+export const REMOVE_USER = 'REMOVE_USER';

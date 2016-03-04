@@ -18,7 +18,8 @@ let init = {
         {number:55, selected:false},
         {number:89, selected:false} 
     ],
-    messages: []
+    messages: [],
+    users:[]
 };
 
 const mainStore = (state = init, action) => {
@@ -32,7 +33,8 @@ const mainStore = (state = init, action) => {
             password: state.password,
             usePass: state.usePass,
             cards: state.cards.slice(),
-            messages: state.messages.slice()
+            messages: state.messages.slice(),
+            users: state.users.slice()
           }
         case 'UPDATE_MESSAGE':
           return {
@@ -43,7 +45,8 @@ const mainStore = (state = init, action) => {
             password: state.password,
             usePass: state.usePass,
             cards: state.cards.slice(),
-            messages: state.messages.slice()
+            messages: state.messages.slice(),
+            users: state.users.slice()
           }  
         case 'TOGGLE_BGCOLOR': 
           return {
@@ -54,7 +57,8 @@ const mainStore = (state = init, action) => {
             password: state.password,
             usePass: state.usePass,
             cards: state.cards.slice(),
-            messages: state.messages.slice()
+            messages: state.messages.slice(),
+            users: state.users.slice()
           }
         case 'UPDATE_LINK': 
           return {
@@ -65,7 +69,8 @@ const mainStore = (state = init, action) => {
             password: state.password,
             usePass: state.usePass,
             cards: state.cards.slice(),
-            messages: state.messages.slice()
+            messages: state.messages.slice(),
+            users: state.users.slice()
           }  
         case 'UPDATE_PASSWORD':
           return {
@@ -76,7 +81,9 @@ const mainStore = (state = init, action) => {
             password: action.password,
             usePass: state.usePass,
             cards: state.cards.slice(),
-            messages: state.messages.slice()
+            messages: state.messages.slice(),
+            users: state.users.slice()
+
           }
         case 'TOGGLE_PRIVATE':
           return {
@@ -87,7 +94,8 @@ const mainStore = (state = init, action) => {
             password: state.password,
             usePass: !state.usePass,
             cards: state.cards.slice(),
-            messages: state.messages.slice()
+            messages: state.messages.slice(),
+            users: state.users.slice()
           }
         case 'CLICKED_CARD':
           return {
@@ -110,7 +118,8 @@ const mainStore = (state = init, action) => {
                     }    
                 }
             }),
-            messages: state.messages.slice()
+            messages: state.messages.slice(),
+            users: state.users.slice()
           }
         case 'ADD_ROOM_MESSAGE':
           return {
@@ -121,8 +130,35 @@ const mainStore = (state = init, action) => {
             password: state.password,
             usePass: state.usePass,
             cards: state.cards.slice(),
-            messages: [action.room_message].concat(state.messages)
-          }        
+            messages: [action.room_message].concat(state.messages),
+            users: state.users.slice()
+          }
+        case 'ADD_USER':
+          return {
+            roomName: state.roomName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: state.usePass,
+            cards: state.cards.slice(),
+            messages: state.messages.slice(),
+            users: action.users.concat(state.users)
+          } 
+        case 'REMOVE_USER':
+          return {
+            roomName: state.roomName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: state.usePass,
+            cards: state.cards.slice(),
+            messages: state.messages.slice(),
+            users: state.users.filter(function(item){
+               return item.name !== action.name;
+            })
+          }           
         default: 
             return state;     
     }
