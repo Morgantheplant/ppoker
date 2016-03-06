@@ -1,6 +1,7 @@
 
 let init = { 
     roomName: '',
+    userName: '',
     message: 'Welcome to planning poker',
     bgColor: false,
     link: '',
@@ -19,7 +20,9 @@ let init = {
         {number:89, selected:false} 
     ],
     messages: [],
-    users:[]
+    users:[],
+    topics:[],
+    timer: 0
 };
 
 const mainStore = (state = init, action) => {
@@ -27,6 +30,7 @@ const mainStore = (state = init, action) => {
         case 'UPDATE_ROOMNAME':
           return { 
             roomName: action.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: state.bgColor,
             link: state.link,
@@ -34,11 +38,30 @@ const mainStore = (state = init, action) => {
             usePass: state.usePass,
             cards: state.cards.slice(),
             messages: state.messages.slice(),
-            users: state.users.slice()
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: state.timer
           }
+         case 'UPDATE_USERNAME':
+          return { 
+            roomName: state.roomName,
+            userName: action.userName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: state.usePass,
+            cards: state.cards.slice(),
+            messages: state.messages.slice(),
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: state.timer
+          }
+
         case 'UPDATE_MESSAGE':
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: action.message,
             bgColor: state.bgColor,
             link: state.link,
@@ -46,11 +69,14 @@ const mainStore = (state = init, action) => {
             usePass: state.usePass,
             cards: state.cards.slice(),
             messages: state.messages.slice(),
-            users: state.users.slice()
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: state.timer
           }  
         case 'TOGGLE_BGCOLOR': 
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: !state.bgColor,
             link: state.link,
@@ -58,11 +84,14 @@ const mainStore = (state = init, action) => {
             usePass: state.usePass,
             cards: state.cards.slice(),
             messages: state.messages.slice(),
-            users: state.users.slice()
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: state.timer
           }
         case 'UPDATE_LINK': 
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: state.bgColor,
             link: action.link,
@@ -70,11 +99,14 @@ const mainStore = (state = init, action) => {
             usePass: state.usePass,
             cards: state.cards.slice(),
             messages: state.messages.slice(),
-            users: state.users.slice()
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: state.timer
           }  
         case 'UPDATE_PASSWORD':
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: state.bgColor,
             link: state.link,
@@ -82,12 +114,15 @@ const mainStore = (state = init, action) => {
             usePass: state.usePass,
             cards: state.cards.slice(),
             messages: state.messages.slice(),
-            users: state.users.slice()
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: state.timer
 
           }
         case 'TOGGLE_PRIVATE':
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: state.bgColor,
             link: state.link,
@@ -95,11 +130,14 @@ const mainStore = (state = init, action) => {
             usePass: !state.usePass,
             cards: state.cards.slice(),
             messages: state.messages.slice(),
-            users: state.users.slice()
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: state.timer
           }
         case 'CLICKED_CARD':
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: state.bgColor,
             link: state.link,
@@ -118,12 +156,15 @@ const mainStore = (state = init, action) => {
                     }    
                 }
             }),
+            users: state.users.slice(),
             messages: state.messages.slice(),
-            users: state.users.slice()
+            topics: state.topics.slice(),
+            timer: state.timer
           }
         case 'ADD_ROOM_MESSAGE':
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: state.bgColor,
             link: state.link,
@@ -131,11 +172,14 @@ const mainStore = (state = init, action) => {
             usePass: state.usePass,
             cards: state.cards.slice(),
             messages: [action.room_message].concat(state.messages),
-            users: state.users.slice()
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: state.timer
           }
         case 'ADD_USER':
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: state.bgColor,
             link: state.link,
@@ -143,11 +187,14 @@ const mainStore = (state = init, action) => {
             usePass: state.usePass,
             cards: state.cards.slice(),
             messages: state.messages.slice(),
-            users: action.users.concat(state.users)
+            users: action.users,
+            topics: state.topics.slice(),
+            timer: state.timer
           } 
         case 'REMOVE_USER':
           return {
             roomName: state.roomName,
+            userName: state.userName,
             message: state.message,
             bgColor: state.bgColor,
             link: state.link,
@@ -157,8 +204,40 @@ const mainStore = (state = init, action) => {
             messages: state.messages.slice(),
             users: state.users.filter(function(item){
                return item.name !== action.name;
-            })
-          }           
+            }),
+            topics: state.topics.slice(),
+            timer: state.timer
+          }
+        case 'UPDATE_TOPICS':
+          return {
+            roomName: state.roomName,
+            userName: state.userName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: state.usePass,
+            cards: state.cards.slice(),
+            messages: state.messages.slice(),
+            users: state.users.slice(),
+            topics: action.topics.concat(state.topics),
+            timer: state.timer
+          }
+        case 'UPDATE_TIMER':
+          return {
+            roomName: state.roomName,
+            userName: state.userName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: state.usePass,
+            cards: state.cards.slice(),
+            messages: state.messages.slice(),
+            users: state.users.slice(),
+            topics: state.topics.slice(),
+            timer: action.timer
+        }                            
         default: 
             return state;     
     }

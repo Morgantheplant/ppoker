@@ -7,6 +7,13 @@ export const updateRoomName = function updateRoomName(name){
   };
 }
 
+export const updateUserName = function updateUserName(username){
+  return { 
+    type: types.UPDATE_USERNAME,
+    userName: username
+  };
+}
+
 export const updateMessage = function updateMessage(msg){
   return { 
     type: types.UPDATE_MESSAGE,
@@ -55,10 +62,11 @@ export const addRoomMessage = function addRoomMessage(message){
   };  
 }
 
-export const addUser = function addUser(user){
+export const addUser = function addUser(users){
+  console.log('got herereer', users)
   return { 
     type: types.ADD_USER,
-    users: user
+    users: users
   };  
 }
 
@@ -66,5 +74,19 @@ export const removeUser = function removeUser(name){
   return { 
     type: types.REMOVE_USER,
     name: name
+  };  
+}
+
+export const updateTopics = function updateTopics(topics){
+  return { 
+    type: types.UPDATE_TOPICS,
+    topics: topics
+  };  
+}
+
+export const updateTimer = function updateTimer(time){
+  return { 
+    type: types.UPDATE_TIMER,
+    timer: time
   };  
 }
