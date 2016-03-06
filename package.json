@@ -15,8 +15,8 @@
   },
   "scripts": {
     "postinstall": "npm run build",
-    "start": "nodemon server.js",
-    "dev": "npm run start & npm run watch",
+    "start": "node server.js",
+    "dev": "nodemon server.js & npm run watch",
     "watch": "watchify main.js -d -o public/bundle.js -v",
     "build": "browserify main.js | uglifyjs --compress --mangle -o public/bundle.js"
   },
