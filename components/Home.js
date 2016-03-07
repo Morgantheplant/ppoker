@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../actions/home'
+import config from '../config';
 
 class Home extends React.Component {
   constructor (props) {
@@ -42,7 +43,7 @@ class Home extends React.Component {
         { 
           //show or hide link field
           this.props.link ? (<div><input ref="roomLinkInput" 
-            className="room-link-input" /><a href="https://app.asana.com/-/oauth_authorize?response_type=code&client_id=97693819859917&redirect_uri=http%3A%2F%2Fthe-planning-poker.herokuapp.com%2Flogin&state=123" target="_blank" ><button>ASANA</button></a></div>) : null 
+            className="room-link-input" /><a href={config.asana_link_req} target="_blank" ><button>ASANA</button></a></div>) : null 
         }
 
         { 
