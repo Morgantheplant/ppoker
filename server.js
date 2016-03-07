@@ -42,6 +42,7 @@ app.get('/login',function(req, res){
 
   var options = {
       method: 'POST',
+      port: 430,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }       
@@ -52,6 +53,10 @@ app.get('/login',function(req, res){
   var post_req = https.request(options, function(response) {
      console.log('request')
      res.sendFile(__dirname + '/public/success.html');
+  });
+
+  post_req.on('error', function(e) {
+  console.log(`problem with request: ${e.message}`);
   });
 
   // post the data
