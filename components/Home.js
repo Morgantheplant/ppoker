@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../actions/home'
-import config from './config';
+import config from '../config';
 
 class Home extends React.Component {
   constructor (props) {
@@ -46,7 +46,9 @@ class Home extends React.Component {
             className="room-link-input" /><a href={config.asana_link_req} target="_blank" ><button>ASANA</button></a></div>) : null 
         }
 
-        { {config.asana_link_req}         this.props.link ? (
+        { 
+          // show or hide link button
+          this.props.link ? (
             <Link to={`/room/`+ this.props.roomName }>
               <button className="btn"> Let's Go </button>
             </Link>) : null 

@@ -1,8 +1,8 @@
 var express = require('express');
 var app = express();
+var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
-var http = require('http').Server(app);
 var config = require ('./config')
 var https = require('https');
 var querystring = require('querystring');
@@ -10,7 +10,6 @@ var querystring = require('querystring');
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
-   console.log('got the code', code)
 });
 
 app.get('/room', function(req, res){
@@ -30,7 +29,7 @@ app.get('/images/cards.jpg', function(req, res){
 });
 
 app.get('/login',function(req, res){
-  code = req.query.code;
+  var code = req.query.code;
   
   var req_body = querystring.stringify({
       grant_type: 'authorization_code',
