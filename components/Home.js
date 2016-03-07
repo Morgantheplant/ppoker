@@ -41,8 +41,8 @@ class Home extends React.Component {
         
         { 
           //show or hide link field
-          this.props.link ? (<input ref="roomLinkInput" 
-            className="room-link-input" />) : null 
+          this.props.link ? (<div><input ref="roomLinkInput" 
+            className="room-link-input" /><a href="https://app.asana.com/-/oauth_authorize?response_type=code&client_id=97693819859917&redirect_uri=http%3A%2F%2Fthe-planning-poker.herokuapp.com%2Flogin&state=123" target="_blank" ><button>ASANA</button></a></div>) : null 
         }
 
         { 

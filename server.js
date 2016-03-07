@@ -1,12 +1,16 @@
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
+var httpRoot = require('http');
+var http = httpRoot.Server(app);
+var config = require ('./config')
+
 
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
+   console.log('got the code', code)
 });
 
 app.get('/room', function(req, res){
@@ -23,6 +27,37 @@ app.get('/bundle.js', function(req, res){
 
 app.get('/images/cards.jpg', function(req, res){
   res.sendFile(__dirname + '/public/images/cards.jpg');
+});
+
+app.get('/login',function(req, res){
+  code = req.query.code;
+
+  res.sendFile(__dirname + '/public/success.html');
+
+  var options = {
+      grant_type: 'authorization_code',
+      hostname: 'https://app.asana.com/-/oauth_token',
+      client_id: config.client_id,
+      client_secret: config.client_secret,
+      redirect_uri: config.redirect_uri,
+      code: code,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }       
+  };
+
+  console.log(options)
+  // Set up the request
+  var post_req = httpRoot.request(options, function(res) {
+     console.log('request')
+  });
+
+  // post the data
+  //post_req.write();
+  //post_req.end();
+
+  
 });
 
 var socketData = {};
@@ -116,12 +151,14 @@ function updateUserClick(data){
   var roomData = socketData[data.room];
   if(roomData){
     var userList = roomData.users;
+    //todo: build helper method
     var fibNumbers = [1,2,3,5,8,13,21,34,55,89];
     userList.forEach(function(user, index){
       if(user.name === data.name){
         user.pick = fibNumbers[data.index]
       }
     })
+
     // todo: move into function
     var notPicked = roomData.users.filter(function(item){
          if(!item.pick){
@@ -129,11 +166,12 @@ function updateUserClick(data){
          }
     })
     if(notPicked.length===0){
-      //todo: move into function
+      //todo: move into function rest user picks and tally score
       pauseTimer(data, true)
       io.to(data.room).emit('message', {
           msg: 'pick made!!'
-        })
+      })
+
     }
   } else {
     console.log('could not find room card pick not updated')

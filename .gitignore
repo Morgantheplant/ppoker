@@ -4,3 +4,4 @@ node_modules
 npm-debug.log*
 *.min.css
 *bundle.js
+config.js
