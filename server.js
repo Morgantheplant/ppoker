@@ -17,8 +17,6 @@ app.get('/room/:room', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
-
-
 app.get('/bundle.js', function(req, res){
   res.sendFile(__dirname + '/public/bundle.js');
 });
@@ -67,11 +65,13 @@ function startTimer(data, tick, end){
   }
 }
 
-function pauseTimer(data){
+function pauseTimer(data, reset){
   var roomData = socketData[data.room];
   if(roomData){
     roomData.timerOn = false;
-    roomData.resume = roomData.time
+    if(!reset){
+      roomData.resume = roomData.time
+    }
     clearTimeout(roomData.timeout);
   } else {
     console.log('room not found could not pause the timer')
@@ -98,7 +98,13 @@ function timer(data, tick, end){
       roomData.time = 30;
       roomData.resume = null
       console.log('timer finished')
-      end(data);  
+      var notPicked = roomData.users.filter(function(item){
+         if(!item.pick){
+           return item.name
+         }
+      })
+      console.log(notPicked, 'these users havent picked');
+      //end(data);  
     }
   } else {
     console.log('room not found timer cannot continue')
@@ -116,7 +122,19 @@ function updateUserClick(data){
         user.pick = fibNumbers[data.index]
       }
     })
-    console.log(userList)
+    // todo: move into function
+    var notPicked = roomData.users.filter(function(item){
+         if(!item.pick){
+           return item.name
+         }
+    })
+    if(notPicked.length===0){
+      //todo: move into function
+      pauseTimer(data, true)
+      io.to(data.room).emit('message', {
+          msg: 'pick made!!'
+        })
+    }
   } else {
     console.log('could not find room card pick not updated')
   }

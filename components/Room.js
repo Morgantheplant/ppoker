@@ -124,7 +124,7 @@ class Room extends React.Component {
 
    _createUsers(item, index){
      console.log(item)
-     return <li key={index}>{item.name}<b>picked:</b>{item.pick}</li>
+     return <li className="users" key={index}>{item.name}<b> picked:</b> {item.pick}</li>
   }
  
 }

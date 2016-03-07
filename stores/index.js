@@ -36,10 +36,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
             timer: state.timer
           }
          case 'UPDATE_USERNAME':
@@ -51,10 +51,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
             timer: state.timer
           }
 
@@ -67,10 +67,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
             timer: state.timer
           }  
         case 'TOGGLE_BGCOLOR': 
@@ -82,10 +82,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
             timer: state.timer
           }
         case 'UPDATE_LINK': 
@@ -97,10 +97,10 @@ const mainStore = (state = init, action) => {
             link: action.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
             timer: state.timer
           }  
         case 'UPDATE_PASSWORD':
@@ -112,10 +112,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: action.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
             timer: state.timer
 
           }
@@ -128,10 +128,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: !state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
             timer: state.timer
           }
         case 'CLICKED_CARD':
@@ -156,9 +156,9 @@ const mainStore = (state = init, action) => {
                     }    
                 }
             }),
-            users: state.users.slice(),
-            messages: state.messages.slice(),
-            topics: state.topics.slice(),
+            users: state.users,
+            messages: state.messages,
+            topics: state.topics,
             timer: state.timer
           }
         case 'ADD_ROOM_MESSAGE':
@@ -170,10 +170,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
+            cards: state.cards,
             messages: [action.room_message].concat(state.messages),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            users: state.users,
+            topics: state.topics,
             timer: state.timer
           }
         case 'ADD_USER':
@@ -185,10 +185,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
+            cards: state.cards,
+            messages: state.messages,
             users: action.users,
-            topics: state.topics.slice(),
+            topics: state.topics,
             timer: state.timer
           } 
         case 'REMOVE_USER':
@@ -200,12 +200,12 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
+            cards: state.cards,
+            messages: state.messages,
             users: state.users.filter(function(item){
                return item.name !== action.name;
             }),
-            topics: state.topics.slice(),
+            topics: state.topics,
             timer: state.timer
           }
         case 'UPDATE_TOPICS':
@@ -217,9 +217,9 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
             topics: action.topics.concat(state.topics),
             timer: state.timer
           }
@@ -232,10 +232,10 @@ const mainStore = (state = init, action) => {
             link: state.link,
             password: state.password,
             usePass: state.usePass,
-            cards: state.cards.slice(),
-            messages: state.messages.slice(),
-            users: state.users.slice(),
-            topics: state.topics.slice(),
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
             timer: action.timer
         }                            
         default: 
