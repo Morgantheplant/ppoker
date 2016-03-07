@@ -33,7 +33,6 @@ app.get('/login',function(req, res){
   
   var req_body = querystring.stringify({
       grant_type: 'authorization_code',
-      hostname: 'https://app.asana.com/-/oauth_token',
       client_id: config.client_id,
       client_secret: config.client_secret,
       redirect_uri: config.redirect_uri,
@@ -41,8 +40,10 @@ app.get('/login',function(req, res){
   });
 
   var options = {
+      hostname: 'https://app.asana.com',
+      path: '/-/oauth_token',
       method: 'POST',
-      port: 430,
+      port: 443,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }       
