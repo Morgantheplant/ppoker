@@ -2,10 +2,10 @@ var express = require('express');
 var app = express();
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
-var httpRoot = require('http');
-var http = httpRoot.Server(app);
+var http = require('http').Server(app);
 var config = require ('./config')
-
+var https = require('https');
+var querystring = require('querystring');
 
 
 app.get('/', function(req, res){
@@ -31,31 +31,35 @@ app.get('/images/cards.jpg', function(req, res){
 
 app.get('/login',function(req, res){
   code = req.query.code;
-
-  res.sendFile(__dirname + '/public/success.html');
-
-  var options = {
+  
+  var req_body = querystring.stringify({
       grant_type: 'authorization_code',
       hostname: 'https://app.asana.com/-/oauth_token',
       client_id: config.client_id,
       client_secret: config.client_secret,
       redirect_uri: config.redirect_uri,
-      code: code,
+      code: code
+  });
+
+  var options = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
       }       
   };
 
   console.log(options)
   // Set up the request
-  var post_req = httpRoot.request(options, function(res) {
+  var post_req = https.request(options, function(response) {
      console.log('request')
+     res.sendFile(__dirname + '/public/success.html');
   });
 
   // post the data
-  //post_req.write();
-  //post_req.end();
+  post_req.write(req_body);
+  post_req.end();
+
+  console.log('I got here')
 
   
 });
