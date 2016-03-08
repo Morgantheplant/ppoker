@@ -3,7 +3,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
-var config = require ('./config')
+//var config = require ('./config')
 var https = require('https');
 var querystring = require('querystring');
 
@@ -27,46 +27,46 @@ app.get('/images/*', function(req, res){
   res.sendFile(__dirname + '/public/'+ req.path)
 });
 
-app.get('/login',function(req, res){
-  var code = req.query.code;
+// app.get('/login',function(req, res){
+//   var code = req.query.code;
   
-  var req_body = querystring.stringify({
-      grant_type: 'authorization_code',
-      client_id: config.client_id,
-      client_secret: config.client_secret,
-      redirect_uri: config.redirect_uri,
-      code: code
-  });
+//   var req_body = querystring.stringify({
+//       grant_type: 'authorization_code',
+//       client_id: config.client_id,
+//       client_secret: config.client_secret,
+//       redirect_uri: config.redirect_uri,
+//       code: code
+//   });
 
-  var options = {
-      hostname: 'https://app.asana.com',
-      path: '/-/oauth_token',
-      method: 'POST',
-      port: 80,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }       
-  };
+//   var options = {
+//       hostname: 'https://app.asana.com',
+//       path: '/-/oauth_token',
+//       method: 'POST',
+//       port: 80,
+//       headers: {
+//         'Content-Type': 'application/x-www-form-urlencoded'
+//       }       
+//   };
 
-  console.log(options)
-  // Set up the request
-  var post_req = https.request(options, function(response) {
-     console.log('request')
-     res.sendFile(__dirname + '/public/success.html');
-  });
+//   console.log(options)
+//   // Set up the request
+//   var post_req = https.request(options, function(response) {
+//      console.log('request')
+//      res.sendFile(__dirname + '/public/success.html');
+//   });
 
-  post_req.on('error', function(e) {
-    console.log(`problem with request: ${e.message}`);
-  });
+//   post_req.on('error', function(e) {
+//     console.log(`problem with request: ${e.message}`);
+//   });
 
-  // post the data
-  post_req.write(req_body);
-  post_req.end();
+//   // post the data
+//   post_req.write(req_body);
+//   post_req.end();
 
-  console.log('I got here')
+//   console.log('I got here')
 
   
-});
+// });
 
 var socketData = {};
 
