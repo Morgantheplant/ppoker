@@ -42,7 +42,7 @@ class Room extends React.Component {
 
         <ul>{this.props.messages.map(this._createMessage, this)}</ul>
 
-        <ul>{this.props.users.map(this._createUsers, this)}</ul>
+        <ul className="users">{this.props.users.map(this._createUsers, this)}</ul>
       
         <div className="card-area">
           <Cards clicked={this.cardSelected.bind(this)} />
@@ -124,7 +124,7 @@ class Room extends React.Component {
 
    _createUsers(item, index){
      console.log(item)
-     return <li className="users" key={index}>{item.name}<b> picked:</b> {item.pick}</li>
+     return <li className="user" key={index}>{item.name}<b> picked:</b> {item.pick}</li>
   }
  
 }

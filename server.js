@@ -7,7 +7,6 @@ var config = require ('./config')
 var https = require('https');
 var querystring = require('querystring');
 
-
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
@@ -24,8 +23,8 @@ app.get('/bundle.js', function(req, res){
   res.sendFile(__dirname + '/public/bundle.js');
 });
 
-app.get('/images/cards.jpg', function(req, res){
-  res.sendFile(__dirname + '/public/images/cards.jpg');
+app.get('/images/*', function(req, res){
+  res.sendFile(__dirname + '/public/'+ req.path)
 });
 
 app.get('/login',function(req, res){
@@ -43,7 +42,7 @@ app.get('/login',function(req, res){
       hostname: 'https://app.asana.com',
       path: '/-/oauth_token',
       method: 'POST',
-      port: 443,
+      port: 80,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }       
@@ -57,7 +56,7 @@ app.get('/login',function(req, res){
   });
 
   post_req.on('error', function(e) {
-  console.log(`problem with request: ${e.message}`);
+    console.log(`problem with request: ${e.message}`);
   });
 
   // post the data
@@ -168,24 +167,43 @@ function updateUserClick(data){
       }
     })
 
-    // todo: move into function
-    var notPicked = roomData.users.filter(function(item){
-         if(!item.pick){
-           return item.name
-         }
-    })
-    if(notPicked.length===0){
-      //todo: move into function rest user picks and tally score
+    if(picksLeft(data).length===0){
       pauseTimer(data, true)
       io.to(data.room).emit('message', {
           msg: 'pick made!!'
       })
-
     }
   } else {
-    console.log('could not find room card pick not updated')
+    console.log('Warning: could not find room card pick not updated')
   }
 }
+
+function picksLeft(data){
+  var roomData = socketData[data.room];
+  if(roomData){
+    return roomData.users.filter(function(item){
+      if(!item.pick){
+        return item.name
+      }
+    });
+      
+  } else {
+     console.log('Warning: something went wrong with checking picks')
+     return [];
+  }
+}
+
+function resetAllUsers(data){
+  var roomData = socketData[data.room];
+  if(roomData && roomData.users){
+     roomData.users.forEach(function(user){
+        user.pick = null;
+     })
+  } else {
+    console.log('could not find room to reset users')
+  }
+}
+
 
 
 io.on('connection', function(socket){
