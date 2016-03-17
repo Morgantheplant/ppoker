@@ -6,6 +6,7 @@ var port = process.env.PORT || 3000;
 //var config = require ('./config')
 var https = require('https');
 var querystring = require('querystring');
+var db = require('./db')
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');

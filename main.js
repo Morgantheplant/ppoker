@@ -12,6 +12,8 @@ import mainStore from './stores';
 const store = createStore(mainStore)
 const routes = createRoutes(store)
 
+require('./styles/index.scss');
+
 render(
     <Provider store={store}>
         <Router history={browserHistory}>

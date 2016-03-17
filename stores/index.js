@@ -22,7 +22,8 @@ let init = {
     messages: [],
     users:[],
     topics:[],
-    timer: 0
+    timer: 0,
+    tasks: []
 };
 
 const mainStore = (state = init, action) => {
@@ -40,7 +41,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }
          case 'UPDATE_USERNAME':
           return { 
@@ -55,7 +57,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }
 
         case 'UPDATE_MESSAGE':
@@ -71,7 +74,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }  
         case 'TOGGLE_BGCOLOR': 
           return {
@@ -86,7 +90,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }
         case 'UPDATE_LINK': 
           return {
@@ -101,7 +106,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }  
         case 'UPDATE_PASSWORD':
           return {
@@ -116,8 +122,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: state.timer
-
+            timer: state.timer,
+            tasks: state.tasks
           }
         case 'TOGGLE_PRIVATE':
           return {
@@ -132,7 +138,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }
         case 'CLICKED_CARD':
           return {
@@ -159,7 +166,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             messages: state.messages,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }
         case 'ADD_ROOM_MESSAGE':
           return {
@@ -174,7 +182,8 @@ const mainStore = (state = init, action) => {
             messages: [action.room_message].concat(state.messages),
             users: state.users,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }
         case 'ADD_USER':
           return {
@@ -189,7 +198,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: action.users,
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           } 
         case 'REMOVE_USER':
           return {
@@ -206,7 +216,8 @@ const mainStore = (state = init, action) => {
                return item.name !== action.name;
             }),
             topics: state.topics,
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }
         case 'UPDATE_TOPICS':
           return {
@@ -221,7 +232,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: action.topics.concat(state.topics),
-            timer: state.timer
+            timer: state.timer,
+            tasks: state.tasks
           }
         case 'UPDATE_TIMER':
           return {
@@ -236,7 +248,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: action.timer
+            timer: action.timer,
+            tasks: state.tasks
         }                            
         default: 
             return state;     

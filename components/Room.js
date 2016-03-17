@@ -17,13 +17,8 @@ class Room extends React.Component {
     return (
       <div>
         <div>
-          { this.props.userName ? (
-            <div className="message-panel">
-              <div className="username">username: {this.props.userName}</div> 
-              <div className="roomname">roomname: {roomname}</div>
-               <textarea className="message-entry" ref="textarea" ></textarea>
-              <button onClick={this.sendMessage} >send</button>
-            </div>) : (
+          
+          { this.props.userName ? null : (
             <div id="modal-bg">
               <div id="modal">
                 <div id="modal-content">
@@ -31,19 +26,31 @@ class Room extends React.Component {
                   <button onClick={this.updateName}>enter</button>
                 </div>  
               </div>
-            </div>) }
+            </div>) 
+          }
         </div>
-
+          
         { this.props.userName ? (
           <div className="timer">{this.props.timer}
           <button onClick={this.toggleTimer}>Start Timer</button>
           </div>
           ): null }
-
-        <ul>{this.props.messages.map(this._createMessage, this)}</ul>
-
+        
+        { this.props.userName ?  (
+          <div className="message-panel">
+            <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
+            </div>
+            <div className="user-info">
+              <div className="username">username: {this.props.userName}</div> 
+              <div className="roomname">roomname: {roomname}</div>
+              <textarea className="message-entry" ref="textarea" ></textarea>
+              <button onClick={this.sendMessage} >SEND</button>
+            </div>
+        </div>) : null }
+       
+        
         <ul className="users">{this.props.users.map(this._createUsers, this)}</ul>
-      
+        
         <div className="card-area">
           <Cards clicked={this.cardSelected.bind(this)} />
         </div>
@@ -124,7 +131,7 @@ class Room extends React.Component {
 
    _createUsers(item, index){
      console.log(item)
-     return <li className="user" key={index}>{item.name}<b> picked:</b> {item.pick}</li>
+     return <li className="user" key={index}>{item.name}<b>{ item.pick }</b> </li>
   }
  
 }
