@@ -1,5 +1,9 @@
-@import 'styles/variables.scss';
-@import 'room';
+@import 'styles/variables.less';
+@import 'styles/room';
+
+*{
+  box-sizing: border-box;
+}
 
 .intro-modal{
       height: 260px;
@@ -194,15 +198,7 @@
     margin: 4px;
     }
     
-    .message_area {
-    width: 200px;
-    height: 27%;
-    border: 1px solid black;
-    position: absolute;
-    top: 19%;
-    border-radius: 5px;
-    overflow-y: auto;
-    }
+   
     
     #modal-content {
     font-family: verdana;

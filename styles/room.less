@@ -1,0 +1,98 @@
+@import 'styles/variables.less';
+@import 'styles/mixins.less';
+
+.message-panel {
+    position: absolute;
+    height: 100%;
+    background: #000000;
+    top: 0;
+    left: 0;
+    width:250px;
+}
+
+.user-info{
+    background: @selectedDarkGrey;
+    position: absolute;
+    height: 86px;
+    bottom: 155px;
+    width: 100%;
+    color: @midGrey;
+    text-shadow: 0px 0px 1px black;
+    font-family: open sans, sans-serif;
+    font-size: 14px;
+    text-shadow: 0px 0px 1px black;
+    font-family: open sans, sans-serif;
+    font-size: 14px;
+    padding: 5px;
+     padding-left:10px;
+    .username, .roomname{
+        cursor: pointer;
+        &:hover{
+            color: @lightGrey;
+        }
+    }
+    button{
+    background: none;
+    border: 1px solid #828282;
+    color: @midGrey;
+    height: 25px;
+    margin-left: 5px;
+      &:hover{
+        border: 1px solid @limeGreen;
+      }
+      &:focus{
+        outline: 0;
+      }
+    }
+}
+
+.user-info{
+   
+    .username{
+       padding-bottom:5px;
+    }
+    .roomname{
+        padding-bottom:5px;
+    }
+}
+
+.message-input{
+    position:relative;
+    .fa-commenting.message-icon {
+        position: absolute;
+        left: 8px;
+        top: 10px;
+        border: none;
+        color: white;
+    }
+    input.message-entry {
+        border-radius: 20px;
+        height:25px;
+        border: none;
+        width: 180px;
+        margin-top: 5px;
+        padding-left:27px;
+        .placeholder({
+            color: @midGrey;
+            padding-top: 10px;
+            });
+        &:focus{
+            outline: 0;
+        }
+    }
+
+    .fa-commenting{
+        color: @midGrey;
+    }
+}
+
+.message_area {
+    border: 1px solid black;
+    position: absolute;
+    top: 19%;
+    border-radius: 5px;
+    overflow-y: auto;
+    width: 100%;
+    height: calc(100% - 368px);
+}
+

@@ -12,7 +12,7 @@ import mainStore from './stores';
 const store = createStore(mainStore)
 const routes = createRoutes(store)
 
-require('./styles/index.scss');
+require('./public/styles.min.css')
 
 render(
     <Provider store={store}>

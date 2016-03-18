@@ -28,6 +28,10 @@ app.get('/images/*', function(req, res){
   res.sendFile(__dirname + '/public/'+ req.path)
 });
 
+app.get('/public/styles.min.css', function(req, res){
+  res.sendFile(__dirname + '/public/styles.min.css'); 
+})
+
 // app.get('/login',function(req, res){
 //   var code = req.query.code;
   

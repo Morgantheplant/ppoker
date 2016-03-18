@@ -41,10 +41,14 @@ class Room extends React.Component {
             <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
             </div>
             <div className="user-info">
-              <div className="username">username: {this.props.userName}</div> 
-              <div className="roomname">roomname: {roomname}</div>
-              <textarea className="message-entry" ref="textarea" ></textarea>
-              <button onClick={this.sendMessage} >SEND</button>
+              <div className="roomname"><i className="fa fa-home"></i> roomname: {roomname}</div>
+              <div className="username"><i className="fa fa-user"></i> username: {this.props.userName}</div> 
+              <div className="message-input">
+                <i className="fa fa-commenting message-icon"></i>
+                <input className="message-entry" ref="messageInput" placeholder="enter text here" ></input>
+                <button onClick={this.sendMessage} >SEND</button>
+              </div>
+              
             </div>
         </div>) : null }
        
@@ -98,10 +102,10 @@ class Room extends React.Component {
   sendMessage(e){
     socket.emit('message',{
         name: this.props.userName,
-        msg: this.refs.textarea.value,
+        msg: this.refs.messageInput.value,
         room: this.props.params.roomname
     })
-    this.refs.textarea.value = '';
+    this.refs.messageInput.value = '';
   }
 
   updateName(e){
