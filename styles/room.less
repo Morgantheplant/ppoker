@@ -4,17 +4,26 @@
 .message-panel {
     position: absolute;
     height: 100%;
-    background: #000000;
+    background: #000;
     top: 0;
     left: 0;
-    width:250px;
+    width: 250px;
+    padding-bottom: 160px;
+    padding-top: 190px;
+    .message-panel-container{
+        height: 100%;
+        width: 100%;
+        background: grey;
+        position: relative;
+    }
 }
+
 
 .user-info{
     background: @selectedDarkGrey;
     position: absolute;
     height: 86px;
-    bottom: 155px;
+    bottom: 0;
     width: 100%;
     color: @midGrey;
     text-shadow: 0px 0px 1px black;
@@ -47,7 +56,6 @@
 }
 
 .user-info{
-   
     .username{
        padding-bottom:5px;
     }
@@ -89,10 +97,9 @@
 .message_area {
     border: 1px solid black;
     position: absolute;
-    top: 19%;
     border-radius: 5px;
     overflow-y: auto;
     width: 100%;
-    height: calc(100% - 368px);
+    height: 100%;
 }
 

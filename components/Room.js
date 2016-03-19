@@ -38,17 +38,18 @@ class Room extends React.Component {
         
         { this.props.userName ?  (
           <div className="message-panel">
-            <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
-            </div>
-            <div className="user-info">
-              <div className="roomname"><i className="fa fa-home"></i> roomname: {roomname}</div>
-              <div className="username"><i className="fa fa-user"></i> username: {this.props.userName}</div> 
-              <div className="message-input">
-                <i className="fa fa-commenting message-icon"></i>
-                <input className="message-entry" ref="messageInput" placeholder="enter text here" ></input>
-                <button onClick={this.sendMessage} >SEND</button>
+            <div className="message-panel-container">
+              <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
               </div>
-              
+              <div className="user-info">
+                <div className="roomname"><i className="fa fa-home"></i> roomname: {roomname}</div>
+                <div className="username"><i className="fa fa-user"></i> username: {this.props.userName}</div> 
+                <div className="message-input">
+                  <i className="fa fa-commenting message-icon"></i>
+                  <input className="message-entry" ref="messageInput" placeholder="enter text here" ></input>
+                  <button onClick={this.sendMessage} >SEND</button>
+                </div>
+              </div>
             </div>
         </div>) : null }
        
