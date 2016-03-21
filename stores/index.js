@@ -250,7 +250,24 @@ const mainStore = (state = init, action) => {
             topics: state.topics,
             timer: action.timer,
             tasks: state.tasks
-        }                            
+        }
+        case 'ADD_TASK':
+          return {
+            roomName: state.roomName,
+            userName: state.userName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: state.usePass,
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
+            timer: action.timer,
+            tasks: state.tasks.concat(action.tasks)
+        }
+
         default: 
             return state;     
     }

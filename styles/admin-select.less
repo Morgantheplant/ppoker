@@ -1,0 +1,22 @@
+@import 'styles/variables.less';
+
+.admin-select-pane{
+    background: @darkGrey;
+    color: @greyFont;
+    .user-select{
+        padding: 5px 35px 5px 35px;
+        cursor: pointer;
+        &:hover{
+            background:@selectedDarkGrey;
+        }
+    }
+}
+
+.arrow{
+    width: 0; 
+    height: 0; 
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid @darkGrey;
+    margin-left: 5px;
+}

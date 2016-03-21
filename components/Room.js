@@ -4,6 +4,9 @@ import classNames from 'classnames';
 import Cards from './Cards';
 import { addRoomMessage, addUser, removeUser, updateUserName, updateTimer, clickedCard } from '../actions/home'
 import { connect } from 'react-redux';
+import MessagePanel from './MessagePanel'
+import AdminSelect from './AdminSelect'
+import Tasks from './Tasks'
 import moment from 'moment';
 
 class Room extends React.Component {
@@ -30,32 +33,26 @@ class Room extends React.Component {
             </div>) 
           }
         </div>
+
           
         { this.props.userName ? (
           <div className="timer">{this.props.timer}
           <button onClick={this.toggleTimer}>Start Timer</button>
+            <AdminSelect users={this.props.users} />
+            <Tasks tasks="this.props.tasks"/>
           </div>
           ): null }
         
-        { this.props.userName ?  (
-          <div className="message-panel">
-            <div className="message-panel-container">
-              <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
-              </div>
-              <div className="user-info">
-                <div className="roomname"><i className="fa fa-home"></i> roomname: {roomname}</div>
-                <div className="username"><i className="fa fa-user"></i> username: {this.props.userName}</div> 
-                <div className="message-input">
-                  <i className="fa fa-commenting message-icon"></i>
-                  <input className="message-entry" ref="messageInput" placeholder="enter text here" ></input>
-                  <button onClick={this.sendMessage} >SEND</button>
-                </div>
-              </div>
-            </div>
-        </div>) : null }
+        { this.props.userName ?  <MessagePanel 
+          userName={this.props.userName} 
+          roomname={roomname} 
+          messages={this.props.messages}
+          sendMessage={this.sendMessage.bind(this)} /> : null }
        
         
-        <ul className="users">{this.props.users.map(this._createUsers, this)}</ul>
+        <ul className="users">
+          {this.props.users.map(this._createUsers, this)} 
+        </ul>
         
         <div className="card-area">
           <Cards clicked={this.cardSelected.bind(this)} />
@@ -101,13 +98,13 @@ class Room extends React.Component {
      dispatch(clickedCard(index))
   }
   
-  sendMessage(e){
+  sendMessage(ref){
     socket.emit('message',{
         name: this.props.userName,
-        msg: this.refs.messageInput.value,
+        msg: ref.value,
         room: this.props.params.roomname
     })
-    this.refs.messageInput.value = '';
+    ref .value = '';
   }
 
   updateName(e){
@@ -129,16 +126,11 @@ class Room extends React.Component {
      })
   }
 
-  
-
-  _createMessage(item, index){
-     return <li key={index}><b>{item.name ? item.name +':' : ''}</b>&nbsp;{item.msg}<span className="time-stamp"> { moment().format('h:mm a') } </span></li>
-  }
-
-   _createUsers(item, index){
-     console.log(item)
+  _createUsers(item, index){
      return <li className="user" key={index}>{item.name}<b>{ item.pick }</b> </li>
   }
+
+ 
  
 }
 
@@ -147,7 +139,8 @@ function mapStateToProps(state) {
     messages: state.messages,
     users: state.users,
     userName: state.userName,
-    timer: state.timer
+    timer: state.timer,
+    tasks: state.tasks
   }
 }
 

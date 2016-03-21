@@ -1,6 +1,8 @@
 import React from '../node_modules/react'
 import classNames from 'classnames'
 
+var rand = 360 * Math.random();
+
 class Card extends React.Component {
    constructor (props) {
     super(props)
@@ -8,7 +10,7 @@ class Card extends React.Component {
   }
   render () {
      return <div
-
+     style={ {background:  "hsl(" + (this.props.item + rand) + ", 100%, 50%)" } }
      className={classNames("card", { "selected": this.props.selected } )} 
      type={this.props.item} 
      onClick={this.clicked} >

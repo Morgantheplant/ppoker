@@ -11,3 +11,4 @@ export const ADD_USER = 'ADD_USER';
 export const REMOVE_USER = 'REMOVE_USER';
 export const UPDATE_TOPICS = 'UPDATE_TOPICS';
 export const UPDATE_TIMER = 'UPDATE_TIMER';
+export const ADD_TASK = 'ADD_TASK';

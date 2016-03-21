@@ -90,3 +90,10 @@ export const updateTimer = function updateTimer(time){
     timer: time
   };  
 }
+
+export const addTask = function addTask(task){
+  return {
+    type: types.ADD_TASK,
+    task: task
+  }
+}
