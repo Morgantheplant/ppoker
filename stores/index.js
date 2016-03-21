@@ -252,6 +252,7 @@ const mainStore = (state = init, action) => {
             tasks: state.tasks
         }
         case 'ADD_TASK':
+          debugger
           return {
             roomName: state.roomName,
             userName: state.userName,
@@ -265,7 +266,7 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: action.timer,
-            tasks: state.tasks.concat(action.tasks)
+            tasks: state.tasks.concat(action.task)
         }
 
         default: 

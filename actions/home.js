@@ -92,6 +92,7 @@ export const updateTimer = function updateTimer(time){
 }
 
 export const addTask = function addTask(task){
+  debugger;
   return {
     type: types.ADD_TASK,
     task: task

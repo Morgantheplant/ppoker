@@ -2,7 +2,7 @@ import React from '../node_modules/react';
 import socket  from '../socket';
 import classNames from 'classnames';
 import Cards from './Cards';
-import { addRoomMessage, addUser, removeUser, updateUserName, updateTimer, clickedCard } from '../actions/home'
+import { addRoomMessage, addUser, removeUser, updateUserName, updateTimer, clickedCard, addTask } from '../actions/home'
 import { connect } from 'react-redux';
 import MessagePanel from './MessagePanel'
 import AdminSelect from './AdminSelect'
@@ -15,6 +15,7 @@ class Room extends React.Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.toggleTimer = this.toggleTimer.bind(this);
     this.updateName = this.updateName.bind(this);
+    this.addTask = this.addTask.bind(this);
   }
   render () {
    let { roomname } = this.props.params
@@ -39,7 +40,7 @@ class Room extends React.Component {
           <div className="timer">{this.props.timer}
           <button onClick={this.toggleTimer}>Start Timer</button>
             <AdminSelect users={this.props.users} />
-            <Tasks tasks="this.props.tasks"/>
+            <Tasks tasks={this.props.tasks} addTask={this.addTask} />
           </div>
           ): null }
         
@@ -126,8 +127,13 @@ class Room extends React.Component {
      })
   }
 
+  addTask(item){
+    let { dispatch } = this.props;
+    dispatch(addTask(item));
+  }
+
   _createUsers(item, index){
-     return <li className="user" key={index}>{item.name}<b>{ item.pick }</b> </li>
+    return <li className="user" key={index}>{item.name}<b>{ item.pick }</b> </li>
   }
 
  
