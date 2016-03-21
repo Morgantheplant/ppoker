@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import Cards from './Cards';
 import { addRoomMessage, addUser, removeUser, updateUserName, updateTimer, clickedCard } from '../actions/home'
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 class Room extends React.Component {
    constructor (props) {
@@ -131,7 +132,7 @@ class Room extends React.Component {
   
 
   _createMessage(item, index){
-     return <li key={index}><b>{item.name ? item.name + ':' : ''}</b>&nbsp;{item.msg}</li>
+     return <li key={index}><b>{item.name ? item.name +':' : ''}</b>&nbsp;{item.msg}<span className="time-stamp"> { moment().format('h:mm a') } </span></li>
   }
 
    _createUsers(item, index){
