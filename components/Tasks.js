@@ -11,17 +11,11 @@ class Tasks extends React.Component {
   render () {
      return (
       <div>
-        <div>
+        <div className="task-controls">
           <i onClick={this.prevTask} className="fa fa-step-backward back"></i>
-          <i className="fa fa-play play" style={ {
-            borderRadius: "50%", 
-            border: "2px solid black", 
-            margin:"10px", 
-            width:"30px",
-            paddingTop: "6px",
-            paddingLeft: "9px", 
-            height:"30px"} } ></i>
+          <i className="fa fa-play play" ></i>
           <i onClick={this.nextTask} className="fa fa-step-forward forward"></i>
+          <div className="detail">description</div>
         </div> 
         <input ref="taskInput" /><i className="fa fa-plus add-task" onClick={this.addTask}></i>
         {this.props.tasks.map(this._createTasks, this)}

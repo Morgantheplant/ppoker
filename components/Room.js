@@ -40,6 +40,14 @@ class Room extends React.Component {
             </div>) 
           }
         </div>
+        
+        <div className="task-heading" >
+        { 
+          this.props.selectTask ? ( <h3 className="selected-task">{
+            this.props.selectedTask.index
+          }</h3>
+          ) : null }
+        </div>  
 
           
         { this.props.userName ? (
@@ -175,6 +183,7 @@ function mapStateToProps(state) {
     selectedTask: state.selectedTask
   }
 }
+
 
 
 export default connect(mapStateToProps)(Room)   

@@ -20,6 +20,8 @@ class Task extends React.Component {
     task.index = index;
     selectTask(task)
   }
+
+  
   
  
 }
