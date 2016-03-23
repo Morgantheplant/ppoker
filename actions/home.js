@@ -77,13 +77,6 @@ export const removeUser = function removeUser(name){
   };  
 }
 
-export const updateTopics = function updateTopics(topics){
-  return { 
-    type: types.UPDATE_TOPICS,
-    topics: topics
-  };  
-}
-
 export const updateTimer = function updateTimer(time){
   return { 
     type: types.UPDATE_TIMER,
@@ -92,9 +85,28 @@ export const updateTimer = function updateTimer(time){
 }
 
 export const addTask = function addTask(task){
-  debugger;
   return {
     type: types.ADD_TASK,
     task: task
+  }
+}
+
+export const selectTask = function(task){
+  return {
+    type: types.SELECT_TASK,
+    task: task
+  }
+
+}
+
+export const nextTask = function(){
+  return {
+    type: types.NEXT_TASK
+  }
+}
+
+export const prevTask = function(){
+  return {
+    type: types.PREV_TASK
   }
 }

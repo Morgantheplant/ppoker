@@ -2,12 +2,15 @@ import React from '../node_modules/react';
 import socket  from '../socket';
 import classNames from 'classnames';
 import Cards from './Cards';
-import { addRoomMessage, addUser, removeUser, updateUserName, updateTimer, clickedCard, addTask } from '../actions/home'
 import { connect } from 'react-redux';
 import MessagePanel from './MessagePanel'
 import AdminSelect from './AdminSelect'
 import Tasks from './Tasks'
 import moment from 'moment';
+import { addRoomMessage, addUser, 
+  removeUser, updateUserName, 
+  updateTimer, clickedCard, 
+  addTask, selectTask, nextTask, prevTask } from '../actions/home'
 
 class Room extends React.Component {
    constructor (props) {
@@ -16,6 +19,9 @@ class Room extends React.Component {
     this.toggleTimer = this.toggleTimer.bind(this);
     this.updateName = this.updateName.bind(this);
     this.addTask = this.addTask.bind(this);
+    this.selectTask = this.selectTask.bind(this);
+    this.nextTask = this.nextTask.bind(this);
+    this.prevTask = this.prevTask.bind(this);
   }
   render () {
    let { roomname } = this.props.params
@@ -40,7 +46,10 @@ class Room extends React.Component {
           <div className="timer">{this.props.timer}
           <button onClick={this.toggleTimer}>Start Timer</button>
             <AdminSelect users={this.props.users} />
-            <Tasks tasks={this.props.tasks} addTask={this.addTask} />
+            <Tasks tasks={this.props.tasks}
+              prevTask={this.prevTask} 
+              nextTask={this.nextTask}
+              addTask={this.addTask} selectTask={this.selectTask} />
           </div>
           ): null }
         
@@ -89,7 +98,6 @@ class Room extends React.Component {
 
   cardSelected(index){
     let { dispatch } = this.props;
-
     socket.emit('clickedCard', {
       name: this.props.userName,
       room: this.props.params.roomname,
@@ -121,15 +129,32 @@ class Room extends React.Component {
   }
 
   toggleTimer(){
+    var selected = this.props.selectedTask
      socket.emit('startTimer', {
       name: this.props.userName,
-      room: this.props.params.roomname
+      room: this.props.params.roomname,
+      selected: selected 
      })
   }
 
   addTask(item){
     let { dispatch } = this.props;
     dispatch(addTask(item));
+  }
+
+  nextTask(){
+    let { dispatch } = this.props;
+    dispatch(nextTask());
+  }
+
+  prevTask(){
+    let { dispatch } = this.props;
+    dispatch(prevTask());
+  }
+
+  selectTask(task){
+    let { dispatch } = this.props;
+    dispatch(selectTask(task))
   }
 
   _createUsers(item, index){
@@ -146,7 +171,8 @@ function mapStateToProps(state) {
     users: state.users,
     userName: state.userName,
     timer: state.timer,
-    tasks: state.tasks
+    tasks: state.tasks,
+    selectedTask: state.selectedTask
   }
 }
 

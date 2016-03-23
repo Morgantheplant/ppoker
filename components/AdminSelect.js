@@ -1,6 +1,6 @@
 import React from '../node_modules/react'
 
-class Card extends React.Component {
+class AdminSelect extends React.Component {
    constructor (props) {
     super(props)
   }
@@ -16,10 +16,10 @@ class Card extends React.Component {
       </div>)
   }
   
-  _createUserSelection(item, index){
-    return <div key={index} className="user-select" value="item.name">{item.name}</div>
+  _createUserSelection(user, index){
+    return <div key={index} className="user-select" value="user.name">{user.name}</div>
   }
  
 }
 
-export default Card
+export default AdminSelect

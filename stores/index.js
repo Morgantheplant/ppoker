@@ -23,7 +23,8 @@ let init = {
     users:[],
     topics:[],
     timer: 0,
-    tasks: []
+    tasks: [],
+    selectedTask: {}
 };
 
 const mainStore = (state = init, action) => {
@@ -42,7 +43,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
          case 'UPDATE_USERNAME':
           return { 
@@ -58,7 +60,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
 
         case 'UPDATE_MESSAGE':
@@ -75,7 +78,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }  
         case 'TOGGLE_BGCOLOR': 
           return {
@@ -91,7 +95,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
         case 'UPDATE_LINK': 
           return {
@@ -107,7 +112,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }  
         case 'UPDATE_PASSWORD':
           return {
@@ -123,7 +129,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
         case 'TOGGLE_PRIVATE':
           return {
@@ -139,7 +146,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
         case 'CLICKED_CARD':
           return {
@@ -167,7 +175,8 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
         case 'ADD_ROOM_MESSAGE':
           return {
@@ -183,7 +192,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
         case 'ADD_USER':
           return {
@@ -199,7 +209,8 @@ const mainStore = (state = init, action) => {
             users: action.users,
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           } 
         case 'REMOVE_USER':
           return {
@@ -217,7 +228,8 @@ const mainStore = (state = init, action) => {
             }),
             topics: state.topics,
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
         case 'UPDATE_TOPICS':
           return {
@@ -233,7 +245,8 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: action.topics.concat(state.topics),
             timer: state.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
           }
         case 'UPDATE_TIMER':
           return {
@@ -249,10 +262,12 @@ const mainStore = (state = init, action) => {
             users: state.users,
             topics: state.topics,
             timer: action.timer,
-            tasks: state.tasks
+            tasks: state.tasks,
+            selectedTask: state.selectedTask
         }
         case 'ADD_TASK':
-          debugger
+          let newTask = action.task;
+          newTask.index = state.tasks.length; 
           return {
             roomName: state.roomName,
             userName: state.userName,
@@ -265,10 +280,88 @@ const mainStore = (state = init, action) => {
             messages: state.messages,
             users: state.users,
             topics: state.topics,
-            timer: action.timer,
-            tasks: state.tasks.concat(action.task)
+            timer: state.timer,
+            tasks: state.tasks.concat(newTask),
+            selectedTask: state.selectedTask
         }
 
+        case 'SELECT_TASK':
+          return  {
+            roomName: state.roomName,
+            userName: state.userName,
+            message: state.message,
+            bgColor: state.bgColor,
+            link: state.link,
+            password: state.password,
+            usePass: state.usePass,
+            cards: state.cards,
+            messages: state.messages,
+            users: state.users,
+            topics: state.topics,
+            timer: state.timer,
+            tasks: state.tasks.map(function(task,index){
+                if(index === action.task.index){
+                    action.task.selected = true;
+                    return action.task;
+                } else {
+                    task.selected = null;
+                    return task;
+                }
+            }),
+            selectedTask: action.task
+        }
+        case 'NEXT_TASK':
+           let nextIndex = state.selectedTask.index+1;
+           if(nextIndex < state.tasks.length){
+              let tasks = state.tasks.slice();
+              let oldIndex = state.selectedTask.index;
+              tasks[oldIndex].selected = null;
+              tasks[nextIndex].selected = true;
+              return  {
+                 roomName: state.roomName,
+                 userName: state.userName,
+                 message: state.message,
+                 bgColor: state.bgColor,
+                 link: state.link,
+                 password: state.password,
+                 usePass: state.usePass,
+                 cards: state.cards,
+                 messages: state.messages,
+                 users: state.users,
+                 topics: state.topics,
+                 timer: state.timer,
+                 tasks: tasks,
+                 selectedTask: tasks[nextIndex]
+              }
+           } else {
+              return state;
+           }
+        case 'PREV_TASK':
+           let prevIndex = state.selectedTask.index-1;
+           if(prevIndex > -1){
+              let tasks = state.tasks.slice();
+              let oldIndex = state.selectedTask.index;
+              tasks[oldIndex].selected = null;
+              tasks[prevIndex].selected = true;
+              return  {
+                 roomName: state.roomName,
+                 userName: state.userName,
+                 message: state.message,
+                 bgColor: state.bgColor,
+                 link: state.link,
+                 password: state.password,
+                 usePass: state.usePass,
+                 cards: state.cards,
+                 messages: state.messages,
+                 users: state.users,
+                 topics: state.topics,
+                 timer: state.timer,
+                 tasks: tasks,
+                 selectedTask: tasks[prevIndex]
+              }
+           } else {
+              return state;
+           }
         default: 
             return state;     
     }

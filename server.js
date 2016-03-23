@@ -98,6 +98,8 @@ function removeUser(username, roomname, id, cb){
 }
 
 function startTimer(data, tick, end){
+  // todo: only start timer if more than 1 user and a task is selected
+  // move this logic out of the timer function
   var roomname = data.room;
   var roomData = socketData[roomname];
   if(roomData){
