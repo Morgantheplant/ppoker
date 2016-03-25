@@ -1,7 +1,7 @@
 export const mainStore = (state = "", action) => {
     switch (action.type){
-        case 'UPDATE_ROOMNAME':
-          return  action.roomName;
+        case 'UPDATE_LINK':
+          return  !state.bgColor;
           default: 
             return state;     
     }

@@ -1,8 +1,8 @@
-export const mainStore = (state = "", action) => {
+export default function roomName(state = "deet", action){
     switch (action.type){
         case 'UPDATE_ROOMNAME':
           return  action.roomName;
-          default: 
+        default: 
             return state;     
     }
 }

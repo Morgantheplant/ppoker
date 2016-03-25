@@ -73,7 +73,16 @@ app.get('/public/styles.min.css', function(req, res){
   
 // });
 
-var socketData = {};
+var socketData = {
+  roomname: { // room data model
+    users: [],
+    timerOn: false,
+    time: 0,
+    timeout: {},
+    limit: 0,
+    resume: false, 
+  }
+};
 
 function removeUser(username, roomname, id, cb){
   if(socketData[roomname]){
@@ -103,6 +112,7 @@ function startTimer(data, tick, end){
   var roomname = data.room;
   var roomData = socketData[roomname];
   if(roomData){
+    //if timer is already on pause it
     if(roomData.timerOn){
       pauseTimer(data, tick, end)
     } else{
@@ -134,9 +144,11 @@ function timer(data, tick, end){
     var time = roomData.time;
     var on = roomData.timerOn;
     var timeout;
+    //send out updated time
     tick({time:time,
       room: data.room
     })
+    // keep loooping through timer if on 
     if(time > -1 && on){
       roomData.time--;
       roomData.timeout = setTimeout(function(){
@@ -144,6 +156,7 @@ function timer(data, tick, end){
       }, 1000);
     }
     if(time === 0 && on){
+      //reset timer 
       roomData.timerOn = false;
       roomData.time = 30;
       roomData.resume = null

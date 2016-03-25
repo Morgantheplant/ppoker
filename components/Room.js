@@ -43,8 +43,8 @@ class Room extends React.Component {
         
         <div className="task-heading" >
         { 
-          this.props.selectTask ? ( <h3 className="selected-task">{
-            this.props.selectedTask.index
+          this.props.selectedTask ? ( <h3 className="selected-task">{
+            this.props.selectedTask.description
           }</h3>
           ) : null }
         </div>  
@@ -109,7 +109,8 @@ class Room extends React.Component {
     socket.emit('clickedCard', {
       name: this.props.userName,
       room: this.props.params.roomname,
-      index: index
+      index: index,
+      selected: this.props.selectedTask
     })
 
      dispatch(clickedCard(index))
@@ -137,17 +138,25 @@ class Room extends React.Component {
   }
 
   toggleTimer(){
-    var selected = this.props.selectedTask
-     socket.emit('startTimer', {
-      name: this.props.userName,
-      room: this.props.params.roomname,
-      selected: selected 
-     })
+    if(this.props.selectedTask.index > -1){
+      var selected = this.props.selectedTask
+       socket.emit('startTimer', {
+        name: this.props.userName,
+        room: this.props.params.roomname,
+        selected: selected 
+      })
+    } else {
+      //todo: replace this with top message
+      alert('select a task first')
+    }
   }
 
   addTask(item){
     let { dispatch } = this.props;
     dispatch(addTask(item));
+    socket.emit('addTask', {
+      task: item
+    })
   }
 
   nextTask(){

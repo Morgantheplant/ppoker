@@ -10,6 +10,8 @@ import { Router, history,  Route, browserHistory  } from 'react-router';
 import mainStore from './stores';
 
 const store = createStore(mainStore)
+console.log(store.getState())
+debugger
 const routes = createRoutes(store)
 
 require('./public/styles.min.css')
