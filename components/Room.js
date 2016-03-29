@@ -184,10 +184,10 @@ class Room extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    messages: state.roomStore.messages,
+    messages: state.messagesStore.messages,
     users: state.userStore.users,
     userName: state.homeStore.userName,
-    timer: state.roomStore.timer,
+    timer: state.timerStore.timer,
     tasks: state.taskStore.tasks,
     selectedTask: state.taskStore.selectedTask
   }
