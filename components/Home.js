@@ -103,13 +103,14 @@ class Home extends React.Component {
 
 function mapStateToProps(state) {
   //todo: only map state in this component
-  let props = {};
-  for(let i in state){
-    if(state[i]!== 'cards'){
-      props[i] = state[i];  
-    }
+  return {
+    roomName: state.homeStore.roomName, 
+    userName: state.homeStore.userName,
+    link: state.homeStore.link,
+    message: state.homeStore.message,
+    bgColor: state.homeStore.bgColor,
+    usePass: state.homeStore.usePass   
   }
-  return props;
 }
 
 export default connect(mapStateToProps)(Home)

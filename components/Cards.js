@@ -25,7 +25,7 @@ class Cards extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    cards: state.cards
+    cards: state.cardStore.cards
   }
 }
 
