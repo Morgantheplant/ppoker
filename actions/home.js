@@ -91,6 +91,7 @@ export const addTask = function addTask(tasks){
 }
 
 export const selectTask = function(data){
+  debugger
   return {
     type: types.SELECT_TASK,
     tasks: data.tasks,
@@ -100,6 +101,7 @@ export const selectTask = function(data){
 }
 
 export const nextTask = function(data){
+  debugger
   return {
     type: types.NEXT_TASK,
     tasks: data.tasks,

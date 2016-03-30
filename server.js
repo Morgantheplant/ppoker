@@ -314,6 +314,7 @@ io.on('connection', function(socket){
     if( tasks[oldIndex] && nextIndex < tasks.length){
       tasks[oldIndex].selected = null;
       tasks[nextIndex].selected = true;
+      room.selectedTask = tasks[nextIndex];
       io.to(data.room).emit('nextTask',{
         tasks: tasks,
         selectedTask: tasks[nextIndex]
@@ -350,6 +351,7 @@ io.on('connection', function(socket){
     if(prevIndex > -1){
       tasks[oldIndex].selected = null;
       tasks[prevIndex].selected = true;
+      room.selectedTask = tasks[prevIndex];
       io.to(data.room).emit('prevTask',{
         tasks: tasks,
         selectedTask: tasks[prevIndex]

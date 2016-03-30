@@ -226,7 +226,6 @@ class Room extends React.Component {
 }
 
 function mapStateToProps(state) {
-  debugger
   return {
     messages: state.messagesStore.messages,
     users: state.userStore.users,

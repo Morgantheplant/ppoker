@@ -1,5 +1,4 @@
 export const taskStore = function(state = { tasks: [], selectedTask: { index: -1} }, action){
-    debugger
     switch (action.type){
         case 'ADD_TASK':
           return {
