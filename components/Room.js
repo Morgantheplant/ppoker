@@ -101,12 +101,16 @@ class Room extends React.Component {
       dispatch(addTask(data.tasks))
     }.bind(this));
 
-    socket.on('nextTask', function(){
-      dispatch(nextTask())
+    socket.on('selectTask', function(data){
+      dispatch(selectTask(data))
     }.bind(this));
 
-    socket.on('prevTask', function(){
-      dispatch(prevTask())
+    socket.on('nextTask', function(data){
+      dispatch(nextTask(data))
+    }.bind(this));
+
+    socket.on('prevTask', function(data){
+      dispatch(prevTask(data))
     }.bind(this));
 
     socket.on('updateTimer', function(data){
@@ -204,7 +208,10 @@ class Room extends React.Component {
     if(!this.props.timerOn){
       let { dispatch } = this.props;
       task.selected = true;
-      dispatch(selectTask(task));
+      socket.emit('selectTask', {
+        task: task,
+        room: this.props.params.roomname
+      })
     } else {
       alert("Still picking totals for task: " + this.props.selectedTask.description)
     }
@@ -219,6 +226,7 @@ class Room extends React.Component {
 }
 
 function mapStateToProps(state) {
+  debugger
   return {
     messages: state.messagesStore.messages,
     users: state.userStore.users,

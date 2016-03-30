@@ -90,23 +90,28 @@ export const addTask = function addTask(tasks){
   }
 }
 
-export const selectTask = function(task){
+export const selectTask = function(data){
   return {
     type: types.SELECT_TASK,
-    task: task
+    tasks: data.tasks,
+    selectedTask: data.selectedTask 
   }
 
 }
 
-export const nextTask = function(){
+export const nextTask = function(data){
   return {
-    type: types.NEXT_TASK
+    type: types.NEXT_TASK,
+    tasks: data.tasks,
+    selectedTask: data.selectedTask 
   }
 }
 
-export const prevTask = function(){
+export const prevTask = function(data){
   return {
-    type: types.PREV_TASK
+    type: types.PREV_TASK,
+    tasks: data.tasks,
+    selectedTask: data.selectedTask 
   }
 }
 

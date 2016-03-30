@@ -271,13 +271,15 @@ io.on('connection', function(socket){
         limit: 0,
         resume: false,
         tasks: [],
-        selectedTask: {}
+        selectedTask: { index: -1}
       };
     }
     // add user to room and keep track of user data
     socket.join(roomname)
     socketData[roomname].users.push(userInfo)
-    io.to(roomname).emit('addUser',{userList: socketData[roomname].users, tasks: socketData[roomname].tasks })
+    io.to(roomname).emit('addUser',{userList: socketData[roomname].users })
+    // update task list only for newly joining user
+    io.to(socket.id).emit('addTask', {tasks: socketData[roomname].tasks, selectedTask: {}})
     //todo: handle joining multiple rooms
     if(socketData[socket.id]){
        console.log('multiple rooms is not supported')
@@ -294,18 +296,65 @@ io.on('connection', function(socket){
   })
 
   socket.on('addTask', function(data){
-    socketData[roomname].tasks.push(data.task);
-    io.to(data.room).emit('addTask',{
-      tasks: socketData[roomname].tasks
+    var roomname = data.room;
+    var tasks = socketData[roomname].tasks
+    // assign new index to task
+    data.task.index = tasks.length
+    tasks.push(data.task);
+    io.to(roomname).emit('addTask',{
+      tasks: tasks
     });
   })
 
   socket.on('nextTask', function(data){
-    io.to(data.room).emit('nextTask',{});
+    var room = socketData[data.room];
+    var tasks = room.tasks
+    var oldIndex = room.selectedTask.index;
+    var nextIndex = oldIndex+1;
+    if( tasks[oldIndex] && nextIndex < tasks.length){
+      tasks[oldIndex].selected = null;
+      tasks[nextIndex].selected = true;
+      io.to(data.room).emit('nextTask',{
+        tasks: tasks,
+        selectedTask: tasks[nextIndex]
+      });
+    }        
+  })
+
+  socket.on('selectTask', function(data){
+    var room = socketData[data.room];
+    var tasks = room.tasks
+    var newIndex = data.task.index;
+   
+    tasks.forEach(function(task, index){
+      if(index === newIndex){
+        task.selected = true;
+        return task;
+      } else {
+        task.selected = null;
+        return task; 
+      }
+    });
+    room.selectedTask = data.task;
+    io.to(data.room).emit('nextTask',{
+        tasks: tasks,
+        selectedTask: room.selectTask
+    });
   })
   
   socket.on('prevTask', function(data){
-    io.to(data.room).emit('prevTask',{});
+    var room = socketData[data.room];
+    var tasks = room.tasks
+    var oldIndex = room.selectedTask.index;
+    var prevIndex = oldIndex-1;
+    if(prevIndex > -1){
+      tasks[oldIndex].selected = null;
+      tasks[prevIndex].selected = true;
+      io.to(data.room).emit('prevTask',{
+        tasks: tasks,
+        selectedTask: tasks[prevIndex]
+      });
+    }
   })
 
 
