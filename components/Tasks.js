@@ -7,13 +7,17 @@ class Tasks extends React.Component {
     this.addTask = this.addTask.bind(this);
     this.nextTask = props.nextTask;
     this.prevTask = props.prevTask;
+    this.toggleTimer = props.toggleTimer;
   }
   render () {
      return (
       <div>
         <div className="task-controls">
+        <div className="time">{this.props.timer}</div>
           <i onClick={this.prevTask} className="fa fa-step-backward back"></i>
-          <i className="fa fa-play play" ></i>
+          { !this.props.timerOn ? (<i onClick={this.toggleTimer} className="fa fa-play play" ></i>) : (
+              <i onClick={this.toggleTimer} className="fa fa-pause play" ></i>
+            ) }
           <i onClick={this.nextTask} className="fa fa-step-forward forward"></i>
           <div className="detail">description</div>
         </div> 
@@ -33,7 +37,7 @@ class Tasks extends React.Component {
   addTask(){
     let input = this.refs.taskInput
     if(input.value != ""){
-      const {addTask} = this.props
+      const {addTask} = this.props;
       let task = { 
         description: input.value,
         selected: false,
@@ -43,7 +47,6 @@ class Tasks extends React.Component {
       input.value = "";   
     }
   }
- 
 }
 
 export default Tasks

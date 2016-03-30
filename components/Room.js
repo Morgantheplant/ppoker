@@ -9,7 +9,7 @@ import Tasks from './Tasks'
 import moment from 'moment';
 import { addRoomMessage, addUser, 
   removeUser, updateUserName, 
-  updateTimer, clickedCard, 
+  updateTimer, clickedCard, timerOn, timerOff,
   addTask, selectTask, nextTask, prevTask } from '../actions/home'
 
 class Room extends React.Component {
@@ -51,10 +51,14 @@ class Room extends React.Component {
 
           
         { this.props.userName ? (
-          <div className="timer">{this.props.timer}
-          <button onClick={this.toggleTimer}>Start Timer</button>
+          <div className="timer">
+          // <button onClick={this.toggleTimer}>Start Timer</button>
             <AdminSelect users={this.props.users} />
-            <Tasks tasks={this.props.tasks}
+            <Tasks 
+              timer={this.props.timer}
+              timerOn={this.props.timerOn}
+              toggleTimer={this.toggleTimer}
+              tasks={this.props.tasks}
               prevTask={this.prevTask} 
               nextTask={this.nextTask}
               addTask={this.addTask} selectTask={this.selectTask} />
@@ -93,9 +97,19 @@ class Room extends React.Component {
     socket.on('removeUser', function(data){
       dispatch(removeUser(data))
     }.bind(this));
+    
+    socket.on('addTask', function(data){
+      dispatch(addTask)
+    }.bind(this));
 
     socket.on('updateTimer', function(data){
      dispatch(updateTimer(data.time))
+     if(data.timerOn){
+       dispatch(timerOn())
+     }
+     if(data.timerOn === false){
+      dispatch(timerOff())
+     }
     }.bind(this))
 
     socket.on('clickedCard', function(data){
@@ -152,26 +166,43 @@ class Room extends React.Component {
   }
 
   addTask(item){
-    let { dispatch } = this.props;
-    dispatch(addTask(item));
     socket.emit('addTask', {
-      task: item
+      task: item,
+      room: this.props.params.roomname
     })
   }
 
   nextTask(){
-    let { dispatch } = this.props;
-    dispatch(nextTask());
+    if(!this.props.timerOn){
+      socket.emit('nextTask', {
+      task: item,
+      room: this.props.params.roomname
+      })
+
+      let { dispatch } = this.props;
+      dispatch(nextTask());
+    } else {
+      alert("Still picking totals for task: " + this.props.selectedTask.description);
+    }
   }
 
   prevTask(){
-    let { dispatch } = this.props;
-    dispatch(prevTask());
+    if(!this.props.timerOn){
+      let { dispatch } = this.props;
+      dispatch(prevTask());
+    } else {
+      alert("Still picking totals for task: " + this.props.selectedTask.description);
+    }
   }
 
   selectTask(task){
-    let { dispatch } = this.props;
-    dispatch(selectTask(task))
+    if(!this.props.timerOn){
+      let { dispatch } = this.props;
+      task.selected = true;
+      dispatch(selectTask(task));
+    } else {
+      alert("Still picking totals for task: " + this.props.selectedTask.description)
+    }
   }
 
   _createUsers(item, index){
@@ -188,6 +219,7 @@ function mapStateToProps(state) {
     users: state.userStore.users,
     userName: state.homeStore.userName,
     timer: state.timerStore.timer,
+    timerOn: state.timerStore.timerOn,
     tasks: state.taskStore.tasks,
     selectedTask: state.taskStore.selectedTask
   }

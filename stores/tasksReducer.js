@@ -1,4 +1,4 @@
-export const taskStore = function(state = { tasks: [], selectedTask: { index: 0} }, action){
+export const taskStore = function(state = { tasks: [], selectedTask: { index: -1} }, action){
     switch (action.type){
         case 'ADD_TASK':
           let newTask = action.task;

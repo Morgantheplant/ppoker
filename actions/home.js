@@ -110,3 +110,16 @@ export const prevTask = function(){
     type: types.PREV_TASK
   }
 }
+
+export const timerOn = function(){
+  return {
+    type: types.TIMER_ON
+  }
+}
+
+
+export const timerOff = function(){
+  return {
+    type: types.TIMER_OFF
+  }
+}

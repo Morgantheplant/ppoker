@@ -114,6 +114,7 @@ function startTimer(data, tick, end){
   if(roomData){
     //if timer is already on pause it
     if(roomData.timerOn){
+      data.timerOn = false;
       pauseTimer(data, tick, end)
     } else{
       roomData.timerOn = true;
@@ -145,8 +146,10 @@ function timer(data, tick, end){
     var on = roomData.timerOn;
     var timeout;
     //send out updated time
-    tick({time:time,
-      room: data.room
+    tick({
+      time:time,
+      room: data.room,
+      timerOn: on
     })
     // keep loooping through timer if on 
     if(time > -1 && on){
@@ -309,7 +312,6 @@ io.on('connection', function(socket){
 
   
   socket.on('message', function(data){
-     console.log(data.room, data.msg)
     io.to(data.room).emit('message',{
       name: data.name,
       msg: data.msg

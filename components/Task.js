@@ -16,7 +16,6 @@ class Task extends React.Component {
   
   selectTask(){
     const {selectTask, task, index } = this.props
-    task.selected = true;
     task.index = index;
     selectTask(task)
   }
