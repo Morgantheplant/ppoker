@@ -52,7 +52,6 @@ class Room extends React.Component {
           
         { this.props.userName ? (
           <div className="timer">
-          // <button onClick={this.toggleTimer}>Start Timer</button>
             <AdminSelect users={this.props.users} />
             <Tasks 
               timer={this.props.timer}
@@ -99,7 +98,15 @@ class Room extends React.Component {
     }.bind(this));
     
     socket.on('addTask', function(data){
-      dispatch(addTask)
+      dispatch(addTask(data.tasks))
+    }.bind(this));
+
+    socket.on('nextTask', function(){
+      dispatch(nextTask())
+    }.bind(this));
+
+    socket.on('prevTask', function(){
+      dispatch(prevTask())
     }.bind(this));
 
     socket.on('updateTimer', function(data){
@@ -175,12 +182,9 @@ class Room extends React.Component {
   nextTask(){
     if(!this.props.timerOn){
       socket.emit('nextTask', {
-      task: item,
-      room: this.props.params.roomname
+        room: this.props.params.roomname
       })
-
-      let { dispatch } = this.props;
-      dispatch(nextTask());
+    
     } else {
       alert("Still picking totals for task: " + this.props.selectedTask.description);
     }
@@ -188,8 +192,9 @@ class Room extends React.Component {
 
   prevTask(){
     if(!this.props.timerOn){
-      let { dispatch } = this.props;
-      dispatch(prevTask());
+      socket.emit('prevTask', {
+        room: this.props.params.roomname
+      })
     } else {
       alert("Still picking totals for task: " + this.props.selectedTask.description);
     }

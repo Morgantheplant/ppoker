@@ -63,7 +63,6 @@ export const addRoomMessage = function addRoomMessage(message){
 }
 
 export const addUser = function addUser(users){
-  console.log('got herereer', users)
   return { 
     type: types.ADD_USER,
     users: users
@@ -84,10 +83,10 @@ export const updateTimer = function updateTimer(time){
   };  
 }
 
-export const addTask = function addTask(task){
+export const addTask = function addTask(tasks){
   return {
     type: types.ADD_TASK,
-    task: task
+    tasks: tasks
   }
 }
 

@@ -1,10 +1,10 @@
 export const taskStore = function(state = { tasks: [], selectedTask: { index: -1} }, action){
     switch (action.type){
         case 'ADD_TASK':
-          let newTask = action.task;
-          newTask.index = state.tasks.length; 
+          //let newTask = action.task;
+          //newTask.index = state.tasks.length; 
           return {
-            tasks: state.tasks.concat(newTask),
+            tasks: action.tasks,
             selectedTask: state.selectedTask
         }
         case 'SELECT_TASK':

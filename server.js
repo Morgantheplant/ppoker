@@ -24,8 +24,9 @@ app.get('/bundle.js', function(req, res){
   res.sendFile(__dirname + '/public/bundle.js');
 });
 
-app.get('/images/*', function(req, res){
-  res.sendFile(__dirname + '/public/'+ req.path)
+
+app.get('/public/images/*', function(req, res){
+  res.sendFile(__dirname + req.path)
 });
 
 app.get('/public/styles.min.css', function(req, res){
@@ -73,6 +74,17 @@ app.get('/public/styles.min.css', function(req, res){
   
 // });
 
+// maintain a list of tASKS that gets updated 
+// when a user presses start begin countdown and reset picks for all users 
+  // make a list of all users in the room
+   // prevent tasks from being selectd during countdown
+    // as users sumbit votes remove them from the list
+       // when no more votes are left tally the scores and present them
+    // if timer runs out wait for all players to finish voting
+    // once a task is voted on it's final score is presented  
+
+
+
 var socketData = {
   roomname: { // room data model
     users: [],
@@ -80,7 +92,9 @@ var socketData = {
     time: 0,
     timeout: {},
     limit: 0,
-    resume: false, 
+    resume: false,
+    tasks: [],
+    selectedTask: {}
   }
 };
 
@@ -117,6 +131,7 @@ function startTimer(data, tick, end){
       data.timerOn = false;
       pauseTimer(data, tick, end)
     } else{
+      resetAllUsers(data);
       roomData.timerOn = true;
       roomData.time = data.limit || roomData.resume || 30
       timer(data, tick, end); 
@@ -192,13 +207,23 @@ function updateUserClick(data){
 
     if(picksLeft(data).length===0){
       pauseTimer(data, true)
+      tallyScores(data);
       io.to(data.room).emit('message', {
-          msg: 'pick made!!'
+          msg: 'all pick made!'
       })
     }
   } else {
     console.log('Warning: could not find room card pick not updated')
   }
+}
+
+function tallyScores(data){
+  var roomData = socketData[data.room];
+  if(roomData){
+    var userList = roomData.users;
+  } else {
+    console.log('something went wrogn in tallying scores')
+  }  
 }
 
 function picksLeft(data){
@@ -240,19 +265,24 @@ io.on('connection', function(socket){
     if(!socketData[roomname]){
       socketData[roomname] = {
         users: [],
+        timerOn: false,
         time: 0,
-        timerOn: false
+        timeout: {},
+        limit: 0,
+        resume: false,
+        tasks: [],
+        selectedTask: {}
       };
     }
     // add user to room and keep track of user data
     socket.join(roomname)
     socketData[roomname].users.push(userInfo)
-    io.to(roomname).emit('addUser',{userList: socketData[roomname].users})
+    io.to(roomname).emit('addUser',{userList: socketData[roomname].users, tasks: socketData[roomname].tasks })
     //todo: handle joining multiple rooms
     if(socketData[socket.id]){
        console.log('multiple rooms is not supported')
         io.to(roomname).emit('message', {
-          msg: 'Note: joining multiple rooms is not supported',
+          msg: 'Note: joining multiple rooms is not supported'
         })
     }  
     // store room info by socketid to id who leaves 
@@ -262,6 +292,22 @@ io.on('connection', function(socket){
       msg: username + ' joined the room'
     })
   })
+
+  socket.on('addTask', function(data){
+    socketData[roomname].tasks.push(data.task);
+    io.to(data.room).emit('addTask',{
+      tasks: socketData[roomname].tasks
+    });
+  })
+
+  socket.on('nextTask', function(data){
+    io.to(data.room).emit('nextTask',{});
+  })
+  
+  socket.on('prevTask', function(data){
+    io.to(data.room).emit('prevTask',{});
+  })
+
 
   // handle a user leaving
   socket.on('disconnect', function(){
