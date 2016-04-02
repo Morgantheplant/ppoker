@@ -1,19 +1,11 @@
-export const timerStore = (state ={ timer: 0, timerStarted: false}, action) => {
+export const timerStore = (state ={ timer: 0, timerOn: false, inProgress: false}, action) => {
     switch (action.type){    
         case 'UPDATE_TIMER':
+          debugger
           return {
             timer: action.timer,
-            timerStarted: state.timerStarted
-          }
-        case 'TIMER_ON':
-          return {
-            timer: state.timer,
-            timerOn: true
-          }
-        case 'TIMER_OFF':
-          return {
-            timer: state.timer,
-            timerOn: false
+            timerOn: action.timerOn,
+            inProgress: action.inProgress
           }
      default:
         return state;    

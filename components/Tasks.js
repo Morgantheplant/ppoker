@@ -15,8 +15,8 @@ class Tasks extends React.Component {
         <div className="task-controls">
         <div className="time">{this.props.timer}</div>
           <i onClick={this.prevTask} className="fa fa-step-backward back"></i>
-          { !this.props.timerOn ? (<i onClick={this.toggleTimer} className="fa fa-play play" ></i>) : (
-              <i onClick={this.toggleTimer} className="fa fa-pause play" ></i>
+          { !this.props.timerOn ? (<i onClick={this.toggleTimer} className="fa fa-play control play" ></i>) : (
+              <i onClick={this.toggleTimer} className="fa fa-pause control pause" ></i>
             ) }
           <i onClick={this.nextTask} className="fa fa-step-forward forward"></i>
           <div className="detail">description</div>

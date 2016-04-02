@@ -14,5 +14,3 @@ export const ADD_TASK = 'ADD_TASK';
 export const SELECT_TASK = 'SELECT_TASK';
 export const NEXT_TASK = 'NEXT_TASK';
 export const PREV_TASK = 'PREV_TASK';
-export const TIMER_ON = 'TIMER_ON';
-export const TIMER_OFF = 'TIMER_OFF';

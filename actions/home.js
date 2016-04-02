@@ -76,10 +76,12 @@ export const removeUser = function removeUser(name){
   };  
 }
 
-export const updateTimer = function updateTimer(time){
+export const updateTimer = function updateTimer(data){
   return { 
     type: types.UPDATE_TIMER,
-    timer: time
+    timer: data.time,
+    timerOn: data.timerOn,
+    inProgress: data.inProgress
   };  
 }
 
@@ -117,15 +119,15 @@ export const prevTask = function(data){
   }
 }
 
-export const timerOn = function(){
-  return {
-    type: types.TIMER_ON
-  }
-}
+// export const timerOn = function(){
+//   return {
+//     type: types.TIMER_ON
+//   }
+// }
 
 
-export const timerOff = function(){
-  return {
-    type: types.TIMER_OFF
-  }
-}
+// export const timerOff = function(){
+//   return {
+//     type: types.TIMER_OFF
+//   }
+// }

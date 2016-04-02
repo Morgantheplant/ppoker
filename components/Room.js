@@ -114,13 +114,7 @@ class Room extends React.Component {
     }.bind(this));
 
     socket.on('updateTimer', function(data){
-     dispatch(updateTimer(data.time))
-     if(data.timerOn){
-       dispatch(timerOn())
-     }
-     if(data.timerOn === false){
-      dispatch(timerOff())
-     }
+     dispatch(updateTimer(data))
     }.bind(this))
 
     socket.on('clickedCard', function(data){
@@ -184,7 +178,7 @@ class Room extends React.Component {
   }
 
   nextTask(){
-    if(!this.props.timerOn){
+    if(!this.props.inProgress){
       socket.emit('nextTask', {
         room: this.props.params.roomname
       })
@@ -195,7 +189,7 @@ class Room extends React.Component {
   }
 
   prevTask(){
-    if(!this.props.timerOn){
+    if(!this.props.inProgress){
       socket.emit('prevTask', {
         room: this.props.params.roomname
       })
@@ -205,7 +199,7 @@ class Room extends React.Component {
   }
 
   selectTask(task){
-    if(!this.props.timerOn){
+    if(!this.props.inProgress){
       let { dispatch } = this.props;
       task.selected = true;
       socket.emit('selectTask', {
@@ -232,6 +226,7 @@ function mapStateToProps(state) {
     userName: state.homeStore.userName,
     timer: state.timerStore.timer,
     timerOn: state.timerStore.timerOn,
+    inProgress: state.timerStore.inProgress,
     tasks: state.taskStore.tasks,
     selectedTask: state.taskStore.selectedTask
   }

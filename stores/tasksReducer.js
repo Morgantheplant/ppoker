@@ -6,6 +6,7 @@ export const taskStore = function(state = { tasks: [], selectedTask: { index: -1
             selectedTask: state.selectedTask
         }
         case 'SELECT_TASK':
+        debugger
           return {
             tasks: action.tasks,
             selectedTask: action.selectedTask

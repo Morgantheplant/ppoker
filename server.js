@@ -148,6 +148,12 @@ function pauseTimer(data, reset){
     if(!reset){
       roomData.resume = roomData.time
     }
+    console.log("rooom timer paused", roomData.timerOn, "time: ", roomData.time)
+    io.to(data.room).emit('updateTimer', {
+      time: roomData.time + 1,
+      timerOn: false,
+      inProgress: !reset
+    })
     clearTimeout(roomData.timeout);
   } else {
     console.log('room not found could not pause the timer')
@@ -164,7 +170,8 @@ function timer(data, tick, end){
     tick({
       time:time,
       room: data.room,
-      timerOn: on
+      timerOn: on,
+      inProgress: true
     })
     // keep loooping through timer if on 
     if(time > -1 && on){
@@ -178,7 +185,13 @@ function timer(data, tick, end){
       roomData.timerOn = false;
       roomData.time = 30;
       roomData.resume = null
+      roomData.inProgress = false
       console.log('timer finished')
+      io.to(data.room).emit('updateTimer', {
+        time: 0,
+        timerOn: false,
+        inProgress: false
+      })
       var notPicked = roomData.users.filter(function(item){
          if(!item.pick){
            return item.name
@@ -203,14 +216,22 @@ function updateUserClick(data){
       if(user.name === data.name){
         user.pick = fibNumbers[data.index]
       }
+      return user;
     })
 
     if(picksLeft(data).length===0){
-      pauseTimer(data, true)
-      tallyScores(data);
+      pauseTimer(data, true);
+      var score = tallyScores(data);
+      var selectedTask = roomData.selectedTask
+      roomData.tasks[selectedTask.index].score = score;
+      selectedTask.score = score;
       io.to(data.room).emit('message', {
-          msg: 'all pick made!'
+          msg: 'final score is ' + score
       })
+      io.to(data.room).emit('selectTask', {
+        tasks: roomData.tasks,
+        selectedTask: roomData.selectedTask
+      });
     }
   } else {
     console.log('Warning: could not find room card pick not updated')
@@ -221,6 +242,27 @@ function tallyScores(data){
   var roomData = socketData[data.room];
   if(roomData){
     var userList = roomData.users;
+    var rawScores = userList.map(function(user){
+      if(user.pick > -1){
+        return user.pick;
+      } else {
+         console.log('error: user pick fail, missing user.pick  ')
+      }
+    })
+    var totals = rawScores.reduce(function(curr, prev){
+       return curr + prev;
+    })
+    var numOfUsers = rawScores.length  
+    //throw out highest and lowest score if more than 4 users
+    if(numOfUsers > 4){
+      var highest = Math.max.apply(null, rawScores);
+      var lowest = Math.min.apply(null, rawScores);
+      totals = totals - highest - lowest;
+      numOfUsers -= 2;
+    }
+    
+    return totals/numOfUsers;
+    
   } else {
     console.log('something went wrogn in tallying scores')
   }  
@@ -337,9 +379,9 @@ io.on('connection', function(socket){
       }
     });
     room.selectedTask = data.task;
-    io.to(data.room).emit('nextTask',{
+    io.to(data.room).emit('selectTask', {
         tasks: tasks,
-        selectedTask: room.selectTask
+        selectedTask: data.task
     });
   })
   
@@ -399,7 +441,9 @@ io.on('connection', function(socket){
         io.to(data.room).emit('updateTimer', data)
       }, 
       function onEnd(data){
-        io.to(data.room).emit('addUser',{userList: socketData[data.room].users})
+        io.to(data.room).emit('addUser',{
+          userList: socketData[data.room].users
+        })
     });
   })
 
