@@ -119,15 +119,9 @@ export const prevTask = function(data){
   }
 }
 
-// export const timerOn = function(){
-//   return {
-//     type: types.TIMER_ON
-//   }
-// }
-
-
-// export const timerOff = function(){
-//   return {
-//     type: types.TIMER_OFF
-//   }
-// }
+export const notificationMessage = function(notification){
+  return {
+    type: types.ADD_NOTIFICATION,
+    notification: notification
+  }
+}

@@ -2,13 +2,14 @@ import React from '../node_modules/react';
 import socket  from '../socket';
 import classNames from 'classnames';
 import Cards from './Cards';
+import NotificationPanel from './NotificationPanel'
 import { connect } from 'react-redux';
 import MessagePanel from './MessagePanel'
 import AdminSelect from './AdminSelect'
 import Tasks from './Tasks'
 import moment from 'moment';
 import { addRoomMessage, addUser, 
-  removeUser, updateUserName, 
+  removeUser, updateUserName, notificationMessage,
   updateTimer, clickedCard, timerOn, timerOff,
   addTask, selectTask, nextTask, prevTask } from '../actions/home'
 
@@ -28,6 +29,8 @@ class Room extends React.Component {
     return (
       <div>
         <div>
+
+          <NotificationPanel message={this.props.notification} />
           
           { this.props.userName ? null : (
             <div id="modal-bg">
@@ -101,6 +104,10 @@ class Room extends React.Component {
       dispatch(addTask(data.tasks))
     }.bind(this));
 
+    socket.on('notification', function(data){
+      dispatch(notifyMessage(data));
+    });
+
     socket.on('selectTask', function(data){
       dispatch(selectTask(data))
     }.bind(this));
@@ -115,11 +122,7 @@ class Room extends React.Component {
 
     socket.on('updateTimer', function(data){
      dispatch(updateTimer(data))
-    }.bind(this))
-
-    socket.on('clickedCard', function(data){
-     
-    })
+    }.bind(this));
   
   }
 
@@ -166,7 +169,8 @@ class Room extends React.Component {
       })
     } else {
       //todo: replace this with top message
-      alert('select a task first')
+      let { dispatch } = this.props;
+      dispatch(notificationMessage("Select a task first"));
     }
   }
 
@@ -184,7 +188,8 @@ class Room extends React.Component {
       })
     
     } else {
-      alert("Still picking totals for task: " + this.props.selectedTask.description);
+      let { dispatch } = this.props;
+      dispatch(notificationMessage("Still picking totals for task: " + this.props.selectedTask.description));
     }
   }
 
@@ -194,20 +199,21 @@ class Room extends React.Component {
         room: this.props.params.roomname
       })
     } else {
-      alert("Still picking totals for task: " + this.props.selectedTask.description);
+       let { dispatch } = this.props;
+      dispatch(notificationMessage("Still picking totals for task: " + this.props.selectedTask.description))
     }
   }
 
   selectTask(task){
     if(!this.props.inProgress){
-      let { dispatch } = this.props;
       task.selected = true;
       socket.emit('selectTask', {
         task: task,
         room: this.props.params.roomname
       })
     } else {
-      alert("Still picking totals for task: " + this.props.selectedTask.description)
+      let { dispatch } = this.props;
+      dispatch(notificationMessage("Still picking totals for task: " + this.props.selectedTask.description))
     }
   }
 
@@ -228,7 +234,8 @@ function mapStateToProps(state) {
     timerOn: state.timerStore.timerOn,
     inProgress: state.timerStore.inProgress,
     tasks: state.taskStore.tasks,
-    selectedTask: state.taskStore.selectedTask
+    selectedTask: state.taskStore.selectedTask,
+    notification: state.notificationStore.notification
   }
 }
 

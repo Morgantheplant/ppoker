@@ -74,17 +74,6 @@ app.get('/public/styles.min.css', function(req, res){
   
 // });
 
-// maintain a list of tASKS that gets updated 
-// when a user presses start begin countdown and reset picks for all users 
-  // make a list of all users in the room
-   // prevent tasks from being selectd during countdown
-    // as users sumbit votes remove them from the list
-       // when no more votes are left tally the scores and present them
-    // if timer runs out wait for all players to finish voting
-    // once a task is voted on it's final score is presented  
-
-
-
 var socketData = {
   roomname: { // room data model
     users: [],
@@ -129,11 +118,11 @@ function startTimer(data, tick, end){
     //if timer is already on pause it
     if(roomData.timerOn){
       data.timerOn = false;
-      pauseTimer(data, tick, end)
+      pauseTimer(data, false);
     } else{
       resetAllUsers(data);
       roomData.timerOn = true;
-      roomData.time = data.limit || roomData.resume || 30
+      roomData.time = roomData.time || data.limit || 30;
       timer(data, tick, end); 
     }
   } else {
@@ -145,9 +134,12 @@ function pauseTimer(data, reset){
   var roomData = socketData[data.room];
   if(roomData){
     roomData.timerOn = false;
-    if(!reset){
-      roomData.resume = roomData.time
+    if(reset){
+      console.log('pause got here in the timer ', roomData.limit)
+      // if reset isn't listed then set time to limit or 29
+      roomData.time = (roomData.limit) ? roomData.limit - 1 : 29;
     }
+
     console.log("rooom timer paused", roomData.timerOn, "time: ", roomData.time)
     io.to(data.room).emit('updateTimer', {
       time: roomData.time + 1,
@@ -173,7 +165,7 @@ function timer(data, tick, end){
       timerOn: on,
       inProgress: true
     })
-    // keep loooping through timer if on 
+    // keep looping through timer if on 
     if(time > -1 && on){
       roomData.time--;
       roomData.timeout = setTimeout(function(){
@@ -198,6 +190,7 @@ function timer(data, tick, end){
          }
       })
       console.log(notPicked, 'these users havent picked');
+       io.to(roomname).emit('addUser',{ userList: socketData[roomname].users })
       //end(data);  
     }
   } else {
@@ -232,6 +225,9 @@ function updateUserClick(data){
         tasks: roomData.tasks,
         selectedTask: roomData.selectedTask
       });
+      io.to(data.room).emit('addUser',{
+        userList: socketData[roomname].users 
+      });
     }
   } else {
     console.log('Warning: could not find room card pick not updated')
@@ -260,8 +256,15 @@ function tallyScores(data){
       totals = totals - highest - lowest;
       numOfUsers -= 2;
     }
-    
-    return totals/numOfUsers;
+
+    var fibNumbers = [1,2,3,5,8,13,21,34,55,89];
+    var average = Math.floor(totals/numOfUsers);
+    for (var i = 0; i < fibNumbers.length; i++) {
+      if(fibNumbers[i] >= average){
+        return fibNumbers[i];
+      }
+    }
+
     
   } else {
     console.log('something went wrogn in tallying scores')
@@ -310,7 +313,7 @@ io.on('connection', function(socket){
         timerOn: false,
         time: 0,
         timeout: {},
-        limit: 0,
+        limit: 30,
         resume: false,
         tasks: [],
         selectedTask: { index: -1}

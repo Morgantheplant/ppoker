@@ -10,6 +10,7 @@ class MessagePanel extends React.Component {
   render(){
     return (
       <div className="message-panel">
+        <i className="fa fa-inbox message-button"></i>
         <div className="message-panel-container">
           <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
           </div>
@@ -27,8 +28,10 @@ class MessagePanel extends React.Component {
   }
 
   sendMessage(){
-    const{sendMessage} = this.props;
-    sendMessage(this.refs.messageInput);
+    if(this.refs.messageInput.value){
+      const{sendMessage} = this.props;
+      sendMessage(this.refs.messageInput);
+    }
   }
 
   _createMessage(item, index){

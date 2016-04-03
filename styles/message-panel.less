@@ -1,0 +1,57 @@
+@import 'styles/variables.less';
+@import 'styles/mixins.less';
+
+.message-panel {
+    position: absolute;
+    height: 100%;
+    background: #000;
+    top: 0;
+    left: 0;
+    width: 250px;
+    padding-bottom: 160px;
+    padding-top: 190px;
+    .message-button{
+        color: @white;
+    }
+    .message-panel-container{
+        height: 100%;
+        width: 100%;
+        background: @darkGrey;
+        position: relative;
+        padding-bottom: 85px;
+        .message_area {
+            border: 1px solid #000;
+            position: relative;
+            border-radius: 5px;
+            overflow-y: auto;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            ul.messages {
+                padding-right: 5px;
+                padding-left: 5px;
+                position: absolute;
+                width: 100%;
+                li{
+                    display: block;
+                    background: @bgDarkGrey;
+                    margin: 1px auto;
+                    padding: 0;
+                    border-radius: 5px;
+                    padding: 9px;
+                    font-size: 14px;
+                    color: @white;
+                    margin: 4px;
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                    word-wrap: break-word;
+                    .time-stamp{
+                        color: @greyFont;
+                        display: block;
+                        font-size: 12px;
+                        text-align: right;
+                    }
+                }
+            }
+        }
+    }
+}
