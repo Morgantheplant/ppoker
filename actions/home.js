@@ -125,3 +125,15 @@ export const notificationMessage = function(notification){
     notification: notification
   }
 }
+
+export const hideNotification = function(){
+  return {
+    type: types.HIDE_NOTIFICATION
+  }
+}
+
+export const clearNotification = function(){
+  return {
+    type: types.CLEAR_NOTIFICATION
+  }
+}

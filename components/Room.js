@@ -9,9 +9,12 @@ import AdminSelect from './AdminSelect'
 import Tasks from './Tasks'
 import moment from 'moment';
 import { addRoomMessage, addUser, 
-  removeUser, updateUserName, notificationMessage,
+  removeUser, updateUserName, notificationMessage, 
+  hideNotification, clearNotification,
   updateTimer, clickedCard, timerOn, timerOff,
   addTask, selectTask, nextTask, prevTask } from '../actions/home'
+
+let messageQueue = [];
 
 class Room extends React.Component {
    constructor (props) {
@@ -30,7 +33,7 @@ class Room extends React.Component {
       <div>
         <div>
 
-          <NotificationPanel message={this.props.notification} />
+          <NotificationPanel message={this.props.notification} show={this.props.notificationShow} />
           
           { this.props.userName ? null : (
             <div id="modal-bg">
@@ -105,8 +108,8 @@ class Room extends React.Component {
     }.bind(this));
 
     socket.on('notification', function(data){
-      dispatch(notifyMessage(data));
-    });
+      this.notifyMessage(data);
+    }.bind(this));
 
     socket.on('selectTask', function(data){
       dispatch(selectTask(data))
@@ -124,6 +127,36 @@ class Room extends React.Component {
      dispatch(updateTimer(data))
     }.bind(this));
   
+  }
+
+  notifyMessage(message){
+    console.log(message)
+    messageQueue.push(message);
+    this.notifyHandler()
+  }
+
+  notifyHandler(cont){
+    let { dispatch } = this.props;
+    let keepGoing = (!messageQueue.inProgress || cont);
+    console.log(messageQueue.inProgress , "inProgress?")
+    if(messageQueue.length > 0 && keepGoing){
+      messageQueue.inProgress = true;
+      dispatch( notificationMessage ( messageQueue.shift() ) );
+      // show for longer if no messages lined up
+      let timeShown = (messageQueue.length) ? 200 : 1500;
+      setTimeout(function(){
+        dispatch(hideNotification());
+        if(messageQueue.length > 0){
+          this.notifyHandler(true);
+        }
+        if(messageQueue.length === 0){
+          setTimeout(function(){
+            messageQueue.inProgress = false;
+            dispatch(clearNotification())
+          }, 1000)
+        }
+      }.bind(this),timeShown)
+    }
   }
 
   cardSelected(index){
@@ -170,7 +203,7 @@ class Room extends React.Component {
     } else {
       //todo: replace this with top message
       let { dispatch } = this.props;
-      dispatch(notificationMessage("Select a task first"));
+      this.notifyMessage("Select a task first");
     }
   }
 
@@ -189,7 +222,7 @@ class Room extends React.Component {
     
     } else {
       let { dispatch } = this.props;
-      dispatch(notificationMessage("Still picking totals for task: " + this.props.selectedTask.description));
+      this.notifyMessage(("Still picking totals for task: " + this.props.selectedTask.description));
     }
   }
 
@@ -200,7 +233,7 @@ class Room extends React.Component {
       })
     } else {
        let { dispatch } = this.props;
-      dispatch(notificationMessage("Still picking totals for task: " + this.props.selectedTask.description))
+      this.notifyMessage(("Still picking totals for task: " + this.props.selectedTask.description))
     }
   }
 
@@ -213,7 +246,7 @@ class Room extends React.Component {
       })
     } else {
       let { dispatch } = this.props;
-      dispatch(notificationMessage("Still picking totals for task: " + this.props.selectedTask.description))
+      this.notifyMessage(("Still picking totals for task: " + this.props.selectedTask.description))
     }
   }
 
@@ -235,7 +268,8 @@ function mapStateToProps(state) {
     inProgress: state.timerStore.inProgress,
     tasks: state.taskStore.tasks,
     selectedTask: state.taskStore.selectedTask,
-    notification: state.notificationStore.notification
+    notification: state.notificationStore.notification,
+    notificationShow: state.notificationStore.show
   }
 }
 

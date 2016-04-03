@@ -4,12 +4,12 @@ import classNames from 'classnames'
 class NotificationPanel extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-        show: false
-    }
+    // this.state = {
+    //     show: false
+    // }
   }
   render () {
-    return (<div className={classNames("notification-panel", { "show": this.state.show }) } >
+    return (<div className={classNames("notification-panel", { "show": this.props.show }) } >
       <i className="fa fa-flag icon"></i><span className="message">{this.props.message}</span><i className="fa fa-close x"></i>
       </div>)
   }
