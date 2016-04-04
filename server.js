@@ -190,7 +190,7 @@ function timer(data, tick, end){
          }
       })
       console.log(notPicked, 'these users havent picked');
-       io.to(roomname).emit('addUser',{ userList: socketData[roomname].users })
+       io.to(data.room).emit('addUser',{ userList: socketData[roomname].users })
       //end(data);  
     }
   } else {
@@ -226,7 +226,7 @@ function updateUserClick(data){
         selectedTask: roomData.selectedTask
       });
       io.to(data.room).emit('addUser',{
-        userList: socketData[roomname].users 
+        userList: socketData[data.room].users 
       });
     }
   } else {

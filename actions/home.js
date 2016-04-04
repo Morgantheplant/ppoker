@@ -93,7 +93,6 @@ export const addTask = function addTask(tasks){
 }
 
 export const selectTask = function(data){
-  debugger
   return {
     type: types.SELECT_TASK,
     tasks: data.tasks,
@@ -103,7 +102,6 @@ export const selectTask = function(data){
 }
 
 export const nextTask = function(data){
-  debugger
   return {
     type: types.NEXT_TASK,
     tasks: data.tasks,
@@ -135,5 +133,11 @@ export const hideNotification = function(){
 export const clearNotification = function(){
   return {
     type: types.CLEAR_NOTIFICATION
+  }
+}
+
+export const toggleAdminPane = function(){
+  return {
+    type: types.TOGGLE_ADMIN_PANE
   }
 }

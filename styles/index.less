@@ -1,8 +1,9 @@
 @import 'styles/variables';
 @import 'styles/room';
 @import 'styles/admin-select';
-@import 'styles/tasks';
+@import 'styles/controls';
 @import 'styles/message-panel';
+@import 'styles/task-heading';
 
 *{
   box-sizing: border-box;
@@ -121,7 +122,7 @@
     
     .card {
     position: relative;
-    height: 135px;
+    height: 120px;
     width: 8%;
     border: 1px solid;
     border-radius: 5px;
@@ -162,9 +163,10 @@
 
     .card-area {
     text-align: center;
-    position: fixed;
+    position: absolute;
     width: 100%;
-    bottom: 10px;
+    bottom: 55px;
+    padding-left: 215px;
     }
 
     #modal-bg {

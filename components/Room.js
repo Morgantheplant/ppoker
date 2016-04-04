@@ -7,14 +7,16 @@ import { connect } from 'react-redux';
 import MessagePanel from './MessagePanel'
 import AdminSelect from './AdminSelect'
 import Tasks from './Tasks'
+import Controls from './Controls'
+
 import moment from 'moment';
 import { addRoomMessage, addUser, 
   removeUser, updateUserName, notificationMessage, 
-  hideNotification, clearNotification,
+  hideNotification, clearNotification, toggleAdminPane,
   updateTimer, clickedCard, timerOn, timerOff,
   addTask, selectTask, nextTask, prevTask } from '../actions/home'
 
-let messageQueue = [];
+//let messageQueue = [];
 
 class Room extends React.Component {
    constructor (props) {
@@ -26,6 +28,7 @@ class Room extends React.Component {
     this.selectTask = this.selectTask.bind(this);
     this.nextTask = this.nextTask.bind(this);
     this.prevTask = this.prevTask.bind(this);
+    this.toggleAdminPane = this.toggleAdminPane.bind(this);
   }
   render () {
    let { roomname } = this.props.params
@@ -33,7 +36,10 @@ class Room extends React.Component {
       <div>
         <div>
 
-          <NotificationPanel message={this.props.notification} show={this.props.notificationShow} />
+          <NotificationPanel 
+            message={this.props.notification} 
+            show={this.props.notificationShow} 
+             />
           
           { this.props.userName ? null : (
             <div id="modal-bg">
@@ -48,24 +54,27 @@ class Room extends React.Component {
         </div>
         
         <div className="task-heading" >
-        { 
-          this.props.selectedTask ? ( <h3 className="selected-task">{
-            this.props.selectedTask.description
-          }</h3>
-          ) : null }
+          <h3 className="selected-task">
+          { 
+            this.props.selectedTask.description || "Add tasks at the top right to begin" 
+          }
+          </h3>
         </div>  
-
+        
+        <Controls  timer={this.props.timer}
+              timerOn={this.props.timerOn}
+              toggleTimer={this.toggleTimer}
+              prevTask={this.prevTask} 
+              nextTask={this.nextTask} />
           
         { this.props.userName ? (
           <div className="timer">
-            <AdminSelect users={this.props.users} />
+            <AdminSelect users={this.props.users} 
+              toggleAdminPane={this.toggleAdminPane}
+              show={this.props.showAdminPane}
+               />
             <Tasks 
-              timer={this.props.timer}
-              timerOn={this.props.timerOn}
-              toggleTimer={this.toggleTimer}
               tasks={this.props.tasks}
-              prevTask={this.prevTask} 
-              nextTask={this.nextTask}
               addTask={this.addTask} selectTask={this.selectTask} />
           </div>
           ): null }
@@ -130,33 +139,21 @@ class Room extends React.Component {
   }
 
   notifyMessage(message){
-    console.log(message)
-    messageQueue.push(message);
-    this.notifyHandler()
+    let { dispatch } = this.props;
+    dispatch(notificationMessage(message));
+    if(this.timeout){
+      clearTimeout(this.timeout)
+      this.hideNofity(dispatch);
+    } else {
+      this.hideNofity(dispatch);
+    }
   }
 
-  notifyHandler(cont){
-    let { dispatch } = this.props;
-    let keepGoing = (!messageQueue.inProgress || cont);
-    console.log(messageQueue.inProgress , "inProgress?")
-    if(messageQueue.length > 0 && keepGoing){
-      messageQueue.inProgress = true;
-      dispatch( notificationMessage ( messageQueue.shift() ) );
-      // show for longer if no messages lined up
-      let timeShown = (messageQueue.length) ? 200 : 1500;
-      setTimeout(function(){
-        dispatch(hideNotification());
-        if(messageQueue.length > 0){
-          this.notifyHandler(true);
-        }
-        if(messageQueue.length === 0){
-          setTimeout(function(){
-            messageQueue.inProgress = false;
-            dispatch(clearNotification())
-          }, 1000)
-        }
-      }.bind(this),timeShown)
-    }
+  hideNofity(dispatch){
+    this.timeout = setTimeout(function(){
+      dispatch(hideNotification());
+      this.timeout = null;
+    }.bind(this),2000)
   }
 
   cardSelected(index){
@@ -205,6 +202,11 @@ class Room extends React.Component {
       let { dispatch } = this.props;
       this.notifyMessage("Select a task first");
     }
+  }
+
+  toggleAdminPane(){
+    let { dispatch } = this.props;
+    dispatch(toggleAdminPane())
   }
 
   addTask(item){
@@ -269,7 +271,8 @@ function mapStateToProps(state) {
     tasks: state.taskStore.tasks,
     selectedTask: state.taskStore.selectedTask,
     notification: state.notificationStore.notification,
-    notificationShow: state.notificationStore.show
+    notificationShow: state.notificationStore.show,
+    showAdminPane: state.adminPaneStore.showPane
   }
 }
 

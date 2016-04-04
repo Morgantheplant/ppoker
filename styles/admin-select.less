@@ -1,14 +1,25 @@
 @import 'styles/variables.less';
 
+.drop-down{
+    display: none;
+    &.show{
+        display:block;
+    }
+}
 .admin-select-pane{
     background: @darkGrey;
     color: @greyFont;
+    position: absolute;
+    right:0;
     .user-select{
         padding: 5px 35px 5px 35px;
         cursor: pointer;
         &:hover{
             background:@selectedDarkGrey;
         }
+    }
+    &.show{
+        display: block;
     }
 }
 
