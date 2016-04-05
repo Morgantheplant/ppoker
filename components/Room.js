@@ -35,11 +35,20 @@ class Room extends React.Component {
     return (
       <div>
         <div>
-
+           
           <NotificationPanel 
             message={this.props.notification} 
             show={this.props.notificationShow} 
              />
+
+           <div className="main-title-contianer"><i className="fa fa-database pokerchips"></i>
+           <h1 className="main-title">Planning Pokerify</h1>
+           <i className="fa fa-inbox inbox"></i>
+            <AdminSelect users={this.props.users} 
+            toggleAdminPane={this.toggleAdminPane}
+            show={this.props.showAdminPane}
+             />
+           </div>
           
           { this.props.userName ? null : (
             <div id="modal-bg">
@@ -67,23 +76,19 @@ class Room extends React.Component {
               prevTask={this.prevTask} 
               nextTask={this.nextTask} />
           
-        { this.props.userName ? (
-          <div className="timer">
-            <AdminSelect users={this.props.users} 
-              toggleAdminPane={this.toggleAdminPane}
-              show={this.props.showAdminPane}
-               />
-            <Tasks 
-              tasks={this.props.tasks}
-              addTask={this.addTask} selectTask={this.selectTask} />
-          </div>
-          ): null }
         
-        { this.props.userName ?  <MessagePanel 
+        <div className="timer">
+          <Tasks 
+            tasks={this.props.tasks}
+            addTask={this.addTask} selectTask={this.selectTask} />
+        </div>
+        
+        
+        <MessagePanel 
           userName={this.props.userName} 
           roomname={roomname} 
           messages={this.props.messages}
-          sendMessage={this.sendMessage.bind(this)} /> : null }
+          sendMessage={this.sendMessage.bind(this)} />
        
         
         <ul className="users">
