@@ -1,28 +1,52 @@
 @import 'styles/variables.less';
 @import 'styles/mixins.less';
 
+
+.right-panel{
+    position: absolute;
+    height: 100%;
+    background: @bgDarkGrey;
+    top: 0;
+    left: 0;
+    width: 200px;
+    padding-bottom: 104px;
+    padding-top: 91px;
+}
+
 .message-panel {
     position: absolute;
     height: 100%;
-    background: #000;
+    background: @darkGrey;
     top: 0;
-    left: 0;
+    right: 0;
     width: 250px;
-    padding-bottom: 104px;
-    padding-top: 91px;
+    padding-bottom: 50px;
+    padding-top: 40px;
+     button{
+    background: none;
+    border: 1px solid #828282;
+    color: @midGrey;
+    height: 25px;
+    margin-left: 5px;
+      &:hover{
+        border: 1px solid @playGreen;
+      }
+      &:focus{
+        outline: 0;
+      }
+    }
     .message-button{
         color: @white;
     }
     .message-panel-container{
         height: 100%;
         width: 100%;
-        background: @bgDarkGrey;
+        background: @darkGrey;
         position: relative;
         padding-bottom: 50px;
         .message_area {
             border: 1px solid #000;
             position: relative;
-            border-radius: 5px;
             overflow-y: auto;
             width: 100%;
             height: 100%;
@@ -34,10 +58,8 @@
                 width: 100%;
                 li{
                     display: block;
-                    background: @bgDarkGrey;
                     margin: 1px auto;
                     padding: 0;
-                    border-radius: 5px;
                     padding: 9px;
                     font-size: 14px;
                     color: @white;

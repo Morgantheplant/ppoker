@@ -9,11 +9,7 @@ class MessagePanel extends React.Component {
 
   render(){
     return (
-      <div className="message-panel">
-        <div className="user-info">
-            <div className="roomname"><i className="fa fa-home"></i> roomname: {this.props.roomname}</div>
-            <div className="username"><i className="fa fa-user"></i> username: {this.props.userName}</div> 
-        </div>    
+      <div className="message-panel">   
         <div className="message-panel-container">
           <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
           </div>

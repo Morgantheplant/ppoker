@@ -9,6 +9,10 @@
   box-sizing: border-box;
 }
 
+body{
+  background: @darkGrey;
+}
+
 .intro-modal{
       height: 260px;
       width: 500px;
@@ -132,6 +136,7 @@
     transition: transform .25s;
     background-color: #F9F9F9;
     box-shadow: 1px 1px 5px #525252;
+    pointer-events: visible;
     }
 
     .card.selected{
@@ -165,7 +170,9 @@
     position: absolute;
     width: 100%;
     bottom: 55px;
-    padding-left: 215px;
+    padding-left: 200px;
+    padding-right: 250px;
+    pointer-events: none;
     }
 
     #modal-bg {

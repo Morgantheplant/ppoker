@@ -8,9 +8,13 @@ class Tasks extends React.Component {
   }
   render () {
      return (
-      <div>
-        <input ref="taskInput" /><i className="fa fa-plus add-task" onClick={this.addTask}></i>
+      <div className="right-panel">
+         <div className="user-info">
+            <div className="roomname"><i className="fa fa-home"></i> roomname: {this.props.roomname}</div>
+            <div className="username"><i className="fa fa-user"></i> username: {this.props.userName}</div> 
+        </div>    
         {this.props.tasks.map(this._createTasks, this)}
+        <input ref="taskInput" /><i className="fa fa-plus add-task" onClick={this.addTask}></i>
       </div>)
   }
   

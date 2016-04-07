@@ -41,14 +41,14 @@ class Room extends React.Component {
             show={this.props.notificationShow} 
              />
 
-           <div className="main-title-contianer"><i className="fa fa-database pokerchips"></i>
-           <h1 className="main-title">Planning Pokerify</h1>
-           <i className="fa fa-inbox inbox"></i>
+          <div className="main-title-contianer"><i className="fa fa-database pokerchips"></i>
+            <h1 className="main-title">Planning Pokerify</h1>
+            <i className="fa fa-inbox inbox"></i>
             <AdminSelect users={this.props.users} 
             toggleAdminPane={this.toggleAdminPane}
             show={this.props.showAdminPane}
-             />
-           </div>
+            />
+          </div>
           
           { this.props.userName ? null : (
             <div id="modal-bg">
@@ -77,16 +77,17 @@ class Room extends React.Component {
               nextTask={this.nextTask} />
           
         
-        <div className="timer">
-          <Tasks 
-            tasks={this.props.tasks}
-            addTask={this.addTask} selectTask={this.selectTask} />
-        </div>
+      
+        <Tasks 
+          tasks={this.props.tasks}
+          userName={this.props.userName} 
+          roomname={roomname} 
+          addTask={this.addTask} 
+          selectTask={this.selectTask} />
+      
         
         
         <MessagePanel 
-          userName={this.props.userName} 
-          roomname={roomname} 
           messages={this.props.messages}
           sendMessage={this.sendMessage.bind(this)} />
        
