@@ -16,7 +16,7 @@
     left: 0;
     height: 40px;
     background:@bgDarkGrey;
-    border-bottom:@darkGrey;
+    border-bottom: 1px solid @darkGrey;
     width: 100%;
     z-index: 1;
     line-height: 20px;
@@ -25,18 +25,18 @@
     z-index: 1;
     color: #1DCC5C;
     font-family: open-sans,sans-serif;
-    font-size: 17px;
+    font-size: 14px;
     display: inline-block;
     /* margin-right: 80px; */
     }
 
     i.pokerchips {
         background: #1DCC5C;
-        width: 24px;
-        font-size: 15px;
-        height: 24px;
+        width: 21px;
+        font-size: 13px;
+        height: 21px;
         padding-top: 4px;
-        padding-left: 6px;
+        padding-left: 5px;
         z-index: 10;
         border-radius: 50%;
         margin-left: 10px;
@@ -51,27 +51,19 @@ i.fa.fa-inbox.inbox {
     top: 12px;
 }
 
-i.fa.fa-users {
-    font-size: 12px;
-    border-radius: 50%;
-    height: 23px;
-    width: 23px;
-    border: 1px solid grey;
-    padding-top: 5px;
-    padding-left: 4px;
-}
+
 .user-info{
     background: @bgDarkGrey;
     position: absolute;
-    height: 50px;
+    height: 90px;
     width: 100%;
-    color: @midGrey;
-    text-shadow: 0px 0px 1px black;
+    color: @textGrey;
     font-family: open sans, sans-serif;
     font-size: 14px;
     z-index:10;
     padding: 5px;
-     padding-left:10px;
+    padding-top: 10px;
+    padding-left:0;
     .username, .roomname{
         cursor: pointer;
         &:hover{
@@ -81,7 +73,7 @@ i.fa.fa-users {
     button{
     background: none;
     border: 1px solid #828282;
-    color: @midGrey;
+    color: @textGrey;
     height: 25px;
     margin-left: 5px;
       &:hover{
@@ -121,7 +113,7 @@ i.fa.fa-users {
         margin-top: 5px;
         padding-left:27px;
         .placeholder({
-            color: @midGrey;
+            color: @textGrey;
             padding-top: 10px;
             });
         &:focus{
@@ -130,7 +122,7 @@ i.fa.fa-users {
     }
 
     .fa-commenting{
-        color: @midGrey;
+        color: @textGrey;
     }
 }
 

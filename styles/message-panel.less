@@ -3,77 +3,115 @@
 
 
 .right-panel{
-    position: absolute;
-    height: 100%;
-    background: @bgDarkGrey;
-    top: 0;
-    left: 0;
-    width: 200px;
-    padding-bottom: 104px;
-    padding-top: 91px;
+  position: absolute;
+  height: 100%;
+  background: @bgDarkGrey;
+  color: @textGrey;
+  font-family: @mainFont;
+  top: 0;
+  left: 0;
+  width: 200px;
+  padding-bottom: 104px;
+  padding-top: 150px;
+  font-size: 12px;
+  h2.section-title {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 13px;
+  margin-left: 15px;
+  }
+  .icon{
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .task-icon{
+    margin-right: 15px;
+  }
+
+  .task {
+    height: 32px;
+    line-height: 32px;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+    border-left: 5px solid @bgDarkGrey;
+    padding-left: 10px;
+    &.selected{
+      border-left: 5px solid limegreen;
+    }
+
+  }
 }
 
-.message-panel {
+.task-input-container {
     position: absolute;
+    bottom: 118px;
+    left: 15px;
+}
+
+
+.message-panel {
+  position: absolute;
+  height: 100%;
+  background: @darkGrey;
+  top: 0;
+  right: 0;
+  width: 250px;
+  padding-bottom: 50px;
+  padding-top: 40px;
+   button{
+  background: none;
+  border: 1px solid #828282;
+  color: @textGrey;
+  height: 25px;
+  margin-left: 5px;
+    &:hover{
+    border: 1px solid @playGreen;
+    }
+    &:focus{
+    outline: 0;
+    }
+  }
+  .message-button{
+    color: @white;
+  }
+  .message-panel-container{
     height: 100%;
+    width: 100%;
     background: @darkGrey;
-    top: 0;
-    right: 0;
-    width: 250px;
+    position: relative;
     padding-bottom: 50px;
-    padding-top: 40px;
-     button{
-    background: none;
-    border: 1px solid #828282;
-    color: @midGrey;
-    height: 25px;
-    margin-left: 5px;
-      &:hover{
-        border: 1px solid @playGreen;
-      }
-      &:focus{
-        outline: 0;
-      }
-    }
-    .message-button{
-        color: @white;
-    }
-    .message-panel-container{
-        height: 100%;
+    .message_area {
+      box-shadow: 0px -5px 1px black;
+      position: relative;
+      overflow-y: auto;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      ul.messages {
+        padding-right: 5px;
+        padding-left: 5px;
+        position: absolute;
         width: 100%;
-        background: @darkGrey;
-        position: relative;
-        padding-bottom: 50px;
-        .message_area {
-            border: 1px solid #000;
-            position: relative;
-            overflow-y: auto;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            ul.messages {
-                padding-right: 5px;
-                padding-left: 5px;
-                position: absolute;
-                width: 100%;
-                li{
-                    display: block;
-                    margin: 1px auto;
-                    padding: 0;
-                    padding: 9px;
-                    font-size: 14px;
-                    color: @white;
-                    margin: 4px;
-                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-                    word-wrap: break-word;
-                    .time-stamp{
-                        color: @greyFont;
-                        display: block;
-                        font-size: 12px;
-                        text-align: right;
-                    }
-                }
-            }
+        li{
+          display: block;
+          margin: 1px auto;
+          padding: 0;
+          padding: 9px;
+          font-size: 14px;
+          color: @white;
+          margin: 4px;
+          font-family: @mainFont;
+          word-wrap: break-word;
+          .time-stamp{
+            color: @textGrey;
+            display: block;
+            font-size: 12px;
+            text-align: right;
+          }
         }
+      }
     }
+  }
 }

@@ -7,25 +7,47 @@
     }
 }
 
+i.fa.fa-users {
+    font-size: 12px;
+    border-radius: 50%;
+    height: 23px;
+    width: 23px;
+    border: 1px solid @textGrey;
+    padding-top: 5px;
+    padding-left: 4px;
+    &.show{
+         border: 1px solid @playGreen;
+    }
+}
+
 .admin-select{
     position: absolute;
     width: 155px;
     height: 40px;
     right: 9px;
     top: 0;
-    font-family: open-sans, sans-serif;
+    font-family: @mainFont;
+    .select{
+        cursor: pointer;
+        &.show:hover{
+            color: @textGrey !important;
+        }
+        &:hover{
+            color: @highlightText !important;
+        }
+    }
 }
 
 .admin-select-pane{
-    background: @darkGrey;
-    color: @greyFont;
+    background: @greyPanel;
+    color: @textGrey;
     position: absolute;
-    right:0;
+    right:10px;
     .user-select{
         padding: 5px 35px 5px 35px;
         cursor: pointer;
         &:hover{
-            background:@selectedDarkGrey;
+            background:@progressBg;
         }
     }
     &.show{
@@ -41,8 +63,7 @@ i.nav-angle.fa.fa-angle-down {
 }
 
 .select{
-    background: @bgDarkGrey;
-    color: @midGrey;
+    color: @textGrey;
     span.text{
       padding-left: 10px;
       padding-right: 10px;
@@ -55,6 +76,6 @@ i.nav-angle.fa.fa-angle-down {
     height: 0; 
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
-    border-bottom: 7px solid @darkGrey;
-    margin-left: 124px;
+    border-bottom: 7px solid @greyPanel;
+    margin-left: 115px;
 }

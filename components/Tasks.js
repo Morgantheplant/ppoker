@@ -10,11 +10,13 @@ class Tasks extends React.Component {
      return (
       <div className="right-panel">
          <div className="user-info">
-            <div className="roomname"><i className="fa fa-home"></i> roomname: {this.props.roomname}</div>
-            <div className="username"><i className="fa fa-user"></i> username: {this.props.userName}</div> 
-        </div>    
+            <h2 className="section-title">ROOM INFO</h2>
+            <div className="roomname"><i className="fa fa-home icon"></i> {this.props.roomname}</div>
+            <div className="username"><i className="fa fa-user icon"></i> {this.props.userName}</div> 
+        </div>
+        <h2 className="section-title">YOUR TASKS</h2>    
         {this.props.tasks.map(this._createTasks, this)}
-        <input ref="taskInput" /><i className="fa fa-plus add-task" onClick={this.addTask}></i>
+        <div className="task-input-container"><i className="fa fa-plus add-task" onClick={this.addTask}></i><input className="create-task" ref="taskInput" /></div>
       </div>)
   }
   

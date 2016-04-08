@@ -31,7 +31,6 @@ class Controls extends React.Component {
             </div>
           </div>
         </div>  
-        <div className="detail">description</div>
       </div>)
   }
 }  
