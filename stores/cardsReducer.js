@@ -15,20 +15,27 @@ export const cardStore = (state ={ cards: cards }, action) => {
     switch (action.type){
         case 'CLICKED_CARD':
           return {
-            cards: state.cards.map(function(item, index){
+            cards: state.cards.map(function(card, index){
                 if(index === action.index){
                     return {
                         selected : true,
-                        number: item.number
+                        number: card.number
                     }    
                 } else {
                     return {
                         selected: false,
-                        number: item.number
+                        number: card.number
                     }    
                 }
             }),
           }
+        case 'RESET_PICKS':
+           return { 
+             cards: state.cards.map(function(card, index){
+               card.selected = false;
+               return card
+             })
+           }
         default:
           return state  
     }      
