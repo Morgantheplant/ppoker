@@ -141,3 +141,8 @@ export const toggleAdminPane = function(){
     type: types.TOGGLE_ADMIN_PANE
   }
 }
+export const toggleMessagePane = function(){
+  return {
+    type: types.TOGGLE_MESSAGE_PANE
+  }
+}
