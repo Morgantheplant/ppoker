@@ -27,7 +27,7 @@ export const cardStore = (state ={ cards: cards }, action) => {
                         number: card.number
                     }    
                 }
-            }),
+            })
           }
         case 'RESET_PICKS':
            return { 
