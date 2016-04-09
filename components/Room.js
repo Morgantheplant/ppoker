@@ -88,6 +88,7 @@ class Room extends React.Component {
         
         
         <MessagePanel 
+          showPanel={this.props.showMessagePanel}
           messages={this.props.messages}
           sendMessage={this.sendMessage.bind(this)} />
        
@@ -278,7 +279,8 @@ function mapStateToProps(state) {
     selectedTask: state.taskStore.selectedTask,
     notification: state.notificationStore.notification,
     notificationShow: state.notificationStore.show,
-    showAdminPane: state.adminPaneStore.showPane
+    showAdminPane: state.adminPaneStore.showPane,
+    showMessagePanel: state.messageStore.showPanel
   }
 }
 
