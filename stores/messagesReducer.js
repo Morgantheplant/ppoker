@@ -5,7 +5,7 @@ export const messagesStore = (state ={ messages:[], showPanel:true }, action) =>
             messages: [action.room_message].concat(state.messages),
             showPanel: state.showPanel
           }  
-        case: 'TOGGLE_MESSAGE_PANE':   
+        case 'TOGGLE_MESSAGE_PANE':   
           return {
             messages: state.messages,
             showPanel: !state.showPanel
