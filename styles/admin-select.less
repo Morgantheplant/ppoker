@@ -24,9 +24,9 @@ i.fa.fa-users {
     position: absolute;
     width: 155px;
     height: 40px;
-    right: 9px;
     top: 0;
     font-family: @mainFont;
+    right: 25px;
     .select{
         cursor: pointer;
         &.show:hover{
@@ -42,7 +42,11 @@ i.fa.fa-users {
     background: @greyPanel;
     color: @textGrey;
     position: absolute;
-    right:10px;
+    right:-10px;
+    width: 160px;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 5px 5px 5px black;
     .user-select{
         padding: 5px 35px 5px 35px;
         cursor: pointer;
@@ -66,16 +70,18 @@ i.nav-angle.fa.fa-angle-down {
     color: @textGrey;
     span.text{
       padding-left: 10px;
-      padding-right: 10px;
+      padding-right: 24px;
       font-size:12px;
     }   
 }
 
 .arrow{
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 7px solid @greyPanel;
-    margin-left: 115px;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #333;
+    margin-left: 130px;
+    margin-top: 2px;
 }
+

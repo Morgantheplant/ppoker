@@ -45,12 +45,22 @@
 }
 
 i.fa.fa-inbox.inbox {
-    color: white;
+    color: @textGrey;
     position: absolute;
-    right: 177px;
-    top: 12px;
+    right: 202px;
+    top: 9px;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    padding-top: 4px;
+    padding-left: 6px;
+    &:hover{
+        background: @progressBg;
+        color: @highlightText;
+    }
 }
 
+   
 
 .user-info{
     background: @bgDarkGrey;
