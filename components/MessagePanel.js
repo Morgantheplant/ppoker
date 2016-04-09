@@ -1,5 +1,6 @@
 import React from '../node_modules/react'
 import moment from 'moment'
+import classNames from 'classnames'
 
 class MessagePanel extends React.Component {
    constructor (props) {
@@ -9,7 +10,7 @@ class MessagePanel extends React.Component {
 
   render(){
     return (
-      <div className="message-panel">   
+      <div className={classNames("message-panel", {"show-messages":this.props.showPanel}}>   
         <div className="message-panel-container">
           <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
           </div>
