@@ -10,7 +10,7 @@ class MessagePanel extends React.Component {
 
   render(){
     return (
-      <div className={classNames("message-panel", {"show-messages":this.props.showPanel}}>   
+      <div className={classNames("message-panel", {"show-messages":this.props.showPanel}) }>   
         <div className="message-panel-container">
           <div className="message_area"><ul className="messages">{this.props.messages.map(this._createMessage, this)}</ul>
           </div>

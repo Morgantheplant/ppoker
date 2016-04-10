@@ -10,7 +10,7 @@ class Cards extends React.Component {
   }
   render () {
    
-    return (<div>
+    return (<div className={classNames("card-area", {"show-pane": this.props.panelShown})}>
          { this.props.cards.map(this._createCards, this)}
         </div>)
   }

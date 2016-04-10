@@ -13,7 +13,7 @@ import moment from 'moment';
 import { addRoomMessage, addUser, 
   removeUser, updateUserName, notificationMessage, 
   hideNotification, clearNotification, toggleAdminPane,
-  updateTimer, clickedCard, timerOn, timerOff,
+  updateTimer, clickedCard, timerOn, timerOff, toggleMessagePane,
   addTask, selectTask, nextTask, prevTask } from '../actions/home'
 
 //let messageQueue = [];
@@ -29,6 +29,7 @@ class Room extends React.Component {
     this.nextTask = this.nextTask.bind(this);
     this.prevTask = this.prevTask.bind(this);
     this.toggleAdminPane = this.toggleAdminPane.bind(this);
+    this.toggleMessagePane = this.toggleMessagePane.bind(this);
   }
   render () {
    let { roomname } = this.props.params
@@ -43,7 +44,7 @@ class Room extends React.Component {
 
           <div className="main-title-contianer"><i className="fa fa-database pokerchips"></i>
             <h1 className="main-title">Planning Pokerify</h1>
-            <i className="fa fa-inbox inbox"></i>
+            <i className={classNames("fa fa-inbox inbox", {on:this.props.showMessagePanel})} onClick={this.toggleMessagePane}></i>
             <AdminSelect users={this.props.users} 
             toggleAdminPane={this.toggleAdminPane}
             show={this.props.showAdminPane}
@@ -80,7 +81,7 @@ class Room extends React.Component {
       
         <Tasks 
           tasks={this.props.tasks}
-          userName={this.props.userName} 
+          userName={this.props.userName}
           roomname={roomname} 
           addTask={this.addTask} 
           selectTask={this.selectTask} />
@@ -97,9 +98,10 @@ class Room extends React.Component {
           {this.props.users.map(this._createUsers, this)} 
         </ul>
         
-        <div className="card-area">
-          <Cards clicked={this.cardSelected.bind(this)} />
-        </div>
+        <Cards
+          panelShown={this.props.showMessagePanel}  
+          clicked={this.cardSelected.bind(this)} />
+        
 
       </div>)
   }
@@ -216,6 +218,11 @@ class Room extends React.Component {
     dispatch(toggleAdminPane())
   }
 
+  toggleMessagePane(){
+    let { dispatch } = this.props;
+    dispatch(toggleMessagePane())
+  }
+
   addTask(item){
     socket.emit('addTask', {
       task: item,
@@ -280,7 +287,7 @@ function mapStateToProps(state) {
     notification: state.notificationStore.notification,
     notificationShow: state.notificationStore.show,
     showAdminPane: state.adminPaneStore.showPane,
-    showMessagePanel: state.messageStore.showPanel
+    showMessagePanel: state.messagesStore.showPanel
   }
 }
 
