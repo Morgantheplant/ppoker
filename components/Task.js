@@ -10,7 +10,7 @@ class Task extends React.Component {
      return (
        <div onClick={this.selectTask} key={this.props.index} 
            className={classNames("task", { "selected":  this.props.task.selected } )}  value="item"> 
-          { this.props.task.selected ? <i className="fa fa-check-circle-o task-icon"> </i> : <i className="fa fa-circle-o task-icon"> </i> }
+          { (this.props.task.score || this.props.task.selected ) ? <i className="fa fa-check-circle-o task-icon"> </i> : <i className="fa fa-circle-o task-icon"> </i> }
           {this.props.task.score ? "[" +this.props.task.score +"] ": null }
           {this.props.task.description}
       </div>

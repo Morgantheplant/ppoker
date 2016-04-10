@@ -16,7 +16,9 @@ class Tasks extends React.Component {
         </div>
         <h2 className="section-title">YOUR TASKS</h2>    
         {this.props.tasks.map(this._createTasks, this)}
-        <div className="task-input-container"><i className="fa fa-plus add-task" onClick={this.addTask}></i><input className="create-task" ref="taskInput" /></div>
+        <div className="task-input-container">
+        <i className="fa fa-plus add-task" onClick={this.addTask}></i>
+        <input className="create-task" ref="taskInput" /></div>
       </div>)
   }
   

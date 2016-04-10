@@ -12,7 +12,7 @@ import Controls from './Controls'
 import moment from 'moment';
 import { addRoomMessage, addUser, 
   removeUser, updateUserName, notificationMessage, 
-  hideNotification, clearNotification, toggleAdminPane,
+  hideNotification, clearNotification, toggleAdminPane, resetPicks,
   updateTimer, clickedCard, timerOn, timerOff, toggleMessagePane,
   addTask, selectTask, nextTask, prevTask } from '../actions/home'
 
@@ -111,39 +111,43 @@ class Room extends React.Component {
 
     socket.on('message', function(data){
       dispatch(addRoomMessage(data))
-    }.bind(this));
+    });
 
     socket.on('addUser', function(data){
       dispatch(addUser(data.userList))
-    }.bind(this));
+    });
 
     socket.on('removeUser', function(data){
       dispatch(removeUser(data))
-    }.bind(this));
+    });
     
     socket.on('addTask', function(data){
       dispatch(addTask(data.tasks))
-    }.bind(this));
+    });
 
     socket.on('notification', function(data){
       this.notifyMessage(data);
-    }.bind(this));
+    });
 
     socket.on('selectTask', function(data){
       dispatch(selectTask(data))
-    }.bind(this));
+    });
 
     socket.on('nextTask', function(data){
       dispatch(nextTask(data))
-    }.bind(this));
+    });
 
     socket.on('prevTask', function(data){
       dispatch(prevTask(data))
-    }.bind(this));
+    });
 
     socket.on('updateTimer', function(data){
      dispatch(updateTimer(data))
-    }.bind(this));
+    });
+
+    socket.on('resetPicks', function(){
+      dispatch(resetPicks())
+    });
   
   }
 
@@ -167,14 +171,15 @@ class Room extends React.Component {
 
   cardSelected(index){
     let { dispatch } = this.props;
-    socket.emit('clickedCard', {
-      name: this.props.userName,
-      room: this.props.params.roomname,
-      index: index,
-      selected: this.props.selectedTask
-    })
-
-     dispatch(clickedCard(index))
+    if(this.props.inProgress){
+      socket.emit('clickedCard', {
+        name: this.props.userName,
+        room: this.props.params.roomname,
+        index: index,
+        selected: this.props.selectedTask
+      })
+    }
+    dispatch(clickedCard(index))
   }
   
   sendMessage(ref){

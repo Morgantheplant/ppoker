@@ -292,6 +292,7 @@ function resetAllUsers(data){
      roomData.users.forEach(function(user){
         user.pick = null;
      })
+    io.to(data.room).emit('resetPicks'); 
   } else {
     console.log('could not find room to reset users')
   }

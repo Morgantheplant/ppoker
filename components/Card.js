@@ -9,8 +9,11 @@ class Card extends React.Component {
     this.clicked = this.clicked.bind(this)
   }
   render () {
+     let value = (Math.floor(this.props.item + rand));
+     let color1 = `hsl(${value}, 100%, 50%)`;
+     let color2 = `hsl(${value+10}, 90%, 45%)`
      return <div
-     style={ {background:  "hsl(" + (this.props.item + rand) + ", 100%, 50%)" } }
+     style={ {backgroundImage: `linear-gradient(${color1},${color2})` } }
      className={classNames("card", { "selected": this.props.selected } )} 
      type={this.props.item} 
      onClick={this.clicked} >
