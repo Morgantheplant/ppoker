@@ -8,6 +8,7 @@ import MessagePanel from './MessagePanel'
 import AdminSelect from './AdminSelect'
 import Tasks from './Tasks'
 import Controls from './Controls'
+import Modal from './Modal'
 
 import moment from 'moment';
 import { addRoomMessage, addUser, 
@@ -16,7 +17,6 @@ import { addRoomMessage, addUser,
   updateTimer, clickedCard, timerOn, timerOff, toggleMessagePane,
   addTask, selectTask, nextTask, prevTask } from '../actions/home'
 
-//let messageQueue = [];
 
 class Room extends React.Component {
    constructor (props) {
@@ -32,7 +32,6 @@ class Room extends React.Component {
     this.toggleMessagePane = this.toggleMessagePane.bind(this);
   }
   render () {
-   let { roomname } = this.props.params
     return (
       <div>
         <div>
@@ -50,17 +49,12 @@ class Room extends React.Component {
             show={this.props.showAdminPane}
             />
           </div>
-          
-          { this.props.userName ? null : (
-            <div id="modal-bg">
-              <div id="modal">
-                <div id="modal-content">
-                  <div>Enter your name to join room: <b>{roomname}</b></div><input ref="nameentry" />
-                  <button onClick={this.updateName}>enter</button>
-                </div>  
-              </div>
-            </div>) 
-          }
+
+          {this.props.userName ? null : (
+            <Modal 
+              updateName={this.updateName} 
+              roomname={this.props.params.roomname} />
+            )}
         </div>
         
         <div className="task-heading" >
@@ -82,7 +76,7 @@ class Room extends React.Component {
         <Tasks 
           tasks={this.props.tasks}
           userName={this.props.userName}
-          roomname={roomname} 
+          roomname={this.props.params.roomname} 
           addTask={this.addTask} 
           selectTask={this.selectTask} />
       
@@ -191,9 +185,9 @@ class Room extends React.Component {
     ref .value = '';
   }
 
-  updateName(e){
+  updateName(ref){
    let { dispatch } = this.props;
-    var name = this.refs.nameentry.value;
+    var name = ref.nameentry.value;
     if(name){
       dispatch(updateUserName(name))
       socket.emit('joinroom', {
