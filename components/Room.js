@@ -2,17 +2,18 @@ import React from '../node_modules/react';
 import socket  from '../socket';
 import classNames from 'classnames';
 import Cards from './Cards';
-import NotificationPanel from './NotificationPanel'
+import NotificationPanel from './NotificationPanel';
 import { connect } from 'react-redux';
-import MessagePanel from './MessagePanel'
-import AdminSelect from './AdminSelect'
-import Tasks from './Tasks'
-import Controls from './Controls'
-import Modal from './Modal'
+import MessagePanel from './MessagePanel';
+import Tasks from './Tasks';
+import Controls from './Controls';
+import Modal from './Modal';
+import TopNav from './TopNav';
+import Users from './Users';
 
 import moment from 'moment';
 import { addRoomMessage, addUser, 
-  removeUser, updateUserName, notificationMessage, 
+  removeUser, updateUserName, notificationMessage, showResults,
   hideNotification, clearNotification, toggleAdminPane, resetPicks,
   updateTimer, clickedCard, timerOn, timerOff, toggleMessagePane,
   addTask, selectTask, nextTask, prevTask } from '../actions/home'
@@ -34,28 +35,24 @@ class Room extends React.Component {
   render () {
     return (
       <div>
-        <div>
-           
           <NotificationPanel 
             message={this.props.notification} 
             show={this.props.notificationShow} 
              />
 
-          <div className="main-title-contianer"><i className="fa fa-database pokerchips"></i>
-            <h1 className="main-title">Planning Pokerify</h1>
-            <i className={classNames("fa fa-inbox inbox", {on:this.props.showMessagePanel})} onClick={this.toggleMessagePane}></i>
-            <AdminSelect users={this.props.users} 
+          <TopNav
+            showMessagePanel={this.props.showMessagePanel}
+            toggleMessagePane={this.toggleMessagePane} 
+            users={this.props.users} 
             toggleAdminPane={this.toggleAdminPane}
-            show={this.props.showAdminPane}
-            />
-          </div>
+            showAdminPane={this.props.showAdminPane}
+          />
 
           {this.props.userName ? null : (
             <Modal 
               updateName={this.updateName} 
               roomname={this.props.params.roomname} />
             )}
-        </div>
         
         <div className="task-heading" >
           <h3 className="selected-task">
@@ -80,18 +77,17 @@ class Room extends React.Component {
           addTask={this.addTask} 
           selectTask={this.selectTask} />
       
-        
+        <Users 
+          users={this.props.users}
+          showResults={this.props.showResults}
+          selectedTask={this.props.selectedTask}
+        />
         
         <MessagePanel 
           showPanel={this.props.showMessagePanel}
           messages={this.props.messages}
           sendMessage={this.sendMessage.bind(this)} />
-       
-        
-        <ul className="users">
-          {this.props.users.map(this._createUsers, this)} 
-        </ul>
-        
+
         <Cards
           panelShown={this.props.showMessagePanel}  
           clicked={this.cardSelected.bind(this)} />
@@ -119,9 +115,15 @@ class Room extends React.Component {
       dispatch(addTask(data.tasks))
     });
 
-    socket.on('notification', function(data){
-      this.notifyMessage(data);
+    socket.on('doneVoting', function(data){
+      dispatch(selectTask(data));
+      dispatch(addUser(data.userList));
+      dispatch(showResults(true));
     });
+
+    socket.on('notification', function(data){
+      this.notifyMessage(data.message);
+    }.bind(this));
 
     socket.on('selectTask', function(data){
       dispatch(selectTask(data))
@@ -139,9 +141,12 @@ class Room extends React.Component {
      dispatch(updateTimer(data))
     });
 
-    socket.on('resetPicks', function(){
-      dispatch(resetPicks())
-    });
+    socket.on('beginVoting', function(data){
+      dispatch(resetPicks());
+      dispatch(showResults(false));
+      let message = `Voting on task: ${ data.task }`
+      this.notifyMessage(message);
+    }.bind(this));
   
   }
 
@@ -213,6 +218,7 @@ class Room extends React.Component {
   }
 
   toggleAdminPane(){
+    debugger
     let { dispatch } = this.props;
     dispatch(toggleAdminPane())
   }
@@ -264,11 +270,6 @@ class Room extends React.Component {
       this.notifyMessage(("Still picking totals for task: " + this.props.selectedTask.description))
     }
   }
-
-  _createUsers(item, index){
-    return <li className="user" key={index}>{item.name}<b>{ item.pick }</b> </li>
-  }
-
  
  
 }
@@ -286,7 +287,8 @@ function mapStateToProps(state) {
     notification: state.notificationStore.notification,
     notificationShow: state.notificationStore.show,
     showAdminPane: state.adminPaneStore.showPane,
-    showMessagePanel: state.messagesStore.showPanel
+    showMessagePanel: state.messagesStore.showPanel,
+    showResults: state.userStore.showResults
   }
 }
 

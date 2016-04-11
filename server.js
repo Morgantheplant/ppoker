@@ -6,7 +6,8 @@ var port = process.env.PORT || 3000;
 //var config = require ('./config')
 var https = require('https');
 var querystring = require('querystring');
-var db = require('./db')
+var db = require('./db');
+var moment = require('moment');
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
@@ -190,8 +191,8 @@ function timer(data, tick, end){
          }
       })
       console.log(notPicked, 'these users havent picked');
-       io.to(data.room).emit('addUser',{ userList: socketData[roomname].users })
-      //end(data);  
+       io.to(data.room).emit('notification',
+        { message: "these users haven't picked:" + notPicked.join(",") }) 
     }
   } else {
     console.log('room not found timer cannot continue')
@@ -218,15 +219,11 @@ function updateUserClick(data){
       var selectedTask = roomData.selectedTask
       roomData.tasks[selectedTask.index].score = score;
       selectedTask.score = score;
-      io.to(data.room).emit('message', {
-          msg: 'final score is ' + score
-      })
-      io.to(data.room).emit('selectTask', {
+      io.to(data.room).emit('doneVoting',{
+        userList: socketData[data.room].users,
+        score: score, 
         tasks: roomData.tasks,
         selectedTask: roomData.selectedTask
-      });
-      io.to(data.room).emit('addUser',{
-        userList: socketData[data.room].users 
       });
     }
   } else {
@@ -292,7 +289,12 @@ function resetAllUsers(data){
      roomData.users.forEach(function(user){
         user.pick = null;
      })
-    io.to(data.room).emit('resetPicks'); 
+
+    io.to(data.room).emit('beginVoting', {
+      task: roomData.selectedTask.description
+    }); 
+
+
   } else {
     console.log('could not find room to reset users')
   }
@@ -306,7 +308,7 @@ io.on('connection', function(socket){
   // handle a user joining
   socket.on('joinroom', function(data){
     var roomname = data.room, username = data.name,
-    userInfo = { name: username, pick:null };
+    userInfo = { name: username, pick:null, num: Math.ceil(Math.random()*25) };
     // if room doesn't already exist init room data
     if(!socketData[roomname]){
       socketData[roomname] = {
@@ -330,14 +332,16 @@ io.on('connection', function(socket){
     if(socketData[socket.id]){
        console.log('multiple rooms is not supported')
         io.to(roomname).emit('message', {
-          msg: 'Note: joining multiple rooms is not supported'
+          msg: 'Note: joining multiple rooms is not supported',
+          time: moment().format('h:mm  a')
         })
     }  
     // store room info by socketid to id who leaves 
     socketData[socket.id] = [roomname, username]
     // notify room that user has joined
     io.to(roomname).emit('message', {
-      msg: username + ' joined the room'
+      msg: username + ' joined the room',
+      time: moment().format('h:mm  a')
     })
   })
 
@@ -416,7 +420,8 @@ io.on('connection', function(socket){
       var username = data[1];
       // tell room that user left
       io.to(roomname).emit('message',{
-        msg: username + ' left the room'
+        msg: username + ' left the room',
+        time: moment().format('h:mm  a')
       });
 
       io.to(roomname).emit('removeUser', username)
@@ -459,7 +464,8 @@ io.on('connection', function(socket){
   socket.on('message', function(data){
     io.to(data.room).emit('message',{
       name: data.name,
-      msg: data.msg
+      msg: data.msg,
+      time: moment().format('h:mm  a')
     });
   })
 

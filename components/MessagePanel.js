@@ -1,5 +1,4 @@
 import React from '../node_modules/react'
-import moment from 'moment'
 import classNames from 'classnames'
 
 class MessagePanel extends React.Component {
@@ -33,7 +32,7 @@ class MessagePanel extends React.Component {
   }
 
   _createMessage(item, index){
-     return <li key={index}><b>{item.name ? item.name +':' : ''}</b>&nbsp;{item.msg}<span className="time-stamp"> { moment().format('h:mm  a') } </span></li>
+     return <li key={index}><b>{item.name ? item.name +':' : ''}</b>&nbsp;{item.msg}<span className="time-stamp"> { item.time } </span></li>
   }
 
  

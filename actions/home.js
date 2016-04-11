@@ -153,3 +153,10 @@ export const resetPicks = function(){
     type: types.RESET_PICKS
   }
 }
+
+export const showResults = function(bool){
+  return {
+    type: types.SHOW_RESULTS,
+    showResults: bool
+  }
+}

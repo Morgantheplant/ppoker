@@ -1,0 +1,90 @@
+@import 'styles/variables.less';
+
+.final-score {
+  color: white;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  margin-left: 25px;
+  font-family: "open Sans";
+  color: @progressGreen;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+li.user{
+	perspective: 1000px;
+	display: inline-block;
+  margin: 5px;
+  text-align: center;
+  height: 130px;
+  width: 65px;
+  .username{
+  	color:@highlightText;
+  	margin-top:10px;
+  	font: @mainFont;
+  }
+	.flip{
+	  transform-style: preserve-3d;
+	  position: relative;
+	  transform-origin: center;
+	  &.show{
+	  	transform: rotateY(180deg);
+	  }
+		.front-card, .back-card{
+			backface-visibility: hidden;
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    border: 1px solid rgba(0, 0, 0, 0.36);
+	    box-shadow: 1px 1px 5px rgb(0, 0, 0);
+	    border-radius: 5px;
+		}
+		.flip, .front-card, .back-card{
+			height: 100px;
+      width: 65px;
+		}
+		.front-card{
+			z-index: 2;
+     	transform: rotateY(0deg);
+     	background-size: 53px 89px;
+      background-repeat: no-repeat;
+      background-color: white;
+      background-position: 5px 5px;
+		}
+		.back-card{
+			transform: rotateY(180deg);
+			position: relative;
+			background-image: linear-gradient(#FFFFFF,#CACACA);
+			&.even{
+        color: black;
+			}
+			&.odd{
+				color: red;
+			}
+			.top {
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			}
+
+			.middle {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			font-size: 20px;
+			font-weight: bold;
+			}
+
+			.bottom {
+			position: absolute;
+			bottom: 5px;
+			right: 5px;
+			transform: rotate(180deg);
+			}
+		}
+	}
+}
