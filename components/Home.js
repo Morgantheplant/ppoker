@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../actions/home'
-import config from '../config';
+import NotificationPanel from './NotificationPanel';
 
 class Home extends React.Component {
   constructor (props) {
@@ -18,52 +18,57 @@ class Home extends React.Component {
   render () {
     return (
       <div className="main-bg">
+      
+      <NotificationPanel 
+        message={this.props.notification} 
+        show={this.props.notificationShow} 
+        />
+
       <div className={classNames("intro-modal", { inverse: this.props.bgColor })} >
         <div className="intro-title"><i className="fa fa-database pokerchips"></i>
             <h1 className="main-title">Planning Pokerify</h1>
         </div>
 
         <div className="login-container">
-        <button className="asana-button">LOG IN WITH ASANA</button>
-        <div className="or-contianer">
-          
-          <div className="or-line">
-            <div className="or">OR</div>
+          <a href="/auth/asana" ><button className="asana-button">LOG IN WITH ASANA</button></a>
+          <div className="or-contianer">
+            
+            <div className="or-line-left">
             </div>
-          </div>
+            <div className="or">OR</div>
+            <div className="or-line-right">
+            </div>
+            </div>
 
-        <input type="text" ref="roomNameInput" className="room-name-input" 
-          onChange={ this.updateRoomname } 
-          placeholder="enter a roomname" />
-       
-        <input type="text" ref="roomPasswordInput" className={classNames("room-name-input password", { "password-on": this.props.usePass})} 
-        onChange={this.updatePassword } 
-        placeholder="enter a password" /> 
-        
-        <div className="private-option">
-          <div><div classNames="private-text">Private?</div> 
-          <div onClick={ this.togglePrivate } className={classNames("toggleTrack", {"password-on": this.props.usePass})}><div className="toggleThumb"></div></div></div>
+          <input type="text" ref="roomNameInput" className="room-name-input" 
+            onChange={ this.updateRoomname } 
+            placeholder="enter a roomname" />
+         
+          <input type="text" ref="roomPasswordInput" className={classNames("room-name-input password", { "password-on": this.props.usePass})} 
+          onChange={this.updatePassword } 
+          placeholder="enter a password" /> 
+          
+          <div className={classNames("private-option", {"private-on": this.props.usePass})}>
+            <div><div classNames="private-text">MAKE PRIVATE</div> 
+            <div onClick={ this.togglePrivate } className={classNames("toggleTrack", {"password-on": this.props.usePass})}><div className="toggleThumb"></div></div></div>
+          </div>
+          
+            { 
+            // show or hide link button
+            this.props.link ? (
+              <Link className="room-link" to={`/room/`+ this.props.roomName }>
+                <button className="btn roomname"> ENTER ROOM </button> 
+              </Link>) : <button className="btn roomname" onClick={ this.submitRoomname } > CREATE </button> 
+          }
+          <p className="link-text" >LINK TO ROOM:</p>
+          { 
+            //show or hide link field
+            this.props.link ? (<input ref="roomLinkInput" 
+              className="room-link-input" />) : null 
+          }
         </div>
         
-        <button className={classNames('btn roomname',{ show: this.props.roomName } )} 
-          onClick={ this.submitRoomname } > CREATE </button> 
-          </div>
         
-        <p className="link-text" >Link to Room:</p>
-        
-        { 
-          //show or hide link field
-          this.props.link ? (<div><input ref="roomLinkInput" 
-            className="room-link-input" /><a href={config.asana_link_req} target="_blank" ><button>ASANA</button></a></div>) : null 
-        }
-
-        { 
-          // show or hide link button
-          this.props.link ? (
-            <Link to={`/room/`+ this.props.roomName }>
-              <button className="btn"> Let's Go </button>
-            </Link>) : null 
-        }
     </div>
     </div>)
   }
@@ -82,7 +87,7 @@ class Home extends React.Component {
     }.bind(this))
 
     socket.on('room-not-available', function(){
-       dispatch(actions.updateMessage( "Sorry that room already exists"))
+       this.notifyMessage("Sorry that room already exists");
     }.bind(this))
 
     dispatch(actions.updateMessage('Please enter a roomname'))
@@ -111,6 +116,24 @@ class Home extends React.Component {
     dispatch(actions.togglePrivate())
   }
 
+  notifyMessage(message){
+    let { dispatch } = this.props;
+    dispatch(actions.notificationMessage(message));
+    if(this.timeout){
+      clearTimeout(this.timeout)
+      this.hideNofity(dispatch);
+    } else {
+      this.hideNofity(dispatch);
+    }
+  }
+
+  hideNofity(dispatch){
+    this.timeout = setTimeout(function(){
+      dispatch(actions.hideNotification());
+      this.timeout = null;
+    }.bind(this),2000)
+  }
+
 }
 
 function mapStateToProps(state) {
@@ -119,9 +142,10 @@ function mapStateToProps(state) {
     roomName: state.homeStore.roomName, 
     userName: state.homeStore.userName,
     link: state.homeStore.link,
-    message: state.homeStore.message,
     bgColor: state.homeStore.bgColor,
-    usePass: state.homeStore.usePass   
+    usePass: state.homeStore.usePass,
+    notification: state.notificationStore.notification,
+    notificationShow: state.notificationStore.show  
   }
 }
 

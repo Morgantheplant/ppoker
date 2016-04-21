@@ -187,7 +187,7 @@ class Room extends React.Component {
         msg: ref.value,
         room: this.props.params.roomname
     })
-    ref .value = '';
+    ref.value = '';
   }
 
   updateName(ref){

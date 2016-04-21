@@ -12,10 +12,6 @@ class Login extends React.Component {
   _onLoginSubmit() {
     const email = ReactDOM.findDOMNode(this.refs.email).value;
     const password = ReactDOM.findDOMNode(this.refs.password).value;
-    // dispatch(manualLogin({
-    //   email: email,
-    //   password: password
-    // }));
   }
 
   render() {

@@ -32,7 +32,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    box-shadow: 1px 1px 3px black;
   .login-container {
     width: 300px;
     margin: 15px auto;
@@ -44,24 +43,41 @@
     color: white;
     border: none;
     border-radius: 30px;
-    height: 29px;
+    height: 28px;
     font-size: 12px;
     letter-spacing: 1.35px;
+    cursor: pointer;
   }
 
-  input.room-name-input {
+  input.room-name-input, input.room-link-input {
     font-size: 13px;
     width: 100%;
     border-radius: 4px;
     border: none;
-    background: #464242;
+    background: @greyPanel;
     margin-top: 12px;
     padding: 5px;
+    color: @textGrey;
     &.password{
-      display: none;
+      visibility: hidden;
       &.password-on{
-        display: block;
+        visibility: visible;
       }
+    }
+  }
+
+  button.btn.roomname {
+    height: 28px;
+    background: @loginBtn;
+    color: white;
+    border: none;
+    margin-top: 20px;
+    border-radius: 30px;
+    width: 100px;
+    letter-spacing: 1.35px;
+    cursor: pointer;
+    &:hover{
+      background: @loginBtnHighlight;
     }
   } 
 
@@ -70,11 +86,17 @@
     width: 100%;
     border-radius: 4px;
     border: none;
-    margin-top: 12px;
+    margin-top: -20px;
     padding: 5px;
     text-align: left;
-    color: grey;
+    color: @greyFont;
+    font-family: @mainFont;
+    font-size: 12px;
     position: relative;
+    transition: .5s margin;
+    &.private-on{
+       margin-top: 12px;
+    }
     .toggleTrack {
       height: 20px;
       position: relative;
@@ -102,8 +124,8 @@
         }
       }
       &.password-on{
-        background: @progressGreen;
-        border: 2px solid @progressGreen;
+        background: @loginBtnHighlight;
+        border: 2px solid @loginBtnHighlight;
         .toggleThumb{
           transform: translateX(18px);
         }
@@ -117,22 +139,25 @@
     margin-top: 14px;
     height: 35px;
     width: 100%;
-    line-height: 35px;
     font-family: sans-serif;
     font-size: 13px;
-  .or-line {
-    width: 100%;
-    height: 50%;
-    border-bottom: 1px solid gray;
-    position: relative;
-    .or {
-      background: #181818;
-      width: 30px;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      color: gray;
-    }
+  .or-line-left {
+    float:left;
+    width:134px;
+    height:25%;
+    border-bottom: 1px solid @textGrey;
+  }
+ .or {
+    float:left;
+    color:  @textGrey;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  .or-line-right {
+    float:left;
+    width:134px;
+    height:25%;
+    border-bottom: 1px solid @textGrey;
   }
 }
 
@@ -140,78 +165,6 @@ p.link-text {
     color: white;
     font-family: sans-serif;
     font-size: 12px;
+    margin-top: 35px;
+    margin-bottom: 5px;
 }
-
-
-
-  // .intro-modal.inverse {
-  //   background-position-y: -224px;
-  //   background-position-x: -3px;
-  // }
-
-
-  // p {
-  //   color: #E43C3C;
-  //   TEXT-TRANSFORM: uppercase;
-  //   font-family: @mainFont;
-  //   margin: 34px auto;
-  //   background: antiquewhite;
-  //   box-shadow: 0px 0px 5px black;
-  //   width: 102%;
-  // }
-
-  // .message{
-  //   height: 21px;
-  //   line-height: 21px;
-  //   font-size: 12px;
-  // }
-
-
-  // input.room-name-input {
-  //   font-size: 13px;
-  //   width: 131px;
-  //   border-radius: 5px;
-  // }
-
-  // p.link-text {
-  // margin-top: 45px;
-  // background-color: white;
-  // box-shadow: none;
-  // color: black;
-  // font-family: @mainFont;
-  // }
-
-  // button.btn{
-  //   display: block;
-  //   margin: 10px auto;
-  //   border: none;
-  //   color: white;
-  //   height: 23px;
-  //   font-size: 15px;
-  //   background: #E10816;;
-  // }
-
-  // button.btn.roomname{
-  //   visibility: hidden;
-  // }
-
-  // button.btn.roomname.show{
-  //   visibility: visible;
-  // }
-
-  // .hovered > button.btn{
-  //   background: #1B2D6B;
-  // }
-
-  // input.room-link-input {
-  // width: 100%;
-  // font-size: 16px;
-  // }
-
-  // .private-option > label{
-  //   background: #122658;
-  //   color: white;
-  //   font-weight: bold;
-  //   width: 75px;
-  //   padding: 2px;
-  // }
