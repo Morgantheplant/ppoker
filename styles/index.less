@@ -5,6 +5,7 @@
 @import 'styles/message-panel';
 @import 'styles/task-heading';
 @import 'styles/users';
+@import 'styles/home';
 
 *{
   box-sizing: border-box;
@@ -15,90 +16,12 @@ body{
   font: @mainFont;
 }
 
-.intro-modal{
-      height: 260px;
-      width: 500px;
-      background: #BB4F4F;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-      border-radius: 20px;
-      box-shadow: 1px 1px 3px black;
-      background-image: url('/images/cards.jpg');
-    }
-
-    .intro-modal.inverse {
-      background-position-y: -224px;
-      background-position-x: -3px;
-    }
-
-
-    p {
-      color: #E43C3C;
-      TEXT-TRANSFORM: uppercase;
-      font-family: @mainFont;
-      margin: 34px auto;
-      background: antiquewhite;
-      box-shadow: 0px 0px 5px black;
-      width: 102%;
-    }
-
-    .message{
-      height: 21px;
-      line-height: 21px;
-      font-size: 12px;
-    }
-
-
-    input.room-name-input {
-      font-size: 13px;
-      width: 131px;
-      border-radius: 5px;
-    }
-
-    p.link-text {
-    margin-top: 45px;
-    background-color: white;
-    box-shadow: none;
-    color: black;
-    font-family: @mainFont;
-    }
-
-    button.btn{
-      display: block;
-      margin: 10px auto;
-      border: none;
-      color: white;
-      height: 23px;
-      font-size: 15px;
-      background: #E10816;;
-    }
-
-    button.btn.roomname{
-      visibility: hidden;
-    }
-
-    button.btn.roomname.show{
-      visibility: visible;
-    }
-
-    .hovered > button.btn{
-      background: #1B2D6B;
-    }
-
-    input.room-link-input {
-    width: 100%;
-    font-size: 16px;
-    }
-
-    .private-option > label{
-      background: #122658;
-      color: white;
-      font-weight: bold;
-      width: 75px;
-      padding: 2px;
-    }
+.main-bg{
+  background-image: url('/images/bg2.jpg');
+  height:100%;
+  width:100%;
+  background-size: cover;
+}
     
     .card {
     position: relative;

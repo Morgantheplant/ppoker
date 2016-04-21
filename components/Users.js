@@ -26,7 +26,7 @@ class Users extends React.Component {
       <div className={classNames("flip", {show: this.props.showResults}) } 
            style={ {transition: `0.6s ${ 0.25 * index}s transform`} } >
         <div className="front-card" style={
-          { backgroundImage: `url("../public/images/cards/loteria-card-${item.num}.jpg")` }
+          { backgroundImage: `url("/images/cards/loteria-card-${item.num}.jpg")` }
         }>
         </div>
         <div className={ `back-card ${index%2?'odd':'even'}` }>

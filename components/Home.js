@@ -17,28 +17,39 @@ class Home extends React.Component {
   }
   render () {
     return (
+      <div className="main-bg">
       <div className={classNames("intro-modal", { inverse: this.props.bgColor })} >
-        <h1> Welcome to Planning Poker</h1>
-        <p className="message" >{this.props.message}</p>
-          <div className="private-option">
-            <input type="checkbox" onChange={ this.togglePrivate } /><label>Private?</label>
+        <div className="intro-title"><i className="fa fa-database pokerchips"></i>
+            <h1 className="main-title">Planning Pokerify</h1>
+        </div>
+
+        <div className="login-container">
+        <button className="asana-button">LOG IN WITH ASANA</button>
+        <div className="or-contianer">
+          
+          <div className="or-line">
+            <div className="or">OR</div>
+            </div>
           </div>
 
         <input type="text" ref="roomNameInput" className="room-name-input" 
           onChange={ this.updateRoomname } 
-          placeholder="enter a name" />
+          placeholder="enter a roomname" />
+       
+        <input type="text" ref="roomPasswordInput" className={classNames("room-name-input password", { "password-on": this.props.usePass})} 
+        onChange={this.updatePassword } 
+        placeholder="enter a password" /> 
         
-          { 
-            // show or hide password input
-            this.props.usePass ? (<input type="text" ref="roomPasswordInput" className="room-name-input" 
-            onChange={this.updatePassword } 
-            placeholder="enter a password" />) : null 
-          }
+        <div className="private-option">
+          <div><div classNames="private-text">Private?</div> 
+          <div onClick={ this.togglePrivate } className={classNames("toggleTrack", {"password-on": this.props.usePass})}><div className="toggleThumb"></div></div></div>
+        </div>
         
         <button className={classNames('btn roomname',{ show: this.props.roomName } )} 
-          onClick={ this.submitRoomname } > Sumit </button> 
+          onClick={ this.submitRoomname } > CREATE </button> 
+          </div>
         
-        <p className="link-text" >Link to your ROOM:</p>
+        <p className="link-text" >Link to Room:</p>
         
         { 
           //show or hide link field
@@ -53,6 +64,7 @@ class Home extends React.Component {
               <button className="btn"> Let's Go </button>
             </Link>) : null 
         }
+    </div>
     </div>)
   }
   componentDidMount(){

@@ -2,6 +2,7 @@ import React from '../node_modules/react';
 import Home from '../components/Home';
 import Room from '../components/Room';
 import socket from '../socket';
+import Login from '../components/Login'
 
 import { Router, Route } from 'react-router';
 
@@ -11,6 +12,7 @@ export default (store) => {
         <Route path="/" component={ Home }>
         </Route>
         <Route path="room/:roomname" component={ Room } />
+        <Route path="login" component={Login} authenticated="false" />
     </Route>   
   );
 };

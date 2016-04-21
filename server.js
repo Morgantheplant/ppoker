@@ -3,11 +3,16 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
-//var config = require ('./config')
+var config = require ('./config')
 var https = require('https');
 var querystring = require('querystring');
 var db = require('./db');
 var moment = require('moment');
+var errorhandler = require('errorhandler')
+var  passport = require('passport')
+var util = require('util')
+var AsanaStrategy = require('passport-asana').Strategy;
+var passport = require('passport');
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
@@ -17,65 +22,70 @@ app.get('/room', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/room/:room', function(req, res){
+app.get('/login', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/bundle.js', function(req, res){
-  res.sendFile(__dirname + '/public/bundle.js');
+
+app.get('/room/:room', function(req, res){
+  res.sendFile(__dirname + '/public/index.html');
+});
+app.use(express.static(__dirname + '/public'));
+console.log('passport', passport)
+// /////////
+// passport.serializeUser(function(user, done) {
+//   done(null, user);
+// });
+
+// passport.deserializeUser(function(obj, done) {
+//   done(null, obj);
+// });
+
+/////////
+passport.use('Asana', new AsanaStrategy({
+    clientID: config.ASANA_CLIENT_ID,
+    clientSecret: config.ASANA_CLIENT_SECRET,
+    callbackURL: "http://127.0.0.1:3000/auth/asana/callback",
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    console.warn(accessToken, refreshToken, profile);
+    process.nextTick(function () {
+      
+      // To keep the example simple, the user's Asana profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Asana account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+    });
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
 });
 
-
-app.get('/public/images/*', function(req, res){
-  res.sendFile(__dirname + req.path)
+passport.deserializeUser(function(user, done) {
+  done(null, user);
 });
 
-app.get('/public/styles.min.css', function(req, res){
-  res.sendFile(__dirname + '/public/styles.min.css'); 
-})
+app.use( passport.initialize());
+
+app.get('/auth/asana/callback', 
+  passport.authenticate('Asana', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+});
+
+/////////
+app.use(errorhandler());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(__dirname + '/public'));
 
-// app.get('/login',function(req, res){
-//   var code = req.query.code;
-  
-//   var req_body = querystring.stringify({
-//       grant_type: 'authorization_code',
-//       client_id: config.client_id,
-//       client_secret: config.client_secret,
-//       redirect_uri: config.redirect_uri,
-//       code: code
-//   });
+app.get('/auth/asana', passport.authenticate('Asana', { failureRedirect: '/login' }));
 
-//   var options = {
-//       hostname: 'https://app.asana.com',
-//       path: '/-/oauth_token',
-//       method: 'POST',
-//       port: 80,
-//       headers: {
-//         'Content-Type': 'application/x-www-form-urlencoded'
-//       }       
-//   };
-
-//   console.log(options)
-//   // Set up the request
-//   var post_req = https.request(options, function(response) {
-//      console.log('request')
-//      res.sendFile(__dirname + '/public/success.html');
-//   });
-
-//   post_req.on('error', function(e) {
-//     console.log(`problem with request: ${e.message}`);
-//   });
-
-//   // post the data
-//   post_req.write(req_body);
-//   post_req.end();
-
-//   console.log('I got here')
-
-  
-// });
 
 var socketData = {
   roomname: { // room data model

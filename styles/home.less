@@ -1,0 +1,217 @@
+@import 'styles/variables.less';
+
+.intro-title{
+
+  i.pokerchips {
+    background: #1DCC5C;
+    width: 58px;
+    font-size: 35px;
+    height: 58px;
+    padding-top: 12px;
+    z-index: 10;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 6px;
+  }
+
+  h1.main-title {
+    color: #fff;
+    z-index: 1;
+    color: #1DCC5C;
+    font-family: open-sans,sans-serif;
+    font-size: 30px;
+    display: inline-block;
+  }
+} 
+
+
+.intro-modal{
+    width: 500px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    box-shadow: 1px 1px 3px black;
+  .login-container {
+    width: 300px;
+    margin: 15px auto;
+  }
+
+  button.asana-button {
+    width: 100%;
+    background-color: #385592;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    height: 29px;
+    font-size: 12px;
+    letter-spacing: 1.35px;
+  }
+
+  input.room-name-input {
+    font-size: 13px;
+    width: 100%;
+    border-radius: 4px;
+    border: none;
+    background: #464242;
+    margin-top: 12px;
+    padding: 5px;
+    &.password{
+      display: none;
+      &.password-on{
+        display: block;
+      }
+    }
+  } 
+
+  .private-option{
+    height: 26px;
+    width: 100%;
+    border-radius: 4px;
+    border: none;
+    margin-top: 12px;
+    padding: 5px;
+    text-align: left;
+    color: grey;
+    position: relative;
+    .toggleTrack {
+      height: 20px;
+      position: relative;
+      background: black;
+      width: 40px;
+      position: absolute;
+      right: 0px;
+      top: 5px;
+      border-radius: 30px;
+      border: 2px solid grey;
+      transition: .8s background-color;
+      .toggleThumb {
+        height: 22px;
+        width: 22px;
+        background: #A0A0A0;
+        border-radius: 50%;
+        position: absolute;
+        top: -3px;
+        right: 17px;
+        box-shadow: 1px 1px 5px black;
+        cursor: pointer;
+        transition: .4s transform;
+        &:hover{
+          color: white;
+        }
+      }
+      &.password-on{
+        background: @progressGreen;
+        border: 2px solid @progressGreen;
+        .toggleThumb{
+          transform: translateX(18px);
+        }
+      }
+    }
+
+  } 
+}
+
+.or-contianer {
+    margin-top: 14px;
+    height: 35px;
+    width: 100%;
+    line-height: 35px;
+    font-family: sans-serif;
+    font-size: 13px;
+  .or-line {
+    width: 100%;
+    height: 50%;
+    border-bottom: 1px solid gray;
+    position: relative;
+    .or {
+      background: #181818;
+      width: 30px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: gray;
+    }
+  }
+}
+
+p.link-text {
+    color: white;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+
+
+  // .intro-modal.inverse {
+  //   background-position-y: -224px;
+  //   background-position-x: -3px;
+  // }
+
+
+  // p {
+  //   color: #E43C3C;
+  //   TEXT-TRANSFORM: uppercase;
+  //   font-family: @mainFont;
+  //   margin: 34px auto;
+  //   background: antiquewhite;
+  //   box-shadow: 0px 0px 5px black;
+  //   width: 102%;
+  // }
+
+  // .message{
+  //   height: 21px;
+  //   line-height: 21px;
+  //   font-size: 12px;
+  // }
+
+
+  // input.room-name-input {
+  //   font-size: 13px;
+  //   width: 131px;
+  //   border-radius: 5px;
+  // }
+
+  // p.link-text {
+  // margin-top: 45px;
+  // background-color: white;
+  // box-shadow: none;
+  // color: black;
+  // font-family: @mainFont;
+  // }
+
+  // button.btn{
+  //   display: block;
+  //   margin: 10px auto;
+  //   border: none;
+  //   color: white;
+  //   height: 23px;
+  //   font-size: 15px;
+  //   background: #E10816;;
+  // }
+
+  // button.btn.roomname{
+  //   visibility: hidden;
+  // }
+
+  // button.btn.roomname.show{
+  //   visibility: visible;
+  // }
+
+  // .hovered > button.btn{
+  //   background: #1B2D6B;
+  // }
+
+  // input.room-link-input {
+  // width: 100%;
+  // font-size: 16px;
+  // }
+
+  // .private-option > label{
+  //   background: #122658;
+  //   color: white;
+  //   font-weight: bold;
+  //   width: 75px;
+  //   padding: 2px;
+  // }
