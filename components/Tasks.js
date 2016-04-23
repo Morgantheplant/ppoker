@@ -13,6 +13,7 @@ class Tasks extends React.Component {
             <h2 className="section-title">ROOM INFO</h2>
             <div className="roomname"><i className="fa fa-home icon"></i> {this.props.roomname}</div>
             <div className="username"><i className="fa fa-user icon"></i> {this.props.userName}</div> 
+            <div className="import-tasks"><i className="fa fa-sign-in icon"></i>Import tasks</div> 
         </div>
         <h2 className="section-title">YOUR TASKS</h2>    
         {this.props.tasks.map(this._createTasks, this)}

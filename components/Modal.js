@@ -10,8 +10,8 @@ class Modal extends React.Component {
       <div id="modal-bg">
         <div id="modal">
           <div id="modal-content">
-            <div>Enter your name to join room: <b>{this.props.roomname}</b></div><input ref="nameentry" />
-            <button onClick={this.updateName}>enter</button>
+            <div>JOINING ROOM: <b>{this.props.roomname}</b></div><input ref="nameentry" placeholder="enter your name to begin"/>
+            <button onClick={this.updateName}>ENTER</button>
           </div>  
         </div>
       </div>) 

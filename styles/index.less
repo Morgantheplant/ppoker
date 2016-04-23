@@ -102,33 +102,74 @@ body{
     } 
     
     #modal-content {
-    font-family: @mainFont;
-    background-color: #f2f2f0;
-    color: #000000;
-    padding: 20px;
-    height: 100px;
-    width: 240px;
-    border-radius: 10px;
-    font-size: 12px;
-    text-align: center;
-    line-height: 1.5;
-    box-shadow: 1px 1px 10px #000000;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    box-sizing: border-box;
+      font-family: @mainFont;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.5;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      i.pokerchips {
+        background: #1DCC5C;
+        width: 21px;
+        font-size: 13px;
+        height: 21px;
+        padding-top: 4px;
+        padding-left: 5px;
+        z-index: 10;
+        border-radius: 50%;
+        margin-left: 10px;
+        margin-right: 6px;
+      }
+
+        h1.main-title {
+        color: #fff;
+        z-index: 1;
+        color: #1DCC5C;
+        font-family: open-sans,sans-serif;
+        font-size: 14px;
+        display: inline-block;
+        }
+
+      input{
+        background-color: @greyPanel;
+        color: @textGrey;
+        border: none;
+        border-radius: 5px;
+        height: 26px;
+        width: 230px;
+        margin-top: 30px;
+        padding: 5px;
+      }
+      button{
+        height: 28px;
+        background: @loginBtn;
+        color: white;
+        border: none;
+        margin-top: 20px;
+        border-radius: 30px;
+        width: 100px;
+        letter-spacing: 1.35px;
+        cursor: pointer;
+        &:hover{
+          background: @loginBtnHighlight;
+      }
+     }
     }
 
    #modal {
     text-align: center;
-    border-radius: 10px;
+    border-radius: 5px;
     padding-top: 6px;
     font-family: @mainFont;
     font-size: 12px;
     width: 267px;
-    height: 120px;
-    background-color: rgb(32, 162, 150);
+    height: 180px;
+    background-color: @bgDarkGrey;
     position: relative;
     top: 50%;
     left: 50%;
@@ -136,7 +177,6 @@ body{
     }
 
     #modal-bg{
-    background-color: rgba(0, 0, 0, 0.65);
     height: 100%;
     width: 100%;
     position: absolute;

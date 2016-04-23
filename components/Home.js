@@ -25,11 +25,15 @@ class Home extends React.Component {
         />
 
       <div className={classNames("intro-modal", { inverse: this.props.bgColor })} >
-        <div className="intro-title"><i className="fa fa-database pokerchips"></i>
-            <h1 className="main-title">Planning Pokerify</h1>
-        </div>
 
         <div className="login-container">
+          <div className="intro-title"><i className="fa fa-database pokerchips"></i>
+            <div className="title-container">
+              <h1 className="main-title">Planning</h1>
+              <h1 className="main-title">Pokerify</h1>
+            </div>
+        </div>
+        
           <a href="/auth/asana" ><button className="asana-button">LOG IN WITH ASANA</button></a>
           <div className="or-contianer">
             
@@ -137,7 +141,6 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-  //todo: only map state in this component
   return {
     roomName: state.homeStore.roomName, 
     userName: state.homeStore.userName,
