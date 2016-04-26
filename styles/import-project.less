@@ -1,0 +1,59 @@
+@import 'styles/variables.less';
+
+
+.import-pane{
+  display: none;
+  &.show{
+    display: block;
+  }
+  .arrow {
+    width: 0;
+    height: 10px;
+    border-top: 7px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #333;
+    margin-left: 130px;
+    margin-top: 2px;
+    position: absolute;
+    top: 88px;
+    left: -12px
+  }
+  .project-select-pane {
+      background: #333;
+      color: #919496;
+      position: absolute;
+      font-size: 14px;
+      text-align: center;
+      box-shadow: 1px 1px 4px #000;
+      top: 67px;
+      left: 135px;
+      width: 160px;
+    h2.heading{
+      margin:10px 0 10px 10px;
+      text-align: left;
+      font-size:14px;
+      i{
+        float: right;
+        margin-right: 10px;
+      }
+    }
+    .project-select{
+      padding: 5px 35px 5px 35px;
+      cursor: pointer;
+      position:relative;
+      &:hover{
+        background:@progressBg;
+      }
+    }
+  }
+}
+
+// todo: add separate pane for importing certain tasks 
+// .asana-tasks{
+//   background: blue;
+//   height: 67px;
+//   position: absolute;
+//   width: 160px;
+//   left: 160px;
+//   top: -35px;
+// }  

@@ -160,3 +160,30 @@ export const showResults = function(bool){
     showResults: bool
   }
 }
+
+export const toggleProjectPane = function(){
+  return {
+    type: types.TOGGLE_PROJECT_PANE
+  }
+}
+
+export const addAsanaToken = function(token){
+  return {
+    type: types.ADD_ASANA_TOKEN,
+    token: token
+  }
+}
+
+export const removeAsanaToken = function(token){
+  return {
+    type: types.REMOVE_ASANA_TOKEN,
+    token: token
+  }
+}
+
+export const addAsanaProjects = function(projects){
+  return {
+    type: types.ADD_ASANA_PROJECTS,
+    projects: projects
+  }
+}

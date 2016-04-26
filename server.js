@@ -30,18 +30,12 @@ app.get('/login', function(req, res){
 app.get('/room/:room', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
+
 app.use(express.static(__dirname + '/public'));
-console.log('passport', passport)
-// /////////
-// passport.serializeUser(function(user, done) {
-//   done(null, user);
-// });
 
-// passport.deserializeUser(function(obj, done) {
-//   done(null, obj);
-// });
 
-/////////
+var asanaAccessToken;
+
 passport.use('Asana', new AsanaStrategy({
     clientID: config.ASANA_CLIENT_ID,
     clientSecret: config.ASANA_CLIENT_SECRET,
@@ -49,7 +43,9 @@ passport.use('Asana', new AsanaStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
-    console.warn(accessToken, refreshToken, profile);
+    asanaAccessToken = accessToken;
+    //getTasks();
+    // console.log(profile)
     process.nextTick(function () {
       
       // To keep the example simple, the user's Asana profile is returned to
@@ -60,6 +56,34 @@ passport.use('Asana', new AsanaStrategy({
     });
   }
 ));
+
+function getTasks(req, res) {
+  var url ="/api/1.0/projects"
+  var postBase = "app.asana.com";
+  var options = {
+    host: postBase,
+    port: 443,
+    path: url,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + asanaAccessToken,
+    }
+  };
+  var asanaReq = https.request(options, function(asanaRes) {
+    asanaRes.on('data', function(chunk) {
+      console.log(chunk + "");
+     // get query params
+     //'/projects?roomname=asdsad'
+      res.send(chunk);
+    });
+    asanaRes.on('error', function(e){
+      console.log(e.message);
+    });
+  });
+
+  asanaReq.end();
+}
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -77,7 +101,6 @@ app.get('/auth/asana/callback',
     res.redirect('/');
 });
 
-/////////
 app.use(errorhandler());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -86,6 +109,11 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/auth/asana', passport.authenticate('Asana', { failureRedirect: '/login' }));
 
+app.get('/projects', function(req, res){
+  console.log('got hereqdasdasdads')
+  getTasks(req, res);
+
+})
 
 var socketData = {
   roomname: { // room data model
@@ -114,7 +142,6 @@ function removeUser(username, roomname, id, cb){
       userList.splice(i,1);
       cb && cb("User "+ user +" successfully cleaned from data");
     } else {
-      console.log(username,roomname, 'loooook', socketData)
       cb && cb("WARNING: username not found");
     }
   } else {
@@ -123,8 +150,6 @@ function removeUser(username, roomname, id, cb){
 }
 
 function startTimer(data, tick, end){
-  // todo: only start timer if more than 1 user and a task is selected
-  // move this logic out of the timer function
   var roomname = data.room;
   var roomData = socketData[roomname];
   if(roomData){

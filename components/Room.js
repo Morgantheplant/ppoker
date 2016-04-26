@@ -57,7 +57,7 @@ class Room extends React.Component {
         <div className="task-heading" >
           <h3 className="selected-task">
           { 
-            this.props.selectedTask.description || "Add tasks at the top right to begin" 
+            this.props.selectedTask.description || "Add or import tasks to begin" 
           }
           </h3>
         </div>  
@@ -205,20 +205,29 @@ class Room extends React.Component {
   toggleTimer(){
     if(this.props.selectedTask.index > -1){
       var selected = this.props.selectedTask
-       socket.emit('startTimer', {
+
+      if(selected.score){
+        let voteAgain = confirm("Are you sure you want to vote again? \n note this will delete the current ");
+        if(voteAgain){
+          selected.score = null;
+        } else {
+          this.notifyMessage("re-vote canceled for this task");
+          return;
+        }
+      } 
+
+      socket.emit('startTimer', {
         name: this.props.userName,
         room: this.props.params.roomname,
         selected: selected 
       })
+
     } else {
-      //todo: replace this with top message
-      let { dispatch } = this.props;
       this.notifyMessage("Select a task first");
     }
   }
 
   toggleAdminPane(){
-    debugger
     let { dispatch } = this.props;
     dispatch(toggleAdminPane())
   }

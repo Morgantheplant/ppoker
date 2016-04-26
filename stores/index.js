@@ -6,7 +6,9 @@ import { timerStore } from './timerReducer'
 import { messagesStore } from './messagesReducer'
 import { notificationStore } from './notificationReducer'
 import { adminPaneStore } from './adminPaneReducer'
+import { importTaskStore } from './importTaskReducer'
 import { combineReducers, createStore } from 'redux'
+
 
 let mainStore = combineReducers({
   taskStore, 
@@ -16,7 +18,8 @@ let mainStore = combineReducers({
   timerStore, 
   messagesStore,
   notificationStore,
-  adminPaneStore 
+  adminPaneStore,
+  importTaskStore 
 });
 
 export default mainStore
