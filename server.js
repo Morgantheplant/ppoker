@@ -44,8 +44,6 @@ passport.use('Asana', new AsanaStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     asanaAccessToken = accessToken;
-    //getTasks();
-    // console.log(profile)
     process.nextTick(function () {
       
       // To keep the example simple, the user's Asana profile is returned to
@@ -73,8 +71,6 @@ function getTasks(req, res) {
   var asanaReq = https.request(options, function(asanaRes) {
     asanaRes.on('data', function(chunk) {
       console.log(chunk + "");
-     // get query params
-     //'/projects?roomname=asdsad'
       res.send(chunk);
     });
     asanaRes.on('error', function(e){
@@ -110,9 +106,7 @@ app.use(express.static(__dirname + '/public'));
 app.get('/auth/asana', passport.authenticate('Asana', { failureRedirect: '/login' }));
 
 app.get('/projects', function(req, res){
-  console.log('got hereqdasdasdads')
   getTasks(req, res);
-
 })
 
 var socketData = {
@@ -228,8 +222,14 @@ function timer(data, tick, end){
          }
       })
       console.log(notPicked, 'these users havent picked');
+      
+      var usersNp = notPicked.reduce(function(prev, curr, index){
+        var comma = (index == 0 || index == this.length ) ? "" : ", ";
+        return prev + comma +curr.name
+      }.bind(this),'')
+
        io.to(data.room).emit('notification',
-        { message: "these users haven't picked:" + notPicked.join(",") }) 
+        { message: "these users haven't picked: " + usersNp }) 
     }
   } else {
     console.log('room not found timer cannot continue')
@@ -326,9 +326,11 @@ function resetAllUsers(data){
      roomData.users.forEach(function(user){
         user.pick = null;
      })
-
+    //make sure task data is reset here and sent back to rooms
     io.to(data.room).emit('beginVoting', {
-      task: roomData.selectedTask.description
+      task: roomData.selectedTask.description,
+      tasks: roomData.tasks,
+      selectedTask: roomData.selectedTask
     }); 
 
 
@@ -341,7 +343,6 @@ function resetAllUsers(data){
 
 io.on('connection', function(socket){
   console.log('a user connected');
-  
   // handle a user joining
   socket.on('joinroom', function(data){
     var roomname = data.room, username = data.name,

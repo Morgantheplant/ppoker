@@ -144,6 +144,7 @@ class Room extends React.Component {
     socket.on('beginVoting', function(data){
       dispatch(resetPicks());
       dispatch(showResults(false));
+      dispatch(selectTask(data))
       let message = `Voting on task: ${ data.task }`
       this.notifyMessage(message);
     }.bind(this));
