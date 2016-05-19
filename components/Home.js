@@ -1,6 +1,7 @@
 import React from '../node_modules/react'
 import socket from '../socket'
 import classNames from 'classnames'
+import MessagePane from './MessagePane'
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../actions/home'
@@ -14,6 +15,7 @@ class Home extends React.Component {
     this.submitRoomname = this.submitRoomname.bind(this)
     this.toggleBgColor = this.toggleBgColor.bind(this)
     this.togglePrivate = this.togglePrivate.bind(this)
+    this.toggleMessage = this.toggleMessage.bind(this)
   }
   render () {
     return (
@@ -23,7 +25,7 @@ class Home extends React.Component {
         message={this.props.notification} 
         show={this.props.notificationShow} 
         />
-
+      
       <div className={classNames("intro-modal", { inverse: this.props.bgColor })} >
 
         <div className="login-container">
@@ -34,15 +36,13 @@ class Home extends React.Component {
             </div>
         </div>
         
-          <a href="/auth/asana" ><button className="asana-button">LOG IN WITH ASANA</button></a>
-          <div className="or-contianer">
-            
-            <div className="or-line-left">
-            </div>
-            <div className="or">OR</div>
-            <div className="or-line-right">
-            </div>
-            </div>
+        <button className="asana-button" onClick={this.toggleMessage}>LOG IN WITH ASANA</button>
+        
+        <div className="or-contianer">
+          <div className="or-line-left"></div>
+          <div className="or">OR</div>
+          <div className="or-line-right"></div>
+        </div>
 
           <input type="text" ref="roomNameInput" className="room-name-input" 
             onChange={ this.updateRoomname } 
@@ -71,9 +71,10 @@ class Home extends React.Component {
               className="room-link-input" />) : null 
           }
         </div>
-        
-        
     </div>
+
+    { this.props.toggleAsanaMessage ? <MessagePane toggleMessage={this.toggleMessage} content="Sorry, this feature is still under construction..."/>  : null }
+
     </div>)
   }
   componentDidMount(){
@@ -138,6 +139,11 @@ class Home extends React.Component {
     }.bind(this),2000)
   }
 
+  toggleMessage(){
+     let { dispatch } = this.props;
+     dispatch(actions.toggleAsanaMessage());
+  }
+
 }
 
 function mapStateToProps(state) {
@@ -148,7 +154,8 @@ function mapStateToProps(state) {
     bgColor: state.homeStore.bgColor,
     usePass: state.homeStore.usePass,
     notification: state.notificationStore.notification,
-    notificationShow: state.notificationStore.show  
+    notificationShow: state.notificationStore.show,
+    toggleAsanaMessage: state.homeStore.toggleAsanaMessage 
   }
 }
 

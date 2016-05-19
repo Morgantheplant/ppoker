@@ -187,3 +187,9 @@ export const addAsanaProjects = function(projects){
     projects: projects
   }
 }
+
+export const toggleAsanaMessage  = function(){
+  return {
+    type: types.TOGGLE_ASANA_MESSAGE
+  }
+}
