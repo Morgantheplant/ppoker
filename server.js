@@ -14,25 +14,13 @@ var util = require('util')
 var AsanaStrategy = require('passport-asana').Strategy;
 var passport = require('passport');
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
-});
-
-app.get('/room', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
-});
-
-app.get('/login', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
-});
 
 
 app.get('/room/:room', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(__dirname + '/public/');
 });
 
 app.use(express.static(__dirname + '/public'));
-
 
 var asanaAccessToken;
 
@@ -46,10 +34,6 @@ passport.use('Asana', new AsanaStrategy({
     asanaAccessToken = accessToken;
     process.nextTick(function () {
       
-      // To keep the example simple, the user's Asana profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Asana account with a user record in your database,
-      // and return that user instead.
       return done(null, profile);
     });
   }
@@ -298,7 +282,6 @@ function tallyScores(data){
         return fibNumbers[i];
       }
     }
-
     
   } else {
     console.log('something went wrogn in tallying scores')
