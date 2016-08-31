@@ -1,7 +1,5 @@
-import React from '../node_modules/react'
+import React from 'react'
 import classNames from 'classnames'
-
-//let loteria = `loteria-card-${Math.ceil(Math.random()*25)}.jpg`;
 
 class Users extends React.Component {
    constructor (props) {
@@ -38,8 +36,6 @@ class Users extends React.Component {
       <div className="username">{item.name}</div>  
     </li>)
   }
-
- 
 }
 
 export default Users

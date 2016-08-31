@@ -1,4 +1,4 @@
-import React from '../node_modules/react'
+import React from 'react'
 
 class Modal extends React.Component {
    constructor (props) {

@@ -1,4 +1,4 @@
-import React from '../node_modules/react'
+import React from 'react'
 import socket from '../socket'
 import classNames from 'classnames'
 import MessagePane from './MessagePane'

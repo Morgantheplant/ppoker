@@ -1,8 +1,8 @@
-import React from '../node_modules/react'
+import React from 'react'
 import classNames from 'classnames'
 import Card from './Card'
 import { connect } from 'react-redux';
-import {clickedCard } from '../actions/home'
+import { clickedCard } from '../actions/home'
 
 class Topics extends React.Component {
   constructor (props) {

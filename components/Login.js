@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-//import { manualLogin } from 'actions/users';
 
 class Login extends React.Component {
  

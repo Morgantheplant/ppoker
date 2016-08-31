@@ -1,8 +1,9 @@
-import React from '../node_modules/react'
+import React from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux';
 import { toggleProjectPane, addAsanaToken,removeAsanaToken,
 addAsanaProjects } from '../actions/home'
+
 class ImportTasks extends React.Component {
    constructor (props) {
     super(props)

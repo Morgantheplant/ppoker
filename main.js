@@ -15,11 +15,11 @@ const routes = createRoutes(store)
 require('./public/styles.min.css')
 
 render(
-    <Provider store={store}>
-        <Router history={browserHistory}>
-        { routes }
-        </Router>
-    </Provider>, document.querySelector('.react-content'))
+  <Provider store={store}>
+    <Router history={browserHistory}>
+    { routes }
+    </Router>
+  </Provider>, document.querySelector('.react-content'))
 
 
 

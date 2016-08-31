@@ -1,4 +1,4 @@
-import React from '../node_modules/react'
+import React from 'react'
 import classNames from 'classnames'
 
 class NotificationPanel extends React.Component {

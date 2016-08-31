@@ -1,4 +1,4 @@
-import React from '../node_modules/react'
+import React from 'react'
 
 class MessagePane extends React.Component {
    constructor (props) {

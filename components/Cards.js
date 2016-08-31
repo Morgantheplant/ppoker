@@ -1,18 +1,18 @@
-import React from '../node_modules/react'
+import React from 'react'
 import classNames from 'classnames'
 import Card from './Card'
 import { connect } from 'react-redux';
-import {clickedCard } from '../actions/home'
+import { clickedCard } from '../actions/home'
 
 class Cards extends React.Component {
   constructor (props) {
     super(props)
   }
   render () {
-   
-    return (<div className={classNames("card-area", {"show-pane": this.props.panelShown})}>
+    return (
+      <div className={classNames("card-area", {"show-pane": this.props.panelShown})}>
          { this.props.cards.map(this._createCards, this)}
-        </div>)
+      </div>)
   }
   
   _createCards(item, index){

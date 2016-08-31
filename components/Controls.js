@@ -1,4 +1,4 @@
-import React from '../node_modules/react'
+import React from 'react'
 
 class Controls extends React.Component {
    constructor (props) {
@@ -8,8 +8,8 @@ class Controls extends React.Component {
     this.toggleTimer = props.toggleTimer;
   }
   render () {
-     let progressBar = (this.props.timer) ? ((1 - (this.props.timer / 30))*100) : 0;
-     return (
+   let progressBar = (this.props.timer) ? ((1 - (this.props.timer / 30))*100) : 0;
+   return (
       <div className="task-controls">
         <div className="task-control-buttons">
           <i onClick={this.prevTask} className="fa fa-step-backward back"></i>
