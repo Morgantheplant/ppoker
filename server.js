@@ -1,100 +1,18 @@
-var express = require('express');
+var express = require("express");
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
 var port = process.env.PORT || 3000;
-var config = require ('./config')
-var https = require('https');
-var querystring = require('querystring');
-var db = require('./db');
-var moment = require('moment');
-var errorhandler = require('errorhandler')
-var  passport = require('passport')
-var util = require('util')
-var AsanaStrategy = require('passport-asana').Strategy;
-var passport = require('passport');
+var moment = require("moment");
 
-
-
-app.get('/room/:room', function(req, res){
-  res.sendFile(__dirname + '/public/');
+app.get("/room/:room", function(req, res){
+  res.sendFile(__dirname + "/public/");
 });
 
-app.use(express.static(__dirname + '/public'));
-
-var asanaAccessToken;
-
-passport.use('Asana', new AsanaStrategy({
-    clientID: config.ASANA_CLIENT_ID,
-    clientSecret: config.ASANA_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/asana/callback",
-  },
-  function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
-    asanaAccessToken = accessToken;
-    process.nextTick(function () {
-      
-      return done(null, profile);
-    });
-  }
-));
-
-function getTasks(req, res) {
-  var url ="/api/1.0/projects"
-  var postBase = "app.asana.com";
-  var options = {
-    host: postBase,
-    port: 443,
-    path: url,
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Bearer ' + asanaAccessToken,
-    }
-  };
-  var asanaReq = https.request(options, function(asanaRes) {
-    asanaRes.on('data', function(chunk) {
-      console.log(chunk + "");
-      res.send(chunk);
-    });
-    asanaRes.on('error', function(e){
-      console.log(e.message);
-    });
-  });
-
-  asanaReq.end();
-}
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-});
-
-app.use( passport.initialize());
-
-app.get('/auth/asana/callback', 
-  passport.authenticate('Asana', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-});
-
-app.use(errorhandler());
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(express.static(__dirname + '/public'));
-
-app.get('/auth/asana', passport.authenticate('Asana', { failureRedirect: '/login' }));
-
-app.get('/projects', function(req, res){
-  getTasks(req, res);
-})
+app.use(express.static(__dirname + "/public"));
 
 var socketData = {
-  roomname: { // room data model
+  roomname: { 
     users: [],
     timerOn: false,
     time: 0,
@@ -110,13 +28,13 @@ function removeUser(username, roomname, id, cb){
   if(socketData[roomname]){
     var userList = socketData[roomname].users, found;
     for(var i = 0; i < userList.length;i++){
-       if(userList[i].name === username){
+      if(userList[i].name === username){
         found = true; 
         break;
-       }
+      }
     }
     if(found){
-      var user = userList[i].name
+      var user = userList[i].name;
       userList.splice(i,1);
       cb && cb("User "+ user +" successfully cleaned from data");
     } else {
@@ -142,7 +60,7 @@ function startTimer(data, tick, end){
       timer(data, tick, end); 
     }
   } else {
-    console.log('room not found could not start timer')
+    console.log("room not found could not start timer");
   }
 }
 
@@ -151,20 +69,20 @@ function pauseTimer(data, reset){
   if(roomData){
     roomData.timerOn = false;
     if(reset){
-      console.log('pause got here in the timer ', roomData.limit)
+      console.log("pause got here in the timer ", roomData.limit);
       // if reset isn't listed then set time to limit or 29
       roomData.time = (roomData.limit) ? roomData.limit - 1 : 29;
     }
 
-    console.log("rooom timer paused", roomData.timerOn, "time: ", roomData.time)
-    io.to(data.room).emit('updateTimer', {
+    console.log("rooom timer paused", roomData.timerOn, "time: ", roomData.time);
+    io.to(data.room).emit("updateTimer", {
       time: roomData.time + 1,
       timerOn: false,
       inProgress: !reset
-    })
+    });
     clearTimeout(roomData.timeout);
   } else {
-    console.log('room not found could not pause the timer')
+    console.log("room not found could not pause the timer");
   }
 }
 
@@ -173,14 +91,13 @@ function timer(data, tick, end){
   if(roomData){
     var time = roomData.time;
     var on = roomData.timerOn;
-    var timeout;
     //send out updated time
     tick({
       time:time,
       room: data.room,
       timerOn: on,
       inProgress: true
-    })
+    });
     // keep looping through timer if on 
     if(time > -1 && on){
       roomData.time--;
@@ -192,31 +109,30 @@ function timer(data, tick, end){
       //reset timer 
       roomData.timerOn = false;
       roomData.time = 30;
-      roomData.resume = null
-      roomData.inProgress = false
-      console.log('timer finished')
-      io.to(data.room).emit('updateTimer', {
+      roomData.resume = null;
+      roomData.inProgress = false;
+      io.to(data.room).emit("updateTimer", {
         time: 0,
         timerOn: false,
         inProgress: false
-      })
+      });
       var notPicked = roomData.users.filter(function(item){
-         if(!item.pick){
-           return item.name
-         }
-      })
-      console.log(notPicked, 'these users havent picked');
+        if(!item.pick){
+          return item.name;
+        }
+      });
+      console.log(notPicked, "these users havent picked");
       
       var usersNp = notPicked.reduce(function(prev, curr, index){
         var comma = (index == 0 || index == this.length ) ? "" : ", ";
-        return prev + comma +curr.name
-      }.bind(this),'')
+        return prev + comma + curr.name;
+      }.bind(this),"");
 
-       io.to(data.room).emit('notification',
-        { message: "these users haven't picked: " + usersNp }) 
+      io.to(data.room).emit("notification",
+        { message: "these users haven't picked: " + usersNp }); 
     }
   } else {
-    console.log('room not found timer cannot continue')
+    console.log("room not found timer cannot continue");
   }
 }
 
@@ -227,20 +143,20 @@ function updateUserClick(data){
     var userList = roomData.users;
     //todo: build helper method
     var fibNumbers = [1,2,3,5,8,13,21,34,55,89];
-    userList.forEach(function(user, index){
+    userList.forEach(function(user){
       if(user.name === data.name){
-        user.pick = fibNumbers[data.index]
+        user.pick = fibNumbers[data.index];
       }
       return user;
-    })
+    });
 
     if(picksLeft(data).length===0){
       pauseTimer(data, true);
       var score = tallyScores(data);
-      var selectedTask = roomData.selectedTask
+      var selectedTask = roomData.selectedTask;
       roomData.tasks[selectedTask.index].score = score;
       selectedTask.score = score;
-      io.to(data.room).emit('doneVoting',{
+      io.to(data.room).emit("doneVoting",{
         userList: socketData[data.room].users,
         score: score, 
         tasks: roomData.tasks,
@@ -248,7 +164,7 @@ function updateUserClick(data){
       });
     }
   } else {
-    console.log('Warning: could not find room card pick not updated')
+    console.log("Warning: could not find room card pick not updated");
   }
 }
 
@@ -260,13 +176,13 @@ function tallyScores(data){
       if(user.pick > -1){
         return user.pick;
       } else {
-         console.log('error: user pick fail, missing user.pick  ')
+        console.log("error: user pick fail, missing user.pick  ");
       }
-    })
+    });
     var totals = rawScores.reduce(function(curr, prev){
-       return curr + prev;
-    })
-    var numOfUsers = rawScores.length  
+      return curr + prev;
+    });
+    var numOfUsers = rawScores.length;  
     //throw out highest and lowest score if more than 4 users
     if(numOfUsers > 4){
       var highest = Math.max.apply(null, rawScores);
@@ -284,7 +200,7 @@ function tallyScores(data){
     }
     
   } else {
-    console.log('something went wrogn in tallying scores')
+    console.log("something went wrogn in tallying scores");
   }  
 }
 
@@ -293,43 +209,41 @@ function picksLeft(data){
   if(roomData){
     return roomData.users.filter(function(item){
       if(!item.pick){
-        return item.name
+        return item.name;
       }
     });
       
   } else {
-     console.log('Warning: something went wrong with checking picks')
-     return [];
+    console.log("Warning: something went wrong with checking picks");
+    return [];
   }
 }
 
 function resetAllUsers(data){
   var roomData = socketData[data.room];
   if(roomData && roomData.users){
-     roomData.users.forEach(function(user){
-        user.pick = null;
-     })
+    roomData.users.forEach(function(user){
+      user.pick = null;
+    });
     //make sure task data is reset here and sent back to rooms
-    io.to(data.room).emit('beginVoting', {
+    io.to(data.room).emit("beginVoting", {
       task: roomData.selectedTask.description,
       tasks: roomData.tasks,
       selectedTask: roomData.selectedTask
     }); 
-
-
   } else {
-    console.log('could not find room to reset users')
+    console.log("could not find room to reset users");
   }
 }
 
 
 
-io.on('connection', function(socket){
-  console.log('a user connected');
+io.on("connection", function(socket){
+  console.log("a user connected");
   // handle a user joining
-  socket.on('joinroom', function(data){
+  socket.on("joinroom", function(data){
     var roomname = data.room, username = data.name,
-    userInfo = { name: username, pick:null, num: Math.ceil(Math.random()*25) };
+      userInfo = { name: username, pick:null, num: Math.ceil(Math.random()*25) };
     // if room doesn't already exist init room data
     if(!socketData[roomname]){
       socketData[roomname] = {
@@ -344,58 +258,58 @@ io.on('connection', function(socket){
       };
     }
     // add user to room and keep track of user data
-    socket.join(roomname)
-    socketData[roomname].users.push(userInfo)
-    io.to(roomname).emit('addUser',{userList: socketData[roomname].users })
+    socket.join(roomname);
+    socketData[roomname].users.push(userInfo);
+    io.to(roomname).emit("addUser",{userList: socketData[roomname].users });
     // update task list only for newly joining user
-    io.to(socket.id).emit('addTask', {tasks: socketData[roomname].tasks, selectedTask: {}})
+    io.to(socket.id).emit("addTask", {tasks: socketData[roomname].tasks, selectedTask: {}});
     //todo: handle joining multiple rooms
     if(socketData[socket.id]){
-       console.log('multiple rooms is not supported')
-        io.to(roomname).emit('message', {
-          msg: 'Note: joining multiple rooms is not supported',
-          time: moment().format('h:mm  a')
-        })
+      console.log("multiple rooms is not supported");
+      io.to(roomname).emit("message", {
+        msg: "Note: joining multiple rooms is not supported",
+        time: moment().format("h:mm  a")
+      });
     }  
     // store room info by socketid to id who leaves 
-    socketData[socket.id] = [roomname, username]
+    socketData[socket.id] = [roomname, username];
     // notify room that user has joined
-    io.to(roomname).emit('message', {
-      msg: username + ' joined the room',
-      time: moment().format('h:mm  a')
-    })
-  })
+    io.to(roomname).emit("message", {
+      msg: username + " joined the room",
+      time: moment().format("h:mm  a")
+    });
+  });
 
-  socket.on('addTask', function(data){
+  socket.on("addTask", function(data){
     var roomname = data.room;
-    var tasks = socketData[roomname].tasks
+    var tasks = socketData[roomname].tasks;
     // assign new index to task
-    data.task.index = tasks.length
+    data.task.index = tasks.length;
     tasks.push(data.task);
-    io.to(roomname).emit('addTask',{
+    io.to(roomname).emit("addTask",{
       tasks: tasks
     });
-  })
+  });
 
-  socket.on('nextTask', function(data){
+  socket.on("nextTask", function(data){
     var room = socketData[data.room];
-    var tasks = room.tasks
+    var tasks = room.tasks;
     var oldIndex = room.selectedTask.index;
     var nextIndex = oldIndex+1;
     if( tasks[oldIndex] && nextIndex < tasks.length){
       tasks[oldIndex].selected = null;
       tasks[nextIndex].selected = true;
       room.selectedTask = tasks[nextIndex];
-      io.to(data.room).emit('nextTask',{
+      io.to(data.room).emit("nextTask",{
         tasks: tasks,
         selectedTask: tasks[nextIndex]
       });
     }        
-  })
+  });
 
-  socket.on('selectTask', function(data){
+  socket.on("selectTask", function(data){
     var room = socketData[data.room];
-    var tasks = room.tasks
+    var tasks = room.tasks;
     var newIndex = data.task.index;
    
     tasks.forEach(function(task, index){
@@ -408,91 +322,90 @@ io.on('connection', function(socket){
       }
     });
     room.selectedTask = data.task;
-    io.to(data.room).emit('selectTask', {
-        tasks: tasks,
-        selectedTask: data.task
+    io.to(data.room).emit("selectTask", {
+      tasks: tasks,
+      selectedTask: data.task
     });
-  })
+  });
   
-  socket.on('prevTask', function(data){
+  socket.on("prevTask", function(data){
     var room = socketData[data.room];
-    var tasks = room.tasks
+    var tasks = room.tasks;
     var oldIndex = room.selectedTask.index;
     var prevIndex = oldIndex-1;
     if(prevIndex > -1){
       tasks[oldIndex].selected = null;
       tasks[prevIndex].selected = true;
       room.selectedTask = tasks[prevIndex];
-      io.to(data.room).emit('prevTask',{
+      io.to(data.room).emit("prevTask",{
         tasks: tasks,
         selectedTask: tasks[prevIndex]
       });
     }
-  })
+  });
 
 
   // handle a user leaving
-  socket.on('disconnect', function(){
-    console.log('a user disconnected')
+  socket.on("disconnect", function(){
+    console.log("a user disconnected");
     var data = socketData[socket.id];
     //see if they joined a room
     if(data && data.length === 2){
       var roomname = data[0];
       var username = data[1];
       // tell room that user left
-      io.to(roomname).emit('message',{
-        msg: username + ' left the room',
-        time: moment().format('h:mm  a')
+      io.to(roomname).emit("message",{
+        msg: username + " left the room",
+        time: moment().format("h:mm  a")
       });
 
-      io.to(roomname).emit('removeUser', username)
+      io.to(roomname).emit("removeUser", username);
       // remove user from data
       removeUser(username, roomname, socket.id, function(message){
-         console.log(message);
-      })
+        console.log(message);
+      });
     }
   });
   
   //picking a roomname from home
-  socket.on('roomname', function(room){
+  socket.on("roomname", function(room){
     if(!io.sockets.adapter.rooms[room]){
-        io.emit('room-available', room)
-        socket.join(room)
-        console.log(io.sockets.adapter.rooms[room])
+      io.emit("room-available", room);
+      socket.join(room);
+      console.log(io.sockets.adapter.rooms[room]);
     } else {
-        io.emit('room-not-available')
+      io.emit("room-not-available");
     }
-  })
+  });
 
   //starting the room timer 
-  socket.on('startTimer', function(data){
-    startTimer(data, 
-      function onTick(data){
-        io.to(data.room).emit('updateTimer', data)
-      }, 
-      function onEnd(data){
-        io.to(data.room).emit('addUser',{
-          userList: socketData[data.room].users
-        })
+  socket.on("startTimer", function(data){
+    startTimer(data, function onTick(data){
+      io.to(data.room).emit("updateTimer", data);
+    }, 
+    function onEnd(data){
+      io.to(data.room).emit("addUser",{
+        userList: socketData[data.room].users
+      });
     });
-  })
+  });
 
-  socket.on('clickedCard', function(data){
-    updateUserClick(data)
-  })
+  socket.on("clickedCard", function(data){
+    updateUserClick(data);
+  });
 
   
-  socket.on('message', function(data){
-    io.to(data.room).emit('message',{
+  socket.on("message", function(data){
+    io.to(data.room).emit("message",{
       name: data.name,
       msg: data.msg,
-      time: moment().format('h:mm  a')
+      time: moment().format("h:mm  a")
     });
-  })
+  });
 
 });
 
 
 http.listen(port, function(){
-    console.log('Yalabazooo listening on port '+ port);
+  console.log("Yalabazooo listening on port "+ port);
 });
