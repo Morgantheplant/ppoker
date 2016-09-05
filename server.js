@@ -60,7 +60,7 @@ function startTimer(data, tick, end){
       timer(data, tick, end); 
     }
   } else {
-    console.log("room not found could not start timer");
+    printMessage("room not found could not start timer");
   }
 }
 
@@ -69,12 +69,12 @@ function pauseTimer(data, reset){
   if(roomData){
     roomData.timerOn = false;
     if(reset){
-      console.log("pause got here in the timer ", roomData.limit);
+      printMessage("pause got here in the timer ", roomData.limit);
       // if reset isn't listed then set time to limit or 29
       roomData.time = (roomData.limit) ? roomData.limit - 1 : 29;
     }
 
-    console.log("rooom timer paused", roomData.timerOn, "time: ", roomData.time);
+    printMessage("rooom timer paused", roomData.timerOn, "time: ", roomData.time);
     io.to(data.room).emit("updateTimer", {
       time: roomData.time + 1,
       timerOn: false,
@@ -82,7 +82,7 @@ function pauseTimer(data, reset){
     });
     clearTimeout(roomData.timeout);
   } else {
-    console.log("room not found could not pause the timer");
+    printMessage("room not found could not pause the timer");
   }
 }
 
@@ -121,7 +121,7 @@ function timer(data, tick, end){
           return item.name;
         }
       });
-      console.log(notPicked, "these users havent picked");
+      printMessage(notPicked, "these users havent picked");
       
       var usersNp = notPicked.reduce(function(prev, curr, index){
         var comma = (index == 0 || index == this.length ) ? "" : ", ";
@@ -132,7 +132,7 @@ function timer(data, tick, end){
         { message: "these users haven't picked: " + usersNp }); 
     }
   } else {
-    console.log("room not found timer cannot continue");
+    printMessage("room not found timer cannot continue");
   }
 }
 
@@ -164,7 +164,7 @@ function updateUserClick(data){
       });
     }
   } else {
-    console.log("Warning: could not find room card pick not updated");
+    printMessage("Warning: could not find room card pick not updated");
   }
 }
 
@@ -176,7 +176,7 @@ function tallyScores(data){
       if(user.pick > -1){
         return user.pick;
       } else {
-        console.log("error: user pick fail, missing user.pick  ");
+        printMessage("error: user pick fail, missing user.pick  ");
       }
     });
     var totals = rawScores.reduce(function(curr, prev){
@@ -200,7 +200,7 @@ function tallyScores(data){
     }
     
   } else {
-    console.log("something went wrogn in tallying scores");
+    printMessage("something went wrogn in tallying scores");
   }  
 }
 
@@ -214,7 +214,7 @@ function picksLeft(data){
     });
       
   } else {
-    console.log("Warning: something went wrong with checking picks");
+    printMessage("Warning: something went wrong with checking picks");
     return [];
   }
 }
@@ -232,14 +232,14 @@ function resetAllUsers(data){
       selectedTask: roomData.selectedTask
     }); 
   } else {
-    console.log("could not find room to reset users");
+    printMessage("could not find room to reset users");
   }
 }
 
 
 
 io.on("connection", function(socket){
-  console.log("a user connected");
+  printMessage("a user connected");
   // handle a user joining
   socket.on("joinroom", function(data){
     var roomname = data.room, username = data.name,
@@ -265,7 +265,7 @@ io.on("connection", function(socket){
     io.to(socket.id).emit("addTask", {tasks: socketData[roomname].tasks, selectedTask: {}});
     //todo: handle joining multiple rooms
     if(socketData[socket.id]){
-      console.log("multiple rooms is not supported");
+      printMessage("multiple rooms is not supported");
       io.to(roomname).emit("message", {
         msg: "Note: joining multiple rooms is not supported",
         time: moment().format("h:mm  a")
@@ -347,7 +347,7 @@ io.on("connection", function(socket){
 
   // handle a user leaving
   socket.on("disconnect", function(){
-    console.log("a user disconnected");
+    printMessage("a user disconnected");
     var data = socketData[socket.id];
     //see if they joined a room
     if(data && data.length === 2){
@@ -362,7 +362,7 @@ io.on("connection", function(socket){
       io.to(roomname).emit("removeUser", username);
       // remove user from data
       removeUser(username, roomname, socket.id, function(message){
-        console.log(message);
+        printMessage(message);
       });
     }
   });
@@ -372,7 +372,7 @@ io.on("connection", function(socket){
     if(!io.sockets.adapter.rooms[room]){
       io.emit("room-available", room);
       socket.join(room);
-      console.log(io.sockets.adapter.rooms[room]);
+      printMessage(io.sockets.adapter.rooms[room]);
     } else {
       io.emit("room-not-available");
     }
@@ -405,7 +405,11 @@ io.on("connection", function(socket){
 
 });
 
+function printMessage(){
+  console.log.apply(null, arguments);
+}
+
 
 http.listen(port, function(){
-  console.log("Yalabazooo listening on port "+ port);
+  printMessage("Yalabazooo listening on port "+ port);
 });
